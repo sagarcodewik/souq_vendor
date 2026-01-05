@@ -1,0 +1,102 @@
+.routeDetails {
+  .legsContainer {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+}
+
+.legItem {
+  padding: 1rem 0;
+}
+
+.legHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.legNumber {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.legTitle {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.routePoints {
+  position: relative;
+  margin-left: 1rem;
+}
+
+.routePoint {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.pointIcon {
+  margin-top: 0.2rem;
+}
+
+.pointDetails {
+  flex: 1;
+}
+
+.connectorLine {
+  height: 20px;
+  width: 2px;
+  background-color: #dee2e6;
+  margin-left: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.legDetails {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  margin-top: 1rem;
+  
+  .row {
+    margin-bottom: 0.5rem;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.driverInfo, .rejectedDrivers {
+  margin-top: 0.5rem;
+}
+
+.rejectionItem {
+  padding: 0.25rem 0;
+  border-bottom: 1px solid #e9ecef;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.legSeparator {
+  margin: 1.5rem 0;
+  opacity: 0.5;
+}

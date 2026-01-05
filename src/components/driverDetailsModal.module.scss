@@ -1,0 +1,53 @@
+.driverModal {
+  // background-color: #fff;
+  border-radius: 1em;
+  overflow: hidden;
+
+  .modalHeader {
+    background: linear-gradient(135deg, #0b737f 0%, #1da6b3 100%);
+    color: white;
+    padding: 1em;
+
+    h5 {
+      margin: 0;
+      font-weight: bold;
+    }
+  }
+
+  .modalBody {
+    padding: 1.5em;
+    text-align: center;
+
+    .profileImage {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #0b737f;
+      margin-bottom: 1em;
+    }
+
+    h5 {
+      margin-bottom: 0.5em;
+      color: #0b737f;
+    }
+
+    p {
+      margin: 0.3em 0;
+      font-size: 0.95rem;
+      color: #444;
+
+      strong {
+        color: #0b737f;
+      }
+    }
+  }
+
+  .modalFooter {
+    padding: 1em;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: flex-end;
+    background-color: #f9f9f9;
+  }
+}

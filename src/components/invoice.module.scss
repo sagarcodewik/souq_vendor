@@ -1,0 +1,40 @@
+.invoiceContainer {
+  background: #fff;
+  //   padding: 20mm;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #000;
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 6px;
+    }
+  }
+
+  // Force colors/borders in print
+  @media print {
+    * {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    & {
+      padding: 10mm; // only applied when printing
+    }
+    .noPrint {
+      display: none !important;
+    }
+
+    // Prevent page breaks inside tables
+    table,
+    tr,
+    td,
+    th {
+      page-break-inside: avoid;
+    }
+  }
+}

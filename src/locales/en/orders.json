@@ -1,0 +1,7 @@
+{
+  "welcome": "Welcome to the Sales Dashboard",
+  "InventoryOverview": "Inventory Overview",
+  "orders": "Total Orders",
+  "customers": "Active Customers",
+  "conversion": "Conversion Rate"
+}
