@@ -35,7 +35,7 @@ const AppSidebar = () => {
       <CSidebarHeader className="border-bottom">
         <Link to="/dashboard" className="text-decoration-none">
           <CSidebarBrand>
-            <img src="/logo.png" alt="Logo" className="sidebar-brand-full" height={32} width={90} />
+            <img src="/logo.svg" alt="Logo" className="sidebar-brand-full" height={32} width={90} style={{ backgroundColor: "white" }}/>
             <img src="/x.png" alt="Logo" className="sidebar-brand-narrow" height={32} width={40} />
             {/* <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={32} /> */}
           </CSidebarBrand>

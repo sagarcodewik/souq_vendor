@@ -8,16 +8,15 @@ import DataTable from '../../../components/datatable/datatable'
 import Loader from '../../../components/loader/loader'
 import { fetchPromotions, deletePromotion } from '../../../redux/slice/promotion'
 import { PromotionHeaders } from '../../../utils/header'
-import ProductDetailsModal from './ProductDetailsModal' 
+import ProductDetailsModal from './ProductDetailsModal'
+import { cilTag, cilBolt, cilGift } from '@coreui/icons'
 
 const Promotion = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [deleting, setDeleting] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedType, setSelectedType] = useState('All Types')
-  
-  // Modal state
+  const [selectedType, setSelectedType] = useState('')
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -38,8 +37,6 @@ const Promotion = () => {
     setSelectedPromotion(promotion)
     setShowModal(true)
   }
-
-  // Handle product click
   const handleProductClick = (product) => {
     setSelectedProduct(product)
     setIsModalOpen(true)
@@ -52,16 +49,27 @@ const Promotion = () => {
         pageSize: pageSize || 10,
         sortKey: sortKey || 'createdAt',
         sortDirection: sortDirection || 'desc',
+        search: searchTerm,
+        type: selectedType,
       }),
     )
-  }, [dispatch, currentPage, pageSize, sortKey, sortDirection])
+  }, [dispatch, currentPage, pageSize, sortKey, sortDirection, searchTerm, selectedType])
 
   useEffect(() => {
     fetch()
   }, [fetch])
 
   const handlePageChange = (page) => {
-    dispatch(fetchPromotions({ page, pageSize, sortKey, sortDirection }))
+    dispatch(
+      fetchPromotions({
+        page,
+        pageSize,
+        sortKey,
+        sortDirection,
+        search: searchTerm,
+        type: selectedType,
+      }),
+    )
   }
 
   const handleDelete = async (id) => {
@@ -129,17 +137,8 @@ const Promotion = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString)
-    return date.toLocaleDateString('en-GB') // DD/MM/YYYY format
+    return date.toLocaleDateString('en-GB')
   }
-
-  const filteredPromotions =
-    promotions?.filter((promotion) => {
-      const matchesSearch =
-        promotion.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        promotion.promotionCode?.toLowerCase().includes(searchTerm.toLowerCase())
-      const matchesType = selectedType === 'All Types' || promotion.type === selectedType
-      return matchesSearch && matchesType
-    }) || []
 
   if (status === 'loading' || deleting) {
     return <Loader />
@@ -147,7 +146,6 @@ const Promotion = () => {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f8f9fa', padding: '24px' }}>
-      {/* Header */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="mb-0" style={{ color: '#111827', fontWeight: 'bold', fontSize: '32px' }}>
           Promotions
@@ -167,8 +165,6 @@ const Promotion = () => {
           New Promotion
         </button>
       </div>
-
-      {/* Search and Filter Bar */}
       <div className="row mb-4">
         <div className="col-md-8">
           <div className="position-relative">
@@ -202,15 +198,14 @@ const Promotion = () => {
               padding: '12px',
             }}
           >
-            <option>All Types</option>
-            <option>Percentage</option>
-            <option>Fixed Amount</option>
+            <option value="">All Types</option>
+            <option value="promotion">Promotion</option>
+            <option value="flash-sale">Flash Sale</option>
+            <option value="bundle">Bundle</option>
           </select>
         </div>
       </div>
-
-      {/* Promotions Grid */}
-      {filteredPromotions.length === 0 ? (
+      {!promotions || promotions.length === 0 ? (
         <div
           className="text-center p-5"
           style={{
@@ -223,22 +218,26 @@ const Promotion = () => {
             <i className="fas fa-plus-circle" style={{ fontSize: '64px', color: '#3b82f6' }}></i>
           </div>
           <h3 style={{ color: '#111827', fontWeight: '600', marginBottom: '8px' }}>
-            Create New Promotion
+            {searchTerm || selectedType ? 'No promotions found' : 'Create New Promotion'}
           </h3>
           <p style={{ color: '#6b7280', marginBottom: '16px' }}>
-            Start building your next promotional campaign
+            {searchTerm || selectedType
+              ? 'Try adjusting your filters'
+              : 'Start building your next promotional campaign'}
           </p>
-          <button
-            onClick={() => navigate('/promotions/create')}
-            className="btn btn-primary"
-            style={{ borderRadius: '12px', padding: '8px 24px' }}
-          >
-            Get Started
-          </button>
+          {!searchTerm && !selectedType && (
+            <button
+              onClick={() => navigate('/promotions/create')}
+              className="btn btn-primary"
+              style={{ borderRadius: '12px', padding: '8px 24px' }}
+            >
+              Get Started
+            </button>
+          )}
         </div>
       ) : (
         <div className="row">
-          {filteredPromotions.map((promotion) => (
+          {promotions.map((promotion) => (
             <div key={promotion._id || promotion.id} className="col-lg-6 mb-4">
               <div
                 className="card border-0"
@@ -257,7 +256,6 @@ const Promotion = () => {
                   e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
                 }}
               >
-                {/* Card Header */}
                 <div
                   className="card-header bg-white border-bottom"
                   style={{ padding: '24px 24px 16px 24px' }}
@@ -276,10 +274,19 @@ const Promotion = () => {
                             justifyContent: 'center',
                           }}
                         >
-                          <i
-                            className="fas fa-tag"
-                            style={{ color: '#6b7280', fontSize: '16px' }}
-                          ></i>
+                          <CIcon
+                            icon={
+                              promotion.type === 'promotion'
+                                ? cilTag
+                                : promotion.type === 'flash-sale'
+                                  ? cilBolt
+                                  : promotion.type === 'bundle'
+                                    ? cilGift
+                                    : cilTag
+                            }
+                            size="lg"
+                            style={{ color: '#6b7280' }}
+                          />
                         </div>
                       </div>
                       <div>
@@ -297,10 +304,7 @@ const Promotion = () => {
                     {getStatusBadge(promotion)}
                   </div>
                 </div>
-
-                {/* Card Body */}
                 <div className="card-body" style={{ padding: '24px' }}>
-                  {/* Discount and Dates Row */}
                   <div className="row g-3 mb-4">
                     <div className="col-4">
                       <div
@@ -369,8 +373,6 @@ const Promotion = () => {
                       </div>
                     </div>
                   </div>
-
-                  {/* Products Table */}
                   {promotion.productIds && promotion.productIds.length > 0 && (
                     <div className="mb-4">
                       <div className="d-flex align-items-center mb-3">
@@ -428,13 +430,13 @@ const Promotion = () => {
                                 }
                               >
                                 <td style={{ padding: '8px 12px' }}>{productIndex + 1}</td>
-                                <td 
-                                  style={{ 
-                                    padding: '8px 12px', 
+                                <td
+                                  style={{
+                                    padding: '8px 12px',
                                     fontWeight: '500',
                                     color: '#0d9488',
                                     cursor: 'pointer',
-                                    textDecoration: 'underline'
+                                    textDecoration: 'underline',
                                   }}
                                   onClick={() => handleProductClick(product)}
                                 >
@@ -548,8 +550,7 @@ const Promotion = () => {
         </div>
       )}
 
-      {/* Product Details Modal */}
-      <ProductDetailsModal 
+      <ProductDetailsModal
         product={selectedProduct}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
