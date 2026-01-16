@@ -12,6 +12,7 @@ import {
 import Loader from '../../../components/loader/loader'
 import { CATEGORY_OPTIONS } from '../../../utils/constants'
 import styles from './updateProfile.module.scss'
+import { useNavigate } from 'react-router-dom'
 
 const UserIcon = () => (
   <svg className={styles.icon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -155,6 +156,7 @@ const reverseGeocode = async (lat, lng) => {
 
 const UpdateProfile = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { vendor, status } = useSelector(
     (s) => s.vendorProfile?.profile || { vendor: null, status: 'idle' },
   )
