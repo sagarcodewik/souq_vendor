@@ -57,7 +57,7 @@ const Login = () => {
     }
   }
 
-  console.log(t ,"===============================");
+
   if (status === 'loading' || processing) return <Loader />
   return (
     <div className={styles.loginPage}>
@@ -111,7 +111,7 @@ const Login = () => {
                         <Field
                           as={CFormInput}
                           name="email"
-                          placeholder="Enter your email"
+                          placeholder={"Enter your email"}
                           autoComplete="email"
                           className={`${styles.formInput} ${touched.email && errors.email ? styles.inputError : ''}`}
                           invalid={touched.email && !!errors.email}
