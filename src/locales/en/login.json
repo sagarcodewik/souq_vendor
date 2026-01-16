@@ -1,0 +1,9 @@
+{
+  "vendorLogin": "Vendor Login",
+  "email": "Email Address",
+  "password": "Password",
+  "forgotPassword": "Forgot password?",
+  "login": "Login",
+  "loggingIn": "Logging in...",
+  "signUp": "Sign up"
+}

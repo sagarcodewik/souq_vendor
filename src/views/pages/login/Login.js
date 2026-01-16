@@ -18,9 +18,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import { toast } from 'react-toastify'
 import styles from './login.module.scss'
+import { useTranslation } from 'react-i18next'
 
 const Login = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation('login')
   const navigate = useNavigate()
   const { status } = useSelector((state) => state.auth)
   const [showPassword, setShowPassword] = useState(false)
@@ -54,6 +56,8 @@ const Login = () => {
       // setProcessing(false)
     }
   }
+
+  console.log(t ,"===============================");
   if (status === 'loading' || processing) return <Loader />
   return (
     <div className={styles.loginPage}>
@@ -83,7 +87,7 @@ const Login = () => {
 
           {/* Welcome Text */}
           <div className={styles.welcomeText}>
-            <h1 className={styles.title}>Vendor Login</h1>
+            <h1 className={styles.title}>{t('vendorLogin')}</h1>
             {/* <p className={styles.subtitle}>Nice to see you again</p> */}
           </div>
 
