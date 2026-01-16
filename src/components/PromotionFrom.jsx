@@ -400,7 +400,7 @@ const validationSchema = Yup.object().shape({
     .required('Discount value is required')
     .min(1, 'Min 1')
     .when('discountType', {
-      is: 'percentage',
+      is: 'Percentage',
       then: (schema) => schema.max(100, 'Max 100%'),
       otherwise: (schema) => schema.notRequired(), // No max for fixed amount
     }),
@@ -412,7 +412,8 @@ const validationSchema = Yup.object().shape({
   }),
   categoryIds: Yup.array().when('scopeType', {
     is: 'category',
-    then: (schema) => schema.min(1, 'Select at least 1 category').required('Categories are required'),
+    then: (schema) =>
+      schema.min(1, 'Select at least 1 category').required('Categories are required'),
     otherwise: (schema) => schema.notRequired(),
   }),
   startDate: Yup.date().required('Start Date is required'),
@@ -442,15 +443,15 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
 
   const categoryOptions = categories.map((cat) => ({
     value: cat._id,
-    label: cat.name, // Assuming category object has 'name' field
+    label: cat.category,
   }))
 
   const defaultValues = {
     title: '',
     description: '',
     discountValue: '',
-    discountType: 'percentage', // 'percentage' or 'fixed'
-    scopeType: 'product', // 'product' or 'category'
+    discountType: 'Percentage',
+    scopeType: 'product',
     type: '',
     promotionCode: '',
     paidFlag: '',
@@ -460,7 +461,6 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
     endDate: '',
     ...initialValues,
   }
-  const navigate = useNavigate()
 
   const validateStep = (values, currentStep) => {
     const errors = {}
@@ -470,7 +470,10 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
       if (!values.type) errors.type = 'Type is required'
       if (!values.discountValue) {
         errors.discountValue = 'Discount value is required'
-      } else if (values.discountType === 'percentage' && (values.discountValue < 1 || values.discountValue > 100)) {
+      } else if (
+        values.discountType === 'Percentage' &&
+        (values.discountValue < 1 || values.discountValue > 100)
+      ) {
         errors.discountValue = 'Discount must be between 1-100%'
       }
     }
@@ -503,8 +506,9 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
               <div className="d-flex align-items-center justify-content-center mb-3">
                 <div className="d-flex align-items-center">
                   <div
-                    className={`rounded-circle d-flex align-items-center justify-content-center fw-semibold transition ${step >= 1 ? 'step-active' : 'step-inactive'
-                      }`}
+                    className={`rounded-circle d-flex align-items-center justify-content-center fw-semibold transition ${
+                      step >= 1 ? 'step-active' : 'step-inactive'
+                    }`}
                     style={{ width: '25px', height: '25px' }}
                   >
                     1
@@ -514,8 +518,9 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                     style={{ width: '80px', height: '4px', borderRadius: '2px' }}
                   ></div>
                   <div
-                    className={`rounded-circle d-flex align-items-center justify-content-center fw-semibold transition ${step >= 2 ? 'step-active' : 'step-inactive'
-                      }`}
+                    className={`rounded-circle d-flex align-items-center justify-content-center fw-semibold transition ${
+                      step >= 2 ? 'step-active' : 'step-inactive'
+                    }`}
                     style={{ width: '25px', height: '25px' }}
                   >
                     2
@@ -590,8 +595,9 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                   {({ field }) => (
                                     <CFormInput
                                       {...field}
-                                      className={`form-control-enhanced ${errors.title && touched.title ? 'form-control-error' : ''
-                                        }`}
+                                      className={`form-control-enhanced ${
+                                        errors.title && touched.title ? 'form-control-error' : ''
+                                      }`}
                                       placeholder="Enter promotion title..."
                                     />
                                   )}
@@ -640,7 +646,6 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                 </div>
                               </div>
 
-
                               {/* Discount Section */}
                               <div className="mb-4">
                                 <CRow>
@@ -650,22 +655,24 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                     </CFormLabel>
                                     <div className="d-flex gap-3 mb-3">
                                       <div
-                                        onClick={() => setFieldValue('discountType', 'percentage')}
-                                        className={`p-3 rounded-3 cursor-pointer w-50 text-center transition ${values.discountType === 'percentage'
-                                          ? 'bg-primary text-white shadow-sm'
-                                          : 'bg-light text-muted border'
-                                          }`}
+                                        onClick={() => setFieldValue('discountType', 'Percentage')}
+                                        className={`p-3 rounded-3 cursor-pointer w-50 text-center transition ${
+                                          values.discountType === 'Percentage'
+                                            ? 'bg-primary text-white shadow-sm'
+                                            : 'bg-light text-muted border'
+                                        }`}
                                         style={{ cursor: 'pointer' }}
                                       >
                                         <Percent size={20} className="mb-1 d-block mx-auto" />
                                         <span className="fw-semibold small">Percentage</span>
                                       </div>
                                       <div
-                                        onClick={() => setFieldValue('discountType', 'fixed')}
-                                        className={`p-3 rounded-3 cursor-pointer w-50 text-center transition ${values.discountType === 'fixed'
-                                          ? 'bg-primary text-white shadow-sm'
-                                          : 'bg-light text-muted border'
-                                          }`}
+                                        onClick={() => setFieldValue('discountType', 'Fixed')}
+                                        className={`p-3 rounded-3 cursor-pointer w-50 text-center transition ${
+                                          values.discountType === 'Fixed'
+                                            ? 'bg-primary text-white shadow-sm'
+                                            : 'bg-light text-muted border'
+                                        }`}
                                         style={{ cursor: 'pointer' }}
                                       >
                                         <DollarSign size={20} className="mb-1 d-block mx-auto" />
@@ -675,7 +682,9 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                   </CCol>
                                   <CCol md={6}>
                                     <CFormLabel className="fw-semibold text-dark mb-2">
-                                      {values.discountType === 'percentage' ? 'Discount Percentage *' : 'Discount Amount *'}
+                                      {values.discountType === 'Percentage'
+                                        ? 'Discount Percentage *'
+                                        : 'Discount Amount *'}
                                     </CFormLabel>
                                     <div className="position-relative">
                                       <Field name="discountValue">
@@ -684,16 +693,23 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                             {...field}
                                             type="number"
                                             min={1}
-                                            max={values.discountType === 'percentage' ? 100 : undefined}
-                                            className={`form-control-enhanced form-control-with-icon ${errors.discountValue && touched.discountValue
-                                              ? 'form-control-error'
-                                              : ''
-                                              }`}
-                                            placeholder={values.discountType === 'percentage' ? "0-100" : "0.00"}
+                                            max={
+                                              values.discountType === 'Percentage' ? 100 : undefined
+                                            }
+                                            className={`form-control-enhanced form-control-with-icon ${
+                                              errors.discountValue && touched.discountValue
+                                                ? 'form-control-error'
+                                                : ''
+                                            }`}
+                                            placeholder={
+                                              values.discountType === 'Percentage'
+                                                ? '0-100'
+                                                : '0.00'
+                                            }
                                           />
                                         )}
                                       </Field>
-                                      {values.discountType === 'percentage' ? (
+                                      {values.discountType === 'Percentage' ? (
                                         <Percent className="icon-position" size={20} />
                                       ) : (
                                         <DollarSign className="icon-position" size={20} />
@@ -704,7 +720,6 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                     </div>
                                   </CCol>
                                 </CRow>
-
 
                                 <div className="mb-4">
                                   <CFormLabel className="fw-semibold text-dark mb-3">
@@ -728,7 +743,9 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                               <IconComponent size={22} />
                                             </div>
                                             <div className="paid-flag-text">
-                                              <h5 className="fw-bold text-dark mb-2">{flag.label}</h5>
+                                              <h5 className="fw-bold text-dark mb-2">
+                                                {flag.label}
+                                              </h5>
                                               <div className="paid-flag-badge">PAID</div>
                                             </div>
 
@@ -815,8 +832,7 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                             </CCardBody>
                           </CCard>
                         </div>
-                      )
-                      }
+                      )}
 
                       {/* Step 2: Products and Schedule */}
                       {step === 2 && (
@@ -843,13 +859,16 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                               <div className="d-flex gap-3 mb-4">
                                 <div
                                   onClick={() => setFieldValue('scopeType', 'product')}
-                                  className={`p-4 rounded-3 cursor-pointer flex-fill border transition d-flex align-items-center ${values.scopeType === 'product'
-                                    ? 'border-primary bg-primary-subtle'
-                                    : 'bg-white border-light-subtle'
-                                    }`}
+                                  className={`p-4 rounded-3 cursor-pointer flex-fill border transition d-flex align-items-center ${
+                                    values.scopeType === 'product'
+                                      ? 'border-primary bg-primary-subtle'
+                                      : 'bg-white border-light-subtle'
+                                  }`}
                                   style={{ cursor: 'pointer' }}
                                 >
-                                  <div className={`p-2 rounded-circle me-3 ${values.scopeType === 'product' ? 'bg-primary text-white' : 'bg-light text-muted'}`}>
+                                  <div
+                                    className={`p-2 rounded-circle me-3 ${values.scopeType === 'product' ? 'bg-primary text-white' : 'bg-light text-muted'}`}
+                                  >
                                     <Box size={24} />
                                   </div>
                                   <div>
@@ -859,7 +878,10 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                   {values.scopeType === 'product' && (
                                     <div className="ms-auto text-primary">
                                       <div className="rounded-circle bg-primary p-1">
-                                        <div className="bg-white rounded-circle" style={{ width: '8px', height: '8px' }}></div>
+                                        <div
+                                          className="bg-white rounded-circle"
+                                          style={{ width: '8px', height: '8px' }}
+                                        ></div>
                                       </div>
                                     </div>
                                   )}
@@ -867,23 +889,31 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
 
                                 <div
                                   onClick={() => setFieldValue('scopeType', 'category')}
-                                  className={`p-4 rounded-3 cursor-pointer flex-fill border transition d-flex align-items-center ${values.scopeType === 'category'
-                                    ? 'border-primary bg-primary-subtle'
-                                    : 'bg-white border-light-subtle'
-                                    }`}
+                                  className={`p-4 rounded-3 cursor-pointer flex-fill border transition d-flex align-items-center ${
+                                    values.scopeType === 'category'
+                                      ? 'border-primary bg-primary-subtle'
+                                      : 'bg-white border-light-subtle'
+                                  }`}
                                   style={{ cursor: 'pointer' }}
                                 >
-                                  <div className={`p-2 rounded-circle me-3 ${values.scopeType === 'category' ? 'bg-primary text-white' : 'bg-light text-muted'}`}>
+                                  <div
+                                    className={`p-2 rounded-circle me-3 ${values.scopeType === 'category' ? 'bg-primary text-white' : 'bg-light text-muted'}`}
+                                  >
                                     <Layers size={24} />
                                   </div>
                                   <div>
                                     <h6 className="fw-bold mb-1">Categories</h6>
-                                    <p className="mb-0 small text-muted">Apply to entire categories</p>
+                                    <p className="mb-0 small text-muted">
+                                      Apply to entire categories
+                                    </p>
                                   </div>
                                   {values.scopeType === 'category' && (
                                     <div className="ms-auto text-primary">
                                       <div className="rounded-circle bg-primary p-1">
-                                        <div className="bg-white rounded-circle" style={{ width: '8px', height: '8px' }}></div>
+                                        <div
+                                          className="bg-white rounded-circle"
+                                          style={{ width: '8px', height: '8px' }}
+                                        ></div>
                                       </div>
                                     </div>
                                   )}
@@ -959,10 +989,11 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                         {...field}
                                         type="date"
                                         min={new Date().toISOString().split('T')[0]}
-                                        className={`form-control-enhanced form-control-with-icon ${errors.startDate && touched.startDate
-                                          ? 'form-control-error'
-                                          : ''
-                                          }`}
+                                        className={`form-control-enhanced form-control-with-icon ${
+                                          errors.startDate && touched.startDate
+                                            ? 'form-control-error'
+                                            : ''
+                                        }`}
                                       />
                                     )}
                                   </Field>
@@ -985,8 +1016,9 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                         {...field}
                                         type="number"
                                         min={1}
-                                        className={`form-control-enhanced form-control-with-icon ${errors.hours && touched.hours ? 'form-control-error' : ''
-                                          }`}
+                                        className={`form-control-enhanced form-control-with-icon ${
+                                          errors.hours && touched.hours ? 'form-control-error' : ''
+                                        }`}
                                         placeholder="Enter duration in hours"
                                       />
                                     )}
@@ -1010,10 +1042,11 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                             values.startDate ||
                                             new Date().toISOString().split('T')[0]
                                           }
-                                          className={`form-control-enhanced form-control-with-icon ${errors.endDate && touched.endDate
-                                            ? 'form-control-error'
-                                            : ''
-                                            }`}
+                                          className={`form-control-enhanced form-control-with-icon ${
+                                            errors.endDate && touched.endDate
+                                              ? 'form-control-error'
+                                              : ''
+                                          }`}
                                         />
                                       )}
                                     </Field>
@@ -1044,7 +1077,9 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                   <div className="d-flex justify-content-between mb-2">
                                     <span className="text-muted">Discount:</span>
                                     <span className="fw-semibold text-success">
-                                      {values.discountType === 'percentage' ? `${values.discountValue}%` : `$${values.discountValue}`}
+                                      {values.discountType === 'Percentage'
+                                        ? `${values.discountValue}%`
+                                        : `$${values.discountValue}`}
                                     </span>
                                   </div>
                                   <div className="d-flex justify-content-between">
@@ -1068,8 +1103,9 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                               <CButton
                                 type="submit"
                                 disabled={loading}
-                                className={`btn-enhanced btn-success-gradient d-flex align-items-center ${loading ? 'opacity-75' : ''
-                                  }`}
+                                className={`btn-enhanced btn-success-gradient d-flex align-items-center ${
+                                  loading ? 'opacity-75' : ''
+                                }`}
                               >
                                 {loading ? (
                                   <>
@@ -1094,7 +1130,7 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
             </div>
           </div>
         </div>
-      </div >
+      </div>
     </>
   )
 }

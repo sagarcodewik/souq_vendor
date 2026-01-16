@@ -17,8 +17,7 @@ import {
   useColorModes,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilBell, cilMenu, cilCheck, cilSettings } from '@coreui/icons'
-import { setLanguage } from '../redux/slice/languageSlice'
+import { cilBell, cilMenu, cilCheck } from '@coreui/icons'
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 import { set } from '../redux/slice/uiSlice'
@@ -28,13 +27,11 @@ import { markAsRead, markAllAsRead } from '../redux/slice/notificationSlice'
 const AppHeader = () => {
   const headerRef = useRef()
   const { t } = useTranslation('common')
-  const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
   const [isAnimating, setIsAnimating] = useState(false)
   const [hoveredNotification, setHoveredNotification] = useState(null)
 
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.ui.sidebarShow)
-  const { lang } = useSelector((state) => state.language)
 
   // 🔔 Redux notifications
   const notifications = useSelector((state) => state.notifications.items)
@@ -46,11 +43,6 @@ const AppHeader = () => {
         headerRef.current.classList.toggle('shadow-sm', document.documentElement.scrollTop > 0)
     })
   }, [])
-
-  const toggleLanguage = () => {
-    const newLang = lang === 'en' ? 'ar' : 'en'
-    dispatch(setLanguage(newLang))
-  }
 
   // 🔹 Mark all as read when dropdown closes
   const handleDropdownClose = () => {
@@ -105,17 +97,16 @@ const AppHeader = () => {
     }
   }
 
- const formatTimeAgo = (date) => {
-  const now = new Date()
-  const notificationDate = new Date(date)
-  const diffInMinutes = Math.floor((now - notificationDate) / (1000 * 60))
+  const formatTimeAgo = (date) => {
+    const now = new Date()
+    const notificationDate = new Date(date)
+    const diffInMinutes = Math.floor((now - notificationDate) / (1000 * 60))
 
-  if (diffInMinutes < 1) return t('just_now')
-  if (diffInMinutes < 60) return `${diffInMinutes}${t('minutes_ago')}`
-  if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}${t('hours_ago')}`
-  return `${Math.floor(diffInMinutes / 1440)}${t('days_ago')}`
-}
-
+    if (diffInMinutes < 1) return t('just_now')
+    if (diffInMinutes < 60) return `${diffInMinutes}${t('minutes_ago')}`
+    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}${t('hours_ago')}`
+    return `${Math.floor(diffInMinutes / 1440)}${t('days_ago')}`
+  }
 
   return (
     <CHeader position="sticky" className="mb-4 p-0" ref={headerRef}>
@@ -328,17 +319,16 @@ const AppHeader = () => {
                           >
                             {!notification.isRead && (
                               <CButton
-  color="success"
-  variant="ghost"
-  size="sm"
-  onClick={(e) => handleMarkAsRead(notification._id, e)}
-  className="p-1 px-2"
-  style={{ borderRadius: '6px', fontSize: '0.7rem' }}
->
-  <CIcon icon={cilCheck} size="sm" className="me-1" />
-  {t('mark_read')}
-</CButton>
-
+                                color="success"
+                                variant="ghost"
+                                size="sm"
+                                onClick={(e) => handleMarkAsRead(notification._id, e)}
+                                className="p-1 px-2"
+                                style={{ borderRadius: '6px', fontSize: '0.7rem' }}
+                              >
+                                <CIcon icon={cilCheck} size="sm" className="me-1" />
+                                {t('mark_read')}
+                              </CButton>
                             )}
                           </div>
                         </div>
@@ -355,14 +345,14 @@ const AppHeader = () => {
                   style={{ borderRadius: '0 0 16px 16px' }}
                 >
                   <CButton
-  color="primary"
-  variant="ghost"
-  size="sm"
-  className="fw-semibold"
-  style={{ borderRadius: '8px' }}
->
-  {t('view_all_notifications')}
-</CButton>
+                    color="primary"
+                    variant="ghost"
+                    size="sm"
+                    className="fw-semibold"
+                    style={{ borderRadius: '8px' }}
+                  >
+                    {t('view_all_notifications')}
+                  </CButton>
                 </div>
               )}
             </CDropdownMenu>

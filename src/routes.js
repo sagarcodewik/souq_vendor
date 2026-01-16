@@ -1,5 +1,6 @@
 import React from 'react'
 import ResetPasswordProtectedRoute from './layout/ResetPasswordProtectedRoute'
+import Boots from './views/pages/boosts/boots'
 // Dashboard
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 
@@ -97,6 +98,7 @@ const routes = [
   },
   { path: '/dashboard/profile/upgrade', name: 'Upgrade To Premium', element: UpgradeToPremium },
   { path: '/order-request', name: 'Order Request', element: OrderRequest },
+  { path: '/boosts', name: 'Boosts', element: Boots },
   { path: '/promotions', name: 'Promotions', element: Promotion },
   { path: '/promotions/create', name: 'Create Promotion', element: New_promotion },
   { path: '/promotions/update', name: 'Update Promotion', element: Update_promotion },

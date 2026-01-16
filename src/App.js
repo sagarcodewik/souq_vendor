@@ -8,7 +8,6 @@ import './scss/examples.scss'
 import { Navigate } from 'react-router-dom'
 import ResetPasswordProtectedRoute from './layout/ResetPasswordProtectedRoute'
 import EmailVerifyLayout from './layout/EmailVerifyLayout'
-// Lazy-loaded components
 const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 const Login = React.lazy(() => import('./views/pages/login/Login'))
@@ -19,7 +18,6 @@ const Reset_password = React.lazy(() => import('./views/pages/reset-passord/Rese
 
 const App = () => {
   const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
-  const theme = useSelector((state) => state.ui.theme)
 
   // Theme setup
   useEffect(() => {
@@ -30,11 +28,6 @@ const App = () => {
       return
     }
     localStorage.setItem('coreui-free-react-admin-template-theme', 'light')
-    // if (!localTheme) {
-    //   // force light mode at first load
-    //   setColorMode('light')
-    //   localStorage.setItem('coreui-free-react-admin-template-theme', 'light')
-    // }
   }, [isColorModeSet, setColorMode])
 
   return (

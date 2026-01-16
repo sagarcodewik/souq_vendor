@@ -60,6 +60,12 @@ const _nav = (t) =>  [
   },
   {
     component: CNavItem,
+    name: t('Boosts'),
+    to: '/boosts',
+    icon: <CIcon icon={cilTags} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: t('Sale Report'),
     to: '/sale-report',
     icon: <CIcon icon={cilChartLine} customClassName="nav-icon" />,

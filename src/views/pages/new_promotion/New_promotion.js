@@ -34,14 +34,21 @@ const New_promotion = () => {
 
   const handleCreate = async (formData, { resetForm }) => {
     try {
-      const result = await dispatch(createPromotion(formData)).unwrap()
+      if (formData?.scopeType === 'product') {
+        delete formData.categoryIds
+      }
 
-      // Only runs if the promise is fulfilled
-      resetForm() // ✅ Reset the form
-      navigate('/promotions') // ✅ Navigate to promotions list
+      if (formData?.scopeType === 'category') {
+        delete formData.productIds
+      }
+      await dispatch(createPromotion(formData))
+        .then((result) => {
+          resetForm()
+          navigate('/promotions')
+        })
+        .catch((err) => {})
     } catch (error) {
       console.error('Failed to create promotion:', error)
-      // Optionally: show toast or error feedback here
     }
   }
 

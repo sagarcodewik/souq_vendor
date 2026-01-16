@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import HttpClient from '../../helper/http-client'
 import { toast } from 'react-toastify'
 
-// ✅ Fetch all products
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async (
@@ -132,7 +131,6 @@ const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // 🟡 FETCH PRODUCTS
       .addCase(fetchProducts.pending, (state) => {
         state.status = 'loading'
         state.error = null

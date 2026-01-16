@@ -6,9 +6,8 @@ import { updatePromotion } from '../../../redux/slice/promotion'
 import PromotionForm from '../../../components/PromotionFrom'
 import Loader from '../../../components/loader/loader'
 import { useNavigate } from 'react-router-dom'
-import { localDateFormat } from '../../../utils'
 import moment from 'moment'
-// Utility to extract query param
+import { fetchCategories } from '../../../redux/slice/category'
 const useQuery = () => {
   return new URLSearchParams(useLocation().search)
 }
@@ -18,7 +17,7 @@ const Update_promotion = () => {
   const navigate = useNavigate()
   const query = useQuery()
   const id = query.get('id')
-
+  const { categories, status: CategoryStatus } = useSelector((state) => state.categories)
   const { list, loading: promotionLoading } = useSelector((state) => state.promotion)
   const { products, status: productStatus } = useSelector((state) => state.products)
 
@@ -26,7 +25,15 @@ const Update_promotion = () => {
 
   useEffect(() => {
     dispatch(fetchProducts({ page: 1, pageSize: 100000 }))
+     dispatch(
+        fetchCategories({
+          page: 1,
+          pageSize: 100000,
+        }),
+      )
   }, [dispatch])
+
+  console.log(promotion, 'promotion=====================', CategoryStatus)
 
   if (!promotion || productStatus === 'loading') return <Loader />
 
@@ -35,12 +42,19 @@ const Update_promotion = () => {
       onSubmit={async (formData) => {
         try {
           const { _id, vendorId, isActive, createdAt, updatedAt, __v, isDeleted, ...cleanedData } =
-            formData // ✅ Remove _id
+            formData
+          if (cleanedData?.scopeType === 'product') {
+            delete cleanedData.categoryIds
+          }
+
+          if (cleanedData?.scopeType === 'category') {
+            delete cleanedData.productIds
+          }
+
           await dispatch(updatePromotion({ id, data: cleanedData })).unwrap()
-          navigate('/promotions') // ✅ Navigate after success
+          navigate('/promotions')
         } catch (err) {
           console.error('Update failed:', err)
-          // Optionally show a toast or alert here
         }
       }}
       initialValues={{
@@ -55,6 +69,7 @@ const Update_promotion = () => {
       }}
       products={products}
       loading={promotionLoading}
+      categories={categories}
     />
   )
 }

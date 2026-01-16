@@ -12,6 +12,7 @@ import enApprovedOrder from '../locales/en/approvedorder.json'
 
 // Arabic
 import arLogin from '../locales/ar/login.json'
+import arBoosts from '../locales/ar/boosts.json'
 import arCommon from '../locales/ar/common.json'
 import arDashboard from '../locales/ar/dashboard.json'
 import arOrders from '../locales/ar/orders.json'
@@ -25,6 +26,9 @@ import arCustomerchats from '../locales/ar/customerchats.json'
 import arOrderchats from '../locales/ar/orderchats.json'
 import arFinance from '../locales/ar/finance.json'
 
+const savedLang = localStorage.getItem('lang') || 'en'
+document.body.dir = savedLang === 'ar' ? 'rtl' : 'ltr'
+
 i18n.use(initReactI18next).init({
   resources: {
     en: {
@@ -34,17 +38,18 @@ i18n.use(initReactI18next).init({
       orders: enOrders,
       orderrequest: enOrderRequests,
       ordercard: enOrdercard,
-      approvedorder : enApprovedOrder,
+      approvedorder: enApprovedOrder,
     },
     ar: {
       login: arLogin,
       common: arCommon,
+      boosts: arBoosts,
       dashboard: arDashboard,
       orders: arOrders,
-      products : arProducts,
+      products: arProducts,
       orderrequest: arOrderRequests,
       ordercard: arOrdercard,
-      approvedorder : arApprovedOrder,
+      approvedorder: arApprovedOrder,
       promotions: arPromotions,
       salereport: arSalesreport,
       customerchats: arCustomerchats,
@@ -52,7 +57,7 @@ i18n.use(initReactI18next).init({
       finance: arFinance,
     },
   },
-  lng: 'en',
+  lng: savedLang,
   fallbackLng: 'en',
   defaultNS: 'common',
   interpolation: {

@@ -67,7 +67,6 @@ const DefaultLayout = () => {
 
   useEffect(() => {
     if (!decoded) return
-    const payload = decoded.id
     socket.on('getNotification', (payload) => {
       console.log('📩 New notification:', payload)
       dispatch(addNotification(payload))
@@ -76,7 +75,9 @@ const DefaultLayout = () => {
       socket.off('getNotification')
     }
   }, [decoded, dispatch])
+
   if (isAuthorized === null) return <Loader />
+
   if (isAuthorized === false) {
     navigate('/login', { replace: true })
     return null

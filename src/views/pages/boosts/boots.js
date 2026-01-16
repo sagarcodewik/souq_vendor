@@ -4,64 +4,65 @@ import { useNavigate } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import Loader from '../../../components/loader/loader'
 import { fetchPromotions, deletePromotion } from '../../../redux/slice/promotion'
-import ProductDetailsModal from './ProductDetailsModal'
+// import ProductDetailsModal from './ProductDetailsModal'
 import { cilTag, cilBolt, cilGift } from '@coreui/icons'
 import { useTranslation } from 'react-i18next'
 
-const Promotion = () => {
+const Boots = () => {
   const dispatch = useDispatch()
-  const { t } = useTranslation('promotions')
+  const { t } = useTranslation('boosts')
   const navigate = useNavigate()
   const [deleting, setDeleting] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedType, setSelectedType] = useState('')
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [promotions, setPromotions] = useState(0)
 
-  const {
-    list: promotions,
-    status,
-    pageSize,
-    currentPage,
-    totalRecords,
-    sortKey,
-    sortDirection,
-  } = useSelector((state) => state.promotion)
+  // const {
+  //   list: promotions,
+  //   status,
+  //   pageSize,
+  //   currentPage,
+  //   totalRecords,
+  //   sortKey,
+  //   sortDirection,
+  // } = useSelector((state) => state.promotion)
 
   const handleProductClick = (product) => {
     setSelectedProduct(product)
     setIsModalOpen(true)
   }
 
-  const fetch = useCallback(() => {
-    dispatch(
-      fetchPromotions({
-        page: currentPage || 1,
-        pageSize: pageSize || 10,
-        sortKey: sortKey || 'createdAt',
-        sortDirection: sortDirection || 'desc',
-        search: searchTerm,
-        type: selectedType,
-      }),
-    )
-  }, [dispatch, currentPage, pageSize, sortKey, sortDirection, searchTerm, selectedType])
+  // const fetch = useCallback(() => {
+  //   dispatch(
+  //     fetchPromotions({
+  //       page: currentPage || 1,
+  //       pageSize: pageSize || 10,
+  //       sortKey: sortKey || 'createdAt',
+  //       sortDirection: sortDirection || 'desc',
+  //       search: searchTerm,
+  //       type: selectedType,
+  //     }),
+  //   )
+  // }, [dispatch, currentPage, pageSize, sortKey, sortDirection, searchTerm, selectedType])
 
-  useEffect(() => {
-    fetch()
-  }, [fetch])
+  // useEffect(() => {
+  //   fetch()
+  // }, [fetch])
 
-  const handlePageChange = (page) => {
-    dispatch(
-      fetchPromotions({
-        page,
-        pageSize,
-        sortKey,
-        sortDirection,
-        search: searchTerm,
-        type: selectedType,
-      }),
-    )
-  }
+  // const handlePageChange = (page) => {
+  //   dispatch(
+  //     fetchPromotions({
+  //       page,
+  //       pageSize,
+  //       sortKey,
+  //       sortDirection,
+  //       search: searchTerm,
+  //       type: selectedType,
+  //     }),
+  //   )
+  // }
 
   const handleDelete = async (id) => {
     setDeleting(true)
@@ -122,9 +123,9 @@ const Promotion = () => {
     return date.toLocaleDateString('en-GB')
   }
 
-  if (status === 'loading' || deleting) {
-    return <Loader />
-  }
+  // if (status === 'loading' || deleting) {
+  //   return <Loader />
+  // }
 
   const getDiscountDisplay = (promotion) => {
     if (promotion.discountType === 'Percentage') {
@@ -143,10 +144,10 @@ const Promotion = () => {
     <div style={{ minHeight: '100vh', backgroundColor: '#f8f9fa', padding: '24px' }}>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="mb-0" style={{ color: '#111827', fontWeight: 'bold', fontSize: '32px' }}>
-          {t('Promotions')}
+          {t('Boosts')}
         </h2>
         <button
-          onClick={() => navigate('/promotions/create')}
+          // onClick={() => navigate('/promotions/create')}
           className="btn text-white"
           style={{
             backgroundColor: '#0d9488',
@@ -157,7 +158,7 @@ const Promotion = () => {
             boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
           }}
         >
-          {t('New Promotion')}
+          {t('New Boosts')}
         </button>
       </div>
       <div className="row mb-4">
@@ -213,16 +214,16 @@ const Promotion = () => {
             <i className="fas fa-plus-circle" style={{ fontSize: '64px', color: '#3b82f6' }}></i>
           </div>
           <h3 style={{ color: '#111827', fontWeight: '600', marginBottom: '8px' }}>
-            {searchTerm || selectedType ? t('No promotions found') : t('Create New Promotion')}
+            {searchTerm || selectedType ? t('No Boosts found') : t('Create New Boosts')}
           </h3>
           <p style={{ color: '#6b7280', marginBottom: '16px' }}>
             {searchTerm || selectedType
               ? t('Try adjusting your filters')
-              : t('Start building your next promotional campaign')}
+              : t('Start building your next boosts campaign')}
           </p>
           {!searchTerm && !selectedType && (
             <button
-              onClick={() => navigate('/promotions/create')}
+              // onClick={() => navigate('/promotions/create')}
               className="btn btn-primary"
               style={{ borderRadius: '12px', padding: '8px 24px' }}
             >
@@ -543,14 +544,14 @@ const Promotion = () => {
       )}
 
       {/* Pagination */}
-      {totalRecords > pageSize && (
+      {/* {totalRecords > pageSize && (
         <div
           className="d-flex justify-content-between align-items-center mt-4 p-4 bg-white"
           style={{ borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
         >
           <div style={{ fontSize: '14px', color: '#6b7280' }}>
             Showing {(currentPage - 1) * pageSize + 1}-
-            {Math.min(currentPage * pageSize, totalRecords)} of {totalRecords} promotions
+            {Math.min(currentPage * pageSize, totalRecords)} of {totalRecords} boots
           </div>
 
           <div className="d-flex align-items-center gap-2">
@@ -578,15 +579,15 @@ const Promotion = () => {
             </button>
           </div>
         </div>
-      )}
+      )} */}
 
-      <ProductDetailsModal
+      {/* <ProductDetailsModal
         product={selectedProduct}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-      />
+      /> */}
     </div>
   )
 }
 
-export default Promotion
+export default Boots

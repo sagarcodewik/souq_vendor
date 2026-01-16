@@ -12,14 +12,6 @@ import {
 import { useSelector, useDispatch } from 'react-redux'
 import { setLanguage } from '../../redux/slice/languageSlice'
 import {
-  cilBell,
-  cilCreditCard,
-  cilCommentSquare,
-  cilEnvelopeOpen,
-  cilFile,
-  cilLockLocked,
-  cilSettings,
-  cilTask,
   cilUser,
   cilAccountLogout,
   cilChatBubble,
@@ -40,20 +32,23 @@ const AppHeaderDropdown = () => {
     toast.success('Logged out successfully')
     navigate('/', { replace: true }) // Redirect to homepage or login
   }
-  const {
-    vendor,
-    status: profileStatus = 'idle',
-    error: profileError,
-  } = useSelector((state) => state.vendorProfile.profile || {})
+
+  const { vendor } = useSelector((state) => state.vendorProfile.profile || {})
+
   const dispatch = useDispatch()
+
   const { lang } = useSelector((state) => state.language)
+
   useEffect(() => {
     dispatch(fetchVendorProfile())
   }, [dispatch])
+
   const toggleLanguage = () => {
     const newLang = lang === 'en' ? 'ar' : 'en'
     dispatch(setLanguage(newLang))
+    localStorage.setItem('lang', newLang)
   }
+
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>

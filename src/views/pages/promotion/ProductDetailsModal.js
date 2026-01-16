@@ -11,9 +11,10 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
   if (!isOpen || !product) return null
 
   // Get all images from variants or main images
-  const allImages = product.variants?.length > 0
-    ? product.variants.flatMap(v => v.images || [])
-    : product.images || []
+  const allImages =
+    product.variants?.length > 0
+      ? product.variants.flatMap((v) => v.images || [])
+      : product.images || []
 
   return (
     <div
@@ -28,7 +29,7 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 1000,
-        padding: '20px'
+        padding: '20px',
       }}
       onClick={onClose}
     >
@@ -40,7 +41,7 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
           width: '100%',
           maxHeight: '90vh',
           overflow: 'auto',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -56,7 +57,7 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
             top: 0,
             backgroundColor: 'white',
             zIndex: 10,
-            borderRadius: '24px 24px 0 0'
+            borderRadius: '24px 24px 0 0',
           }}
         >
           <h3 style={{ margin: 0, fontSize: '24px', fontWeight: '700', color: '#111827' }}>
@@ -75,7 +76,7 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: '8px',
-              transition: 'all 0.2s'
+              transition: 'all 0.2s',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = '#f3f4f6'
@@ -108,7 +109,7 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
                       marginBottom: '16px',
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'center'
+                      justifyContent: 'center',
                     }}
                   >
                     <img
@@ -117,7 +118,7 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
                       style={{
                         maxWidth: '100%',
                         maxHeight: '100%',
-                        objectFit: 'contain'
+                        objectFit: 'contain',
                       }}
                     />
                   </div>
@@ -136,11 +137,12 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
                             borderRadius: '12px',
                             overflow: 'hidden',
                             cursor: 'pointer',
-                            border: selectedImage === idx ? '3px solid #0d9488' : '2px solid #e5e7eb',
+                            border:
+                              selectedImage === idx ? '3px solid #0d9488' : '2px solid #e5e7eb',
                             transition: 'all 0.2s',
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'center'
+                            justifyContent: 'center',
                           }}
                         >
                           <img
@@ -149,7 +151,7 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
                             style={{
                               maxWidth: '100%',
                               maxHeight: '100%',
-                              objectFit: 'cover'
+                              objectFit: 'cover',
                             }}
                           />
                         </div>
@@ -167,10 +169,13 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
                   }}
                 >
-                  <i className="fas fa-image" style={{ fontSize: '64px', color: '#d1d5db', marginBottom: '16px' }}></i>
+                  <i
+                    className="fas fa-image"
+                    style={{ fontSize: '64px', color: '#d1d5db', marginBottom: '16px' }}
+                  ></i>
                   <p style={{ color: '#9ca3af', margin: 0 }}>No images available</p>
                 </div>
               )}
@@ -178,7 +183,14 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
 
             {/* Product Info */}
             <div className="col-md-6">
-              <h2 style={{ fontSize: '28px', fontWeight: '700', color: '#111827', marginBottom: '16px' }}>
+              <h2
+                style={{
+                  fontSize: '28px',
+                  fontWeight: '700',
+                  color: '#111827',
+                  marginBottom: '16px',
+                }}
+              >
                 {product.productName}
               </h2>
 
@@ -192,7 +204,7 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
                     padding: '6px 12px',
                     borderRadius: '8px',
                     fontSize: '14px',
-                    fontWeight: '600'
+                    fontWeight: '600',
                   }}
                 >
                   {product.category?.category || 'N/A'}
@@ -207,7 +219,7 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
                       borderRadius: '8px',
                       fontSize: '14px',
                       fontWeight: '600',
-                      marginLeft: '8px'
+                      marginLeft: '8px',
                     }}
                   >
                     {product.subCategory}
@@ -216,8 +228,22 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
               </div>
 
               {/* Pricing */}
-              <div style={{ marginBottom: '24px', padding: '20px', backgroundColor: '#f9fafb', borderRadius: '12px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+              <div
+                style={{
+                  marginBottom: '24px',
+                  padding: '20px',
+                  backgroundColor: '#f9fafb',
+                  borderRadius: '12px',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    marginBottom: '12px',
+                  }}
+                >
                   <span style={{ fontSize: '32px', fontWeight: '700', color: '#22c55e' }}>
                     {product.discountedprice} SYP
                   </span>
@@ -227,7 +253,7 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
                         style={{
                           fontSize: '20px',
                           color: '#9ca3af',
-                          textDecoration: 'line-through'
+                          textDecoration: 'line-through',
                         }}
                       >
                         {product.price} SYP
@@ -239,7 +265,7 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
                           padding: '4px 8px',
                           borderRadius: '6px',
                           fontSize: '14px',
-                          fontWeight: '600'
+                          fontWeight: '600',
                         }}
                       >
                         -{product.discount}%
@@ -255,7 +281,14 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
 
               {/* Description */}
               <div style={{ marginBottom: '20px' }}>
-                <h4 style={{ fontSize: '16px', fontWeight: '600', color: '#374151', marginBottom: '8px' }}>
+                <h4
+                  style={{
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    color: '#374151',
+                    marginBottom: '8px',
+                  }}
+                >
                   Description
                 </h4>
                 <p style={{ color: '#6b7280', lineHeight: '1.6', margin: 0 }}>
@@ -266,7 +299,14 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
               {/* Color Variants */}
               {product.variants && product.variants.length > 0 && (
                 <div style={{ marginBottom: '20px' }}>
-                  <h4 style={{ fontSize: '16px', fontWeight: '600', color: '#374151', marginBottom: '12px' }}>
+                  <h4
+                    style={{
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      color: '#374151',
+                      marginBottom: '12px',
+                    }}
+                  >
                     Available Colors
                   </h4>
                   <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
@@ -280,7 +320,7 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
                           padding: '8px 12px',
                           backgroundColor: '#f3f4f6',
                           borderRadius: '8px',
-                          border: '2px solid #e5e7eb'
+                          border: '2px solid #e5e7eb',
                         }}
                       >
                         <div
@@ -289,7 +329,7 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
                             height: '24px',
                             borderRadius: '50%',
                             backgroundColor: variant.colorCode,
-                            border: '2px solid #e5e7eb'
+                            border: '2px solid #e5e7eb',
                           }}
                         ></div>
                         <span style={{ fontSize: '14px', color: '#374151', fontWeight: '500' }}>
@@ -304,8 +344,17 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
               {/* Additional Info Grid */}
               <div className="row g-3">
                 <div className="col-6">
-                  <div style={{ padding: '16px', backgroundColor: '#eff6ff', borderRadius: '12px' }}>
-                    <div style={{ fontSize: '12px', color: '#3b82f6', fontWeight: '600', marginBottom: '4px' }}>
+                  <div
+                    style={{ padding: '16px', backgroundColor: '#eff6ff', borderRadius: '12px' }}
+                  >
+                    <div
+                      style={{
+                        fontSize: '12px',
+                        color: '#3b82f6',
+                        fontWeight: '600',
+                        marginBottom: '4px',
+                      }}
+                    >
                       Quantity per Unit
                     </div>
                     <div style={{ fontSize: '18px', fontWeight: '700', color: '#1e40af' }}>
@@ -314,12 +363,22 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
                   </div>
                 </div>
                 <div className="col-6">
-                  <div style={{ padding: '16px', backgroundColor: '#f0fdf4', borderRadius: '12px' }}>
-                    <div style={{ fontSize: '12px', color: '#22c55e', fontWeight: '600', marginBottom: '4px' }}>
+                  <div
+                    style={{ padding: '16px', backgroundColor: '#f0fdf4', borderRadius: '12px' }}
+                  >
+                    <div
+                      style={{
+                        fontSize: '12px',
+                        color: '#22c55e',
+                        fontWeight: '600',
+                        marginBottom: '4px',
+                      }}
+                    >
                       Rating
                     </div>
                     <div style={{ fontSize: '18px', fontWeight: '700', color: '#15803d' }}>
-                      {product.ratings?.overall || 0} <i className="fas fa-star" style={{ fontSize: '14px' }}></i>
+                      {product.ratings?.overall || 0}{' '}
+                      <i className="fas fa-star" style={{ fontSize: '14px' }}></i>
                     </div>
                   </div>
                 </div>
@@ -335,7 +394,7 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
                       color: '#065f46',
                       borderRadius: '8px',
                       fontSize: '14px',
-                      fontWeight: '600'
+                      fontWeight: '600',
                     }}
                   >
                     <i className="fas fa-check-circle me-2"></i>Available
@@ -349,7 +408,7 @@ const ProductDetailsModal = ({ product, isOpen, onClose }) => {
                       color: '#92400e',
                       borderRadius: '8px',
                       fontSize: '14px',
-                      fontWeight: '600'
+                      fontWeight: '600',
                     }}
                   >
                     <i className="fas fa-money-bill-wave me-2"></i>COD Available

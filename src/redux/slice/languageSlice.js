@@ -1,4 +1,3 @@
-// src/store/languageSlice.js
 import { createSlice } from '@reduxjs/toolkit'
 import i18n from '../../utils/i18n'
 
@@ -12,8 +11,8 @@ const languageSlice = createSlice({
   reducers: {
     setLanguage: (state, action) => {
       state.lang = action.payload
-      i18n.changeLanguage(action.payload) // update i18n when redux changes
-      document.body.dir = action.payload === 'ar' ? 'rtl' : 'ltr' // handle RTL
+      i18n.changeLanguage(action.payload)
+      document.body.dir = action.payload === 'ar' ? 'rtl' : 'ltr'
     },
   },
 })
