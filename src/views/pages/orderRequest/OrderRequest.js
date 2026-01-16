@@ -10,15 +10,17 @@ import Loader from '../../../components/loader/loader'
 import styles from './orderRequest.module.scss'
 import OrderCard from '../../../components/OrderCard'
 import CIcon from '@coreui/icons-react'
+import { useTranslation } from 'react-i18next'
 import { cilChevronLeft, cilChevronRight } from '@coreui/icons'
 
 const TABS = {
-  INTRACITY: { key: 'intracity', label: '15 min', type: '1' },
-  INTERCITY: { key: 'intercity', label: 'Market Place', type: '2' },
+  INTRACITY: { key: 'intracity', labelKey: 'intracity', type: '1' },
+  INTERCITY: { key: 'intercity', labelKey: 'market_place', type: '2' },
 }
 
 const OrderRequest = () => {
   const dispatch = useDispatch()
+   const { t } = useTranslation('orderrequest')
   const { orders, status, error, currentPage, pageSize, totalRecords, sortKey, sortDirection } =
     useSelector((state) => state.orders)
 
@@ -92,13 +94,13 @@ const OrderRequest = () => {
   return (
     <div className="p-4">
       <div className="d-flex flex-row mb-3 justify-content-between align-items-center flex-wrap gap-3">
-        <h4 className="text-xl font-semibold mb-4">Pending Order Requests</h4>
+        <h4 className="text-xl font-semibold mb-4"><h4>{t('pending_order_requests')}</h4></h4>
         <div className="d-flex flex-row align-items-center gap-3 flex-wrap">
           {/* 🔥 Search bar */}
           <div className="mt-3 mb-3">
             <input
               type="text"
-              placeholder="Search by order number"
+              placeholder={t('search_by_order_number')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="form-control"
@@ -127,7 +129,7 @@ const OrderRequest = () => {
               ) : (
                 <span style={{ marginRight: '6px' }}>🚌</span>
               )}
-              {tab.label}
+              {t(tab.labelKey)}
             </CNavLink>
           </CNavItem>
         ))}
@@ -141,7 +143,7 @@ const OrderRequest = () => {
           <div className="mt-4">
             {orders.length === 0 ? (
               <div className="text-center">
-                <p className="text-muted ">No orders found.</p>
+                <p className="text-muted ">{t('no_orders_found')}</p>
               </div>
             ) : (
               <div className={styles.orderList}>

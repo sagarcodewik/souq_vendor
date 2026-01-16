@@ -8,23 +8,23 @@ import styles from './order.module.scss'
 import OrderCard from '../../../components/OrderCard'
 import CIcon from '@coreui/icons-react'
 import { cilChevronLeft, cilChevronRight } from '@coreui/icons'
+import { useTranslation } from 'react-i18next'
 
 /* ───────── constants ───────── */
 const STATUS_OPTIONS = [
-  { label: 'All', value: '' },
-  { label: 'Pending', value: 'pending' },
-  { label: 'Confirmed', value: 'confirmed' },
-  { label: 'Ready', value: 'Ready' },
-  { label: 'Shipped', value: 'shipped' },
-  { label: 'In Transit', value: 'in-transit' },
-  { label: 'Delivered', value: 'delivered' },
-  { label: 'Cancelled', value: 'cancelled' },
-  { label: 'Returned', value: 'returned' },
+  { labelKey: 'all', value: '' },
+  { labelKey: 'pending', value: 'pending' },
+  { labelKey: 'confirmed', value: 'confirmed' },
+  { labelKey: 'ready', value: 'Ready' },
+  { labelKey: 'shipped', value: 'shipped' },
+  { labelKey: 'in_transit', value: 'in-transit' },
+  { labelKey: 'delivered', value: 'delivered' },
+  { labelKey: 'cancelled', value: 'cancelled' },
+  { labelKey: 'returned', value: 'returned' },
 ]
-
 const TABS = {
-  INTRACITY: { key: 'intracity', label: '15 min', type: '1' },
-  INTERCITY: { key: 'intercity', label: 'Market Place', type: '2' },
+  INTRACITY: { key: 'intracity', labelKey: 'intracity', type: '1' },
+  INTERCITY: { key: 'intercity', labelKey: 'market_place', type: '2' },
 }
 
 const OrderRequest = () => {
@@ -35,6 +35,7 @@ const OrderRequest = () => {
   const [selectedStatus, setSelectedStatus] = useState('')
   const [activeTab, setActiveTab] = useState(TABS.INTRACITY)
   const [loadingId, setLoadingId] = useState(null)
+  const { t } = useTranslation('approvedorder')
 
   // 🔎 Search
   const [searchTerm, setSearchTerm] = useState('')
@@ -101,12 +102,12 @@ const OrderRequest = () => {
     <div className="p-4">
       {/* heading + filters + search */}
       <div className="d-flex flex-row mb-3 justify-content-between align-items-center flex-wrap gap-3">
-        <h4 className="text-xl font-semibold mb-0">Orders</h4>
+        <h4 className="text-xl font-semibold mb-0">{t('Orders')}</h4>
         <div className="d-flex flex-row align-items-center gap-3 flex-wrap">
           {/* Status Filter */}
           <div className="d-flex flex-row align-items-center gap-2">
             <label htmlFor="statusFilter" className="mb-0 w-auto">
-              Filter by Status:
+              {t('Filter by Status')}:
             </label>
             <select
               id="statusFilter"
@@ -114,9 +115,9 @@ const OrderRequest = () => {
               onChange={(e) => setSelectedStatus(e.target.value)}
               className="form-select w-auto"
             >
-              {STATUS_OPTIONS.map(({ label, value }) => (
+              {STATUS_OPTIONS.map(({ labelKey, value }) => (
                 <option key={value} value={value}>
-                  {label}
+                  {t(labelKey)}
                 </option>
               ))}
             </select>
@@ -126,7 +127,7 @@ const OrderRequest = () => {
           <div style={{ maxWidth: '300px' }}>
             <input
               type="text"
-              placeholder="Search by order number"
+              placeholder={t("Search by order number")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="form-control"
@@ -156,7 +157,7 @@ const OrderRequest = () => {
               ) : (
                 <span style={{ marginRight: '6px' }}>🚌</span>
               )}
-              {tab.label}
+              {t(tab.labelKey)}
             </CNavLink>
           </CNavItem>
         ))}
@@ -171,7 +172,7 @@ const OrderRequest = () => {
           <div className="mt-4">
             {orders.length === 0 ? (
               <div className="text-center">
-                <p className="text-muted ">No orders found.</p>
+                <p className="text-muted ">{t('No orders found')}</p>
               </div>
             ) : (
               <div className={styles.orderList}>

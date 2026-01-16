@@ -8,9 +8,11 @@ import DataTable from '../../../components/datatable/datatable'
 import { useDebounce } from 'use-debounce'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
+import { useTranslation } from 'react-i18next'
 
 const Finance = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation('finance')
   const { financials, status, totalRecords, currentPage, pageSize } = useSelector(
     (state) => state.finance,
   )
@@ -35,15 +37,16 @@ const Finance = () => {
 
     const doc = new jsPDF({ orientation: 'landscape' })
     doc.setFontSize(16)
-    doc.text('Vendor Financial Breakdown', 14, 15)
+   doc.text(t('Vendor Financial Breakdown'), 14, 15)
 
-    const tableColumn = [
-      'Order ID',
-      'Order Number',
-      'Grand Total (SYP)',
-      'Vendor Earnings (SYP)',
-      'Date',
-    ]
+const tableColumn = [
+  t('Order ID'),
+  t('Order Number'),
+  t('Grand Total (SYP))'),
+  t('Vendor Earnings (SYP)'),
+  t('Date'),
+]
+
     const tableRows = financials.map((row) => [
       row.orderId || '',
       row.orderNumber || '',
@@ -103,7 +106,7 @@ const Finance = () => {
     <>
       <CCard className="mb-4">
         <CCardHeader className="d-flex justify-content-between align-items-center flex-wrap gap-2">
-          <h5 className="mb-0">Vendor Financial Breakdown</h5>
+          <h5 className="mb-0">{t("Vendor Financial Breakdown")}</h5>
           <div className="d-flex align-items-center gap-3">
             <div className="input-group" style={{ width: '350px' }}>
               <span className="input-group-text bg-white">
@@ -112,7 +115,7 @@ const Finance = () => {
               <input
                 type="text"
                 className="form-control"
-                placeholder="Search vendor email and order number"
+                placeholder={t("Search vendor email and order number")}
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
               />
@@ -121,7 +124,7 @@ const Finance = () => {
             {/* ✅ Download PDF Button */}
             <CButton color="primary" variant="outline" onClick={handleDownloadPDF}>
               <CIcon icon={cilCloudDownload} className="me-2" />
-              Download PDF
+              {t("Download PDF")}
             </CButton>
           </div>
         </CCardHeader>

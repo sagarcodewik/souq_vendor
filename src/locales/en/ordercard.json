@@ -1,0 +1,17 @@
+{
+  "Approve": "Approve",
+  "Reject": "Reject",
+  "Pending": "Pending",
+  "Confirmed": "Confirmed",
+  "Cancelled": "Cancelled",
+  "Ready": "Ready",
+  "Delivered": "Delivered",
+  "Delivery Route": "Delivery Route",
+  "Pickup Location": "Pickup Location",
+  "Delivery Address": "Delivery Address",
+  "Chat with Customer": "Chat with Customer",
+  "Chat with Driver": "Chat with Driver",
+  "View Invoice": "View Invoice",
+  "15 min": "15 min",
+  "Marketplace": "Marketplace"
+}

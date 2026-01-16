@@ -30,9 +30,11 @@ import { fetchVendorProfile } from '../../redux/slice/profile'
 import avatar8 from './../../assets/images/avatars/8.jpg'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
+
 const AppHeaderDropdown = () => {
   const navigate = useNavigate()
-
+  const { t } = useTranslation('common')
   const handleLogout = () => {
     localStorage.removeItem('token') // or whatever key you're using
     toast.success('Logged out successfully')
@@ -83,14 +85,17 @@ const AppHeaderDropdown = () => {
       </CDropdownToggle>
 
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Account</CDropdownHeader>
+        <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">
+          {t('account')}
+        </CDropdownHeader>
+
         <CDropdownItem href="/dashboard/profile">
           <CIcon icon={cilUser} className="me-2" />
-          Profile
+          {t('profile')}
         </CDropdownItem>
         <CDropdownItem href="/dashboard/chat">
           <CIcon icon={cilChatBubble} className="me-2" />
-          Chat with Us
+          {t('chat_with_us')}
         </CDropdownItem>
         <CDropdownItem onClick={toggleLanguage}>
           <CIcon icon={cilLanguage} className="me-2" />
@@ -139,7 +144,7 @@ const AppHeaderDropdown = () => {
         <CDropdownDivider />
         <CDropdownItem onClick={handleLogout} style={{ cursor: 'pointer' }}>
           <CIcon icon={cilAccountLogout} className="me-2" />
-          Logout
+          {t('logout')}
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>

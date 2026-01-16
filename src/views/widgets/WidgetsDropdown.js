@@ -7,9 +7,12 @@ import CIcon from '@coreui/icons-react'
 import { cilDollar, cilClipboard, cilLoopCircular } from '@coreui/icons'
 import styles from './widget.module.scss'
 import Loader from '../../components/loader/loader'
+import { useTranslation } from 'react-i18next'
+
 const WidgetsDropdown = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+const { t } = useTranslation('dashboard')
 
   const {
     totalSales = 0,
@@ -30,38 +33,39 @@ const WidgetsDropdown = () => {
     return new Intl.NumberFormat('en-US').format(amount)
   }
 
-  const widgets = [
-    {
-      id: 'total-sales',
-      title: 'Sale Report',
-      subtitle: "Today's Revenue",
-      value: `${formatCurrency(totalSales)} SYP`,
-      icon: cilDollar,
-      path: '/sale-report',
-      gradient: 'salesGradient',
-      iconColor: 'salesIcon',
-    },
-    {
-      id: 'pending-orders',
-      title: 'Order Requests',
-      subtitle: 'Awaiting Processing',
-      value: pendingOrders,
-      icon: cilClipboard,
-      path: '/order-request',
-      gradient: 'ordersGradient',
-      iconColor: 'ordersIcon',
-    },
-    {
-      id: 'returned-orders',
-      title: 'Returned Orders',
-      subtitle: 'This Month',
-      value: returnedOrders,
-      icon: cilLoopCircular,
-      path: '/dashboard/return-order',
-      gradient: 'returnsGradient',
-      iconColor: 'returnsIcon',
-    },
-  ]
+const widgets = [
+  {
+    id: 'total-sales',
+    title: t('Sale Report'),
+    subtitle: t("Today's Revenue"),
+    value: `${formatCurrency(totalSales)} SYP`,
+    icon: cilDollar,
+    path: '/sale-report',
+    gradient: 'salesGradient',
+    iconColor: 'salesIcon',
+  },
+  {
+    id: 'pending-orders',
+    title: t('Order Requests'),
+    subtitle: t('Awaiting Processing'),
+    value: pendingOrders,
+    icon: cilClipboard,
+    path: '/order-request',
+    gradient: 'ordersGradient',
+    iconColor: 'ordersIcon',
+  },
+  {
+    id: 'returned-orders',
+    title: t('Returned Orders'),
+    subtitle: t('This Month'),
+    value: returnedOrders,
+    icon: cilLoopCircular,
+    path: '/dashboard/return-order',
+    gradient: 'returnsGradient',
+    iconColor: 'returnsIcon',
+  },
+]
+
 
   return (
     <div className={styles.widgetsContainer}>

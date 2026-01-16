@@ -8,12 +8,14 @@ import { cilUser, cilChatBubble, cilPeople, cilEnvelopeClosed } from '@coreui/ic
 import { ROLE_NAMES } from '../../../utils/constants'
 import ChatBox from '../../../components/ChatBox'
 import styles from './chat.module.scss'
+import { useTranslation } from 'react-i18next'
 
 const Chats = () => {
   const dispatch = useDispatch()
   const [userId, setUserId] = useState(null)
   const [selectedUser, setSelectedUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const { t } = useTranslation('customerchats')
 
   const chatUsers = useSelector((state) => state.chat.chatUsers || [])
   const { fetchStatus, error } = useSelector((state) => state.chat)
@@ -71,9 +73,9 @@ const Chats = () => {
             <div className="d-flex align-items-center">
               <CIcon icon={cilChatBubble} className="me-2" size="lg" />
               <div>
-                <h5 className="text-white mb-0">Messages</h5>
+                <h5 className="text-white mb-0">{t("Messages")}</h5>
                 <small className="text-white-75">
-                  {chatUsers.length} conversation{chatUsers.length !== 1 ? 's' : ''}
+                  {chatUsers.length} {t('conversation')}{chatUsers.length !== 1 ? 's' : ''}
                 </small>
               </div>
             </div>
@@ -83,11 +85,11 @@ const Chats = () => {
             {loading ? (
               <div className={styles.loadingState}>
                 <CSpinner color="primary" />
-                <p className="text-muted mt-2">Loading conversations...</p>
+                <p className="text-muted mt-2">{t("Loading conversations...")}</p>
               </div>
             ) : error ? (
               <CAlert color="danger" className="m-3">
-                <h6 className="alert-heading">Error loading chats</h6>
+                <h6 className="alert-heading">{t("Error loading chats")}</h6>
                 {error}
               </CAlert>
             ) : chatUsers.length > 0 ? (
@@ -143,9 +145,9 @@ const Chats = () => {
             ) : (
               <div className={styles.emptyState}>
                 <CIcon icon={cilPeople} size="3xl" className="text-muted mb-3" />
-                <h6 className="text-muted mb-2">No conversations yet</h6>
+                <h6 className="text-muted mb-2">{t('No conversations yet')}</h6>
                 <p className="text-muted small mb-0">
-                  Start chatting with customers, Vendor and Delivery Agents
+                  {t('Start chatting with customers, Vendor and Delivery Agents')}
                 </p>
               </div>
             )}
@@ -201,8 +203,8 @@ const Chats = () => {
             <CCardBody className={styles.chatArea}>
               <div className={styles.emptyMessage}>
                 <CIcon icon={cilChatBubble} size="4xl" className="text-muted mb-4" />
-                <h4 className="text-muted mb-3">Select a conversation</h4>
-                <p className="text-muted">Choose a contact from the sidebar to start messaging</p>
+                <h4 className="text-muted mb-3">{t('Select a conversation')}</h4>
+                <p className="text-muted">{t('Choose a contact from the sidebar to start messaging')}</p>
               </div>
             </CCardBody>
           )}

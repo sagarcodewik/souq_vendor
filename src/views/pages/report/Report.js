@@ -27,11 +27,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchSalesReport } from '../../../redux/slice/report'
 import Loader from '../../../components/loader/loader'
 import { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const SalesReportDashboard = () => {
   const [timeRange, setTimeRange] = useState('7d')
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
+  const {t} = useTranslation('salereport')
   const { status, error, data } = useSelector((state) => state.report)
 
   // Helper function to get start & end date in UTC from timeRange
@@ -346,8 +348,8 @@ const SalesReportDashboard = () => {
           <div className="col-12">
             <div className="d-flex justify-content-between align-items-center">
               <div>
-                <h4 className="mb-2 dashboard-title">Sales Dashboard</h4>
-                <p className="text-muted small">Track your performance and grow your business</p>
+                <h4 className="mb-2 dashboard-title">{t('Sales Dashboard')}</h4>
+                <p className="text-muted small">{t('Track your performance and grow your business')}</p>
               </div>
               <div className="d-flex align-items-center">
                 <select
@@ -356,9 +358,9 @@ const SalesReportDashboard = () => {
                   className="form-select form-select-sm me-3 time-select"
                   style={{ width: 'auto' }}
                 >
-                  <option value="7d">Last 7 days</option>
-                  <option value="30d">Last 30 days</option>
-                  <option value="90d">Last 3 months</option>
+                  <option value="7d">{t('Last 7 days')}</option>
+                  <option value="30d">{t('Last 30 days')}</option>
+                  <option value="90d">{t('Last 3 months')}</option>
                 </select>
               </div>
             </div>
@@ -369,51 +371,51 @@ const SalesReportDashboard = () => {
         <div className="row mb-4">
           <div className="col-6 col-lg-3 mb-3">
             <MetricCard
-              title="Total Revenue"
+              title={t('Total Revenue')}
               value={`${data?.summary?.totalRevenue || 0} SYP`}
               change={`${data?.summary?.comparison?.revenueChange || 0}`}
               changeType={
                 (data?.summary?.comparison?.revenueChange || 0) < 0 ? 'negative' : 'positive'
               }
               icon={cilDollar}
-              subtitle="vs last period"
+              subtitle={t("vs last period")}
               bgColor="bg-success"
             />
           </div>
           <div className="col-6 col-lg-3 mb-3">
             <MetricCard
-              title="Total Orders"
+              title={t("Total Orders")}
               value={data?.summary?.totalOrders || 0}
               change={`${data?.summary?.comparison?.ordersChange || 0}`}
               changeType={
                 (data?.summary?.comparison?.ordersChange || 0) < 0 ? 'negative' : 'positive'
               }
               icon={cilCart}
-              subtitle="vs last period"
+              subtitle={t("vs last period")}
               bgColor="bg-primary"
             />
           </div>
           <div className="col-6 col-lg-3 mb-3">
             <MetricCard
-              title="Active Customers"
+              title={t("Active Customers")}
               value={data?.summary?.activeCustomers || 0}
               change={`${data?.summary?.comparison?.customersChange || 0}`}
               changeType={
                 (data?.summary?.comparison?.customersChange || 0) < 0 ? 'negative' : 'positive'
               }
               icon={cilPeople}
-              subtitle="vs last period"
+              subtitle={t("vs last period")}
               bgColor="bg-info"
             />
           </div>
           <div className="col-6 col-lg-3 mb-3">
             <MetricCard
-              title="Average Order Value"
+              title={t('Average Order Value')}
               value={`${data?.summary?.averageOrderValue || 0} SYP`}
               change={`${data?.summary?.comparison?.aovChange || 0}`}
               changeType={(data?.summary?.comparison?.aovChange || 0) < 0 ? 'negative' : 'positive'}
               icon={cilArrowTop}
-              subtitle="vs last period"
+              subtitle={t("vs last period")}
               bgColor="bg-warning"
             />
           </div>
@@ -427,15 +429,15 @@ const SalesReportDashboard = () => {
               <div className="card-body p-4">
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <div>
-                    <h5 className="card-title mb-1">Sales Overview</h5>
-                    <p className="text-muted small mb-0">Revenue trend over time</p>
+                    <h5 className="card-title mb-1">{t('Sales Overview')}</h5>
+                    <p className="text-muted small mb-0">{t('Revenue trend over time')}</p>
                   </div>
                   <div className="d-flex align-items-center">
                     <div
                       className="rounded-circle me-2"
                       style={{ width: '8px', height: '8px', backgroundColor: '#0b737f' }}
                     ></div>
-                    <small className="text-muted">Sales (SYP)</small>
+                    <small className="text-muted">{t("Sales (SYP)")}</small>
                   </div>
                 </div>
                 <ResponsiveContainer width="100%" height={280}>
@@ -478,8 +480,8 @@ const SalesReportDashboard = () => {
               <div className="card-body p-4">
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <div>
-                    <h5 className="card-title mb-1">Sales by Category</h5>
-                    <p className="text-muted small mb-0">Distribution</p>
+                    <h5 className="card-title mb-1">{t('Sales by Category')}</h5>
+                    <p className="text-muted small mb-0">{t('Distribution')}</p>
                   </div>
                   <CIcon
                     icon={cilLayers}
@@ -533,8 +535,8 @@ const SalesReportDashboard = () => {
               <div className="card-body p-4">
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <div>
-                    <h5 className="card-title mb-1">Top Performing Products</h5>
-                    <p className="text-muted small mb-0">Best performing items</p>
+                    <h5 className="card-title mb-1">{t('Top Performing Products')}</h5>
+                    <p className="text-muted small mb-0">{t('Best performing items')}</p>
                   </div>
                   <CIcon
                     icon={cilLayers}
@@ -562,8 +564,8 @@ const SalesReportDashboard = () => {
               <div className="card-body p-4">
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <div>
-                    <h5 className="card-title mb-1">Recent Orders</h5>
-                    <p className="text-muted small mb-0">Latest transactions</p>
+                    <h5 className="card-title mb-1">{t('Recent Orders')}</h5>
+                    <p className="text-muted small mb-0">{t('Latest transactions')}</p>
                   </div>
                   <CIcon
                     icon={cilList}
@@ -576,7 +578,7 @@ const SalesReportDashboard = () => {
                       .slice(0, 3)
                       .map((order) => <OrderCard key={order.orderId} order={order} />)
                   ) : (
-                    <p className="text-muted">No recent orders</p>
+                    <p className="text-muted">{t('No recent orders')}</p>
                   )}
                 </div>
               </div>

@@ -1,0 +1,17 @@
+{
+  "Filter by Status": "التصفية حسب الحالة",
+  "Orders": "طلبات",
+  "Search by order number": "البحث حسب رقم الطلب",
+  "No orders found": "لم يتم العثور على أي أوامر",
+  "intracity": "داخل المدينة (15 دقيقة)",
+  "market_place": "السوق",
+  "all": "الكل",
+  "pending": "قيد الانتظار",
+  "confirmed": "تم التأكيد",
+  "ready": "جاهز",
+  "shipped": "تم الشحن",
+  "in_transit": "في الطريق",
+  "delivered": "تم التوصيل",
+  "cancelled": "ملغي",
+  "returned": "مرتجع"
+}

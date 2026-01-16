@@ -1,0 +1,22 @@
+{
+  "Sales Dashboard":"لوحة تحكم المبيعات",
+  "Track your performance and grow your business":"تتبع أدائك وقم بتنمية أعمالك",
+  "Last 7 days":"آخر 7 أيام",
+"Last 30 days":"آخر 30 يومًا",
+"Last 3 months": "آخر 3 أشهر",
+"Average Order Value":"متوسط ​​قيمة الطلب",
+"Total Revenue":"إجمالي الإيرادات",
+"vs last period":"مقابل الفترة الماضية",
+"Active Customers":"العملاء النشطين",
+"Total Orders": "إجمالي الطلب",
+"Sales Overview":"نظرة عامة على المبيعات",
+"Revenue trend over time":"اتجاه الإيرادات بمرور الوقت",
+"Sales (SYP)" : "المبيعات (SYP)",
+"Sales by Category":"المبيعات حسب الفئة",
+"Distribution":"توزيع",
+"Recent Orders":"الطلبات الأخيرة",
+"Latest transactions":"أحدث المعاملات",
+"No recent orders":"لا توجد طلبات حديثة",
+"Top Performing Products":"المنتجات الأعلى أداءً",
+"Best performing items":"أفضل العناصر أداءً"
+}

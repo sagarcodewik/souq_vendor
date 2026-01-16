@@ -27,71 +27,59 @@ import {
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
-const _nav = [
-  {
+const _nav = (t) =>  [
+    {
     component: CNavItem,
-    name: 'Dashboard',
+    name: t('Dashboard'),
     to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Products',
+    name: t('Products'),
     to: '/products',
     icon: <CIcon icon={cilTags} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Order Requests',
+    name: t('Order Requests'),
     to: '/order-request',
     icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Approved Orders',
+    name: t('Approved Orders'),
     to: '/orders',
     icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Promotions',
+    name: t('Promotions'),
     to: '/promotions',
     icon: <CIcon icon={cilTags} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Sale Report',
+    name: t('Sale Report'),
     to: '/sale-report',
     icon: <CIcon icon={cilChartLine} customClassName="nav-icon" />,
   },
-  {
+   {
     component: CNavGroup,
-    name: 'Chats',
+    name: t('Chats'),
     icon: <CIcon icon={cilChatBubble} customClassName="nav-icon" />,
     items: [
-      {
-        component: CNavItem,
-        name: 'Customer Chats',
-        to: '/customer-chats',
-      },
-      {
-        component: CNavItem,
-        name: 'Driver Chats',
-        to: '/driver-chats',
-      },
-      {
-        component: CNavItem,
-        name: 'Order Chats',
-        to: '/order-chats',
-      },
+      { component: CNavItem, name: t('Customer Chats'), to: '/customer-chats' },
+      { component: CNavItem, name: t('Driver Chats'), to: '/driver-chats' },
+      { component: CNavItem, name: t('Order Chats'), to: '/order-chats' },
     ],
   },
-  {
+ {
     component: CNavItem,
-    name: 'Finances',
+    name: t('Finances'),
     to: '/finances',
     icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
-  },
+  },,
   // {
   //   component: CNavItem,
   //   name: 'Reviews',

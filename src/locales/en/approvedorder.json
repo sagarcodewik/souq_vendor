@@ -1,0 +1,13 @@
+{
+  "intracity": "15 min",
+  "market_place": "Market Place",
+  "all": "All",
+  "pending": "Pending",
+  "confirmed": "Confirmed",
+  "ready": "Ready",
+  "shipped": "Shipped",
+  "in_transit": "In Transit",
+  "delivered": "Delivered",
+  "cancelled": "Cancelled",
+  "returned": "Returned"
+}

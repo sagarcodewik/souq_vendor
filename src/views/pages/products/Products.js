@@ -16,11 +16,13 @@ import Loader from '../../../components/loader/loader'
 import styles from './product.module.scss'
 import { CPagination, CPaginationItem } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+import { useTranslation } from 'react-i18next'
 import { cilChevronLeft, cilChevronRight } from '@coreui/icons'
 
 const Products = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { t } = useTranslation('products')
 
   const { products, status, totalRecords, deleteStatus } = useSelector((state) => state.products)
   const { categories } = useSelector((state) => state.categories)
@@ -138,12 +140,12 @@ const Products = () => {
       <div className="card-body p-4">
         {/* Top bar with search + filter */}
         <div className="d-flex justify-content-between align-items-center mb-3">
-          <h4 className="text-xl font-semibold mb-0">Product List</h4>
+          <h4 className="text-xl font-semibold mb-0">{t('Product List')}</h4>
           <div className="d-flex gap-2">
             {/* 🔍 Search box */}
             <input
               type="text"
-              placeholder="Search product..."
+              placeholder={t("Search product...")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="form-control"
@@ -160,7 +162,7 @@ const Products = () => {
               }}
               style={{ maxWidth: '200px' }}
             >
-              <option value="">All Categories</option>
+              <option value="">{t('All Categories')}</option>
               {categories.map((cat) => (
                 // <option key={cat._id} value={cat.category}>
                 <option key={cat._id} value={cat._id}>
@@ -170,7 +172,7 @@ const Products = () => {
             </select>
 
             <button className="btn btn-primary" onClick={() => navigate('/products/new-product')}>
-              New Product
+              {t('New Product')}
             </button>
           </div>
         </div>

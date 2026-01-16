@@ -116,7 +116,7 @@ const Dashboard = () => {
         <div className={styles.chartCard}>
           <div className={styles.chartHeader}>
             <h3 className={styles.chartTitle}>{t('InventoryOverview')}</h3>
-            <div className={styles.chartSubtitle}>Real-time stock levels across all products</div>
+            <div className={styles.chartSubtitle}>{t('Real-time stock levels across all products')}</div>
           </div>
 
           <div className={styles.chartContainer}>
@@ -168,15 +168,15 @@ const Dashboard = () => {
           <div className={styles.stockLegend}>
             <div className={styles.legendItem}>
               <div className={`${styles.legendColor} ${styles.lowStock}`}></div>
-              <span>Low Stock (≤5)</span>
+              <span>{t('Low Stock (≤5)')}</span>
             </div>
             <div className={styles.legendItem}>
               <div className={`${styles.legendColor} ${styles.mediumStock}`}></div>
-              <span>Medium Stock (6-20)</span>
+              <span>{t('Medium Stock (6-20)')}</span>
             </div>
             <div className={styles.legendItem}>
               <div className={`${styles.legendColor} ${styles.highStock}`}></div>
-              <span>High Stock ({'>'}20)</span>
+              <span>{t('High Stock (>20)')}</span>
             </div>
           </div>
         </div>
@@ -186,8 +186,8 @@ const Dashboard = () => {
       <div className={styles.customersSection}>
         <div className={styles.customersCard}>
           <div className={styles.customersHeader}>
-            <h3 className={styles.customersTitle}>Top Customers</h3>
-            <div className={styles.customersSubtitle}>Highest performing customers this period</div>
+            <h3 className={styles.customersTitle}>{t('Top Customers')}</h3>
+            <div className={styles.customersSubtitle}>{t('Highest performing customers this period')}</div>
           </div>
 
           <div className={styles.customersGrid}>
@@ -217,18 +217,18 @@ const Dashboard = () => {
                         <span className={styles.statValue}>
                           {Number(customer.totalSpent).toLocaleString()} SYP
                         </span>
-                        <span className={styles.statLabel}>Total Sales</span>
+                        <span className={styles.statLabel}>{t('Total Sales')}</span>
                       </div>
                       <div className={styles.statItem}>
                         <span className={styles.statValue}>{customer.totalOrders}</span>
-                        <span className={styles.statLabel}>Orders</span>
+                        <span className={styles.statLabel}>{t('Orders')}</span>
                       </div>
                     </div>
                   </div>
                 </div>
               ))
             ) : (
-              <div className={styles.noCustomers}>No top customers available</div>
+              <div className={styles.noCustomers}>{t('No top customers available')}</div>
             )}
           </div>
         </div>

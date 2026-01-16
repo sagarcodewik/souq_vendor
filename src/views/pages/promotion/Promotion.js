@@ -10,9 +10,11 @@ import { fetchPromotions, deletePromotion } from '../../../redux/slice/promotion
 import { PromotionHeaders } from '../../../utils/header'
 import ProductDetailsModal from './ProductDetailsModal'
 import { cilTag, cilBolt, cilGift } from '@coreui/icons'
+import { useTranslation } from 'react-i18next'
 
 const Promotion = () => {
   const dispatch = useDispatch()
+  const {t} = useTranslation('promotions')
   const navigate = useNavigate()
   const [deleting, setDeleting] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
@@ -148,7 +150,7 @@ const Promotion = () => {
     <div style={{ minHeight: '100vh', backgroundColor: '#f8f9fa', padding: '24px' }}>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="mb-0" style={{ color: '#111827', fontWeight: 'bold', fontSize: '32px' }}>
-          Promotions
+          {t('Promotions')}
         </h2>
         <button
           onClick={() => navigate('/promotions/create')}
@@ -162,7 +164,7 @@ const Promotion = () => {
             boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
           }}
         >
-          New Promotion
+          {t('New Promotion')}
         </button>
       </div>
       <div className="row mb-4">
@@ -171,7 +173,7 @@ const Promotion = () => {
             <input
               type="text"
               className="form-control"
-              placeholder="Search by title..."
+              placeholder={t("Search by title...")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               style={{
@@ -198,10 +200,10 @@ const Promotion = () => {
               padding: '12px',
             }}
           >
-            <option value="">All Types</option>
-            <option value="promotion">Promotion</option>
-            <option value="flash-sale">Flash Sale</option>
-            <option value="bundle">Bundle</option>
+            <option value="">{t('All Types')}</option>
+            <option value="promotion">{t('Promotion')}</option>
+            <option value="flash-sale">{t('Flash Sale')}</option>
+            <option value="bundle">{t('Bundle')}</option>
           </select>
         </div>
       </div>
@@ -488,7 +490,7 @@ const Promotion = () => {
                       }}
                     >
                       <i className="fas fa-edit me-1" style={{ fontSize: '12px' }}></i>
-                      Edit
+                      {t('Edit')}
                     </button>
                     <button
                       onClick={() => handleDelete(promotion._id || promotion.id)}
@@ -502,7 +504,7 @@ const Promotion = () => {
                       }}
                     >
                       <i className="fas fa-trash me-1" style={{ fontSize: '12px' }}></i>
-                      Delete
+                      {t('Delete')}
                     </button>
                   </div>
                 </div>

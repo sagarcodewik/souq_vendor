@@ -15,11 +15,13 @@ import { sygnet } from '../assets/brand/sygnet'
 import navigation from '../_nav'
 import { set } from '../redux/slice/uiSlice' // 👈 import the `set` action from uiSlice
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+
 const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.ui.sidebarUnfoldable) // 👈 use `state.ui`
   const sidebarShow = useSelector((state) => state.ui.sidebarShow) // 👈 use `state.ui`
-
+  const { t } = useTranslation('dashboard')
   return (
     <CSidebar
       className="border-end"
@@ -35,7 +37,14 @@ const AppSidebar = () => {
       <CSidebarHeader className="border-bottom">
         <Link to="/dashboard" className="text-decoration-none">
           <CSidebarBrand>
-            <img src="/logo.svg" alt="Logo" className="sidebar-brand-full" height={32} width={90} style={{ backgroundColor: "white" }}/>
+            <img
+              src="/logo.svg"
+              alt="Logo"
+              className="sidebar-brand-full"
+              height={32}
+              width={90}
+              style={{ backgroundColor: 'white' }}
+            />
             <img src="/x.png" alt="Logo" className="sidebar-brand-narrow" height={32} width={40} />
             {/* <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={32} /> */}
           </CSidebarBrand>
@@ -47,7 +56,7 @@ const AppSidebar = () => {
         />
       </CSidebarHeader>
 
-      <AppSidebarNav items={navigation} />
+      <AppSidebarNav items={navigation(t)} />
 
       <CSidebarFooter className="border-top d-none d-lg-flex">
         <CSidebarToggler

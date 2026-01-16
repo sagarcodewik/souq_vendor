@@ -22,10 +22,12 @@ import { setLanguage } from '../redux/slice/languageSlice'
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 import { set } from '../redux/slice/uiSlice'
+import { useTranslation } from 'react-i18next'
 import { markAsRead, markAllAsRead } from '../redux/slice/notificationSlice'
 
 const AppHeader = () => {
   const headerRef = useRef()
+  const { t } = useTranslation('common')
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
   const [isAnimating, setIsAnimating] = useState(false)
   const [hoveredNotification, setHoveredNotification] = useState(null)
@@ -103,16 +105,17 @@ const AppHeader = () => {
     }
   }
 
-  const formatTimeAgo = (date) => {
-    const now = new Date()
-    const notificationDate = new Date(date)
-    const diffInMinutes = Math.floor((now - notificationDate) / (1000 * 60))
+ const formatTimeAgo = (date) => {
+  const now = new Date()
+  const notificationDate = new Date(date)
+  const diffInMinutes = Math.floor((now - notificationDate) / (1000 * 60))
 
-    if (diffInMinutes < 1) return 'Just now'
-    if (diffInMinutes < 60) return `${diffInMinutes}m ago`
-    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`
-    return `${Math.floor(diffInMinutes / 1440)}d ago`
-  }
+  if (diffInMinutes < 1) return t('just_now')
+  if (diffInMinutes < 60) return `${diffInMinutes}${t('minutes_ago')}`
+  if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}${t('hours_ago')}`
+  return `${Math.floor(diffInMinutes / 1440)}${t('days_ago')}`
+}
+
 
   return (
     <CHeader position="sticky" className="mb-4 p-0" ref={headerRef}>
@@ -127,7 +130,7 @@ const AppHeader = () => {
         <CHeaderNav className="d-none d-md-flex">
           <CNavItem>
             <CNavLink to="/dashboard" as={NavLink}>
-              <span className="ms-2 fw-bold fs-5">Dashboard</span>
+              <span className="ms-2 fw-bold fs-5">{t('dashboard')}</span>
             </CNavLink>
           </CNavItem>
         </CHeaderNav>
@@ -199,10 +202,10 @@ const AppHeader = () => {
                   <div className="me-2" style={{ fontSize: '1.2em' }}>
                     🔔
                   </div>
-                  <h6 className="mb-0 fw-bold text-dark">Notifications</h6>
+                  <h6 className="mb-0 fw-bold text-dark">{t('notifications')}</h6>
                   {unreadCount > 0 && (
                     <CBadge color="primary" className="ms-2">
-                      {unreadCount} new
+                      {unreadCount} {t('new')}
                     </CBadge>
                   )}
                 </div>
@@ -239,8 +242,8 @@ const AppHeader = () => {
                     <div className="mb-3" style={{ fontSize: '3em', opacity: 0.3 }}>
                       🔕
                     </div>
-                    <p className="text-muted mb-2">No notifications yet</p>
-                    <small className="text-muted">You're all caught up!</small>
+                    <p className="text-muted mb-2">{t('no_notifications')}</p>
+                    <small className="text-muted">{t('all_caught_up')}</small>
                   </div>
                 ) : (
                   notifications.map((notification, index) => (
@@ -325,16 +328,17 @@ const AppHeader = () => {
                           >
                             {!notification.isRead && (
                               <CButton
-                                color="success"
-                                variant="ghost"
-                                size="sm"
-                                onClick={(e) => handleMarkAsRead(notification._id, e)}
-                                className="p-1 px-2"
-                                style={{ borderRadius: '6px', fontSize: '0.7rem' }}
-                              >
-                                <CIcon icon={cilCheck} size="sm" className="me-1" />
-                                Mark Read
-                              </CButton>
+  color="success"
+  variant="ghost"
+  size="sm"
+  onClick={(e) => handleMarkAsRead(notification._id, e)}
+  className="p-1 px-2"
+  style={{ borderRadius: '6px', fontSize: '0.7rem' }}
+>
+  <CIcon icon={cilCheck} size="sm" className="me-1" />
+  {t('mark_read')}
+</CButton>
+
                             )}
                           </div>
                         </div>
@@ -351,14 +355,14 @@ const AppHeader = () => {
                   style={{ borderRadius: '0 0 16px 16px' }}
                 >
                   <CButton
-                    color="primary"
-                    variant="ghost"
-                    size="sm"
-                    className="fw-semibold"
-                    style={{ borderRadius: '8px' }}
-                  >
-                    View All Notifications
-                  </CButton>
+  color="primary"
+  variant="ghost"
+  size="sm"
+  className="fw-semibold"
+  style={{ borderRadius: '8px' }}
+>
+  {t('view_all_notifications')}
+</CButton>
                 </div>
               )}
             </CDropdownMenu>

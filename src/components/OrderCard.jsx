@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import ProductModal from './ProductModal.js'
 import RouteDetailsModal from './RouteDetailsModal/RouteDetailsModal.js'
 import VehicleSelectionModal from './VehicleSelectionModal/VehicleSelectionModal.js' // Import the new modal
+import { useTranslation } from 'react-i18next'
 
 const OrderCard = ({ order, loading, onStatusChange, type }) => {
   const {
@@ -32,6 +33,7 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
   const [routeModalVisible, setRouteModalVisible] = useState(false)
   const [vehicleModalVisible, setVehicleModalVisible] = useState(false) // New state for vehicle modal
   const navigate = useNavigate()
+  const { t } = useTranslation('ordercard')
 
   const handleApproveClick = () => {
     if (order.type === '2') {
@@ -106,7 +108,7 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
               onClick={handleApproveClick} // Updated to use new handler
             >
               <CIcon icon={cilCheck} className="me-1" />
-              Approve
+              {t('Approve')}
             </CButton>
             <CButton
               size="sm"
@@ -116,7 +118,7 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
               onClick={() => onStatusChange(orderId, 'cancelled')}
             >
               <CIcon icon={cilX} className="me-1" />
-              Reject
+              {t('Reject')}
             </CButton>
           </div>
         )
@@ -143,16 +145,16 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
 
   const StatusBadge = ({ status }) => {
     const statusMap = {
-      pending: { class: 'bg-warning text-dark', label: 'Pending' },
-      confirmed: { class: 'bg-info text-white', label: 'Confirmed' },
-      cancelled: { class: 'bg-danger text-white', label: 'Cancelled' },
-      'driver-accepted': { class: 'bg-primary text-white', label: 'Driver Accepted' },
-      returned: { class: 'bg-secondary text-white', label: 'Returned' },
-      Ready: { class: 'bg-primary text-white', label: 'Ready' },
-      ready: { class: 'bg-primary text-white', label: 'Ready' },
-      shipped: { class: 'bg-primary text-white', label: 'Shipped' },
-      'in-transit': { class: 'bg-primary text-white', label: 'In Transit' },
-      delivered: { class: 'bg-success text-white', label: 'Delivered' },
+      pending: { class: 'bg-warning text-dark', label: t('Pending') },
+      confirmed: { class: 'bg-info text-white', label: t('Confirmed') },
+      cancelled: { class: 'bg-danger text-white', label: t('Cancelled') },
+      'driver-accepted': { class: 'bg-primary text-white', label: t('Driver Accepted') },
+      returned: { class: 'bg-secondary text-white', label: t('Returned') },
+      Ready: { class: 'bg-primary text-white', label: t('Ready') },
+      ready: { class: 'bg-primary text-white', label: t('Ready') },
+      shipped: { class: 'bg-primary text-white', label: t('Shipped') },
+      'in-transit': { class: 'bg-primary text-white', label: t('In Transit') },
+      delivered: { class: 'bg-success text-white', label: t('Delivered') },
     }
 
     const { class: badgeClass = 'bg-light text-dark', label = status } = statusMap[status] || {}
@@ -171,7 +173,7 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
       paymentMap[status] || 'bg-light text-dark'
     }`
 
-    return <span className={badgeClass}>{status?.charAt(0).toUpperCase() + status?.slice(1)}</span>
+    return <span className={badgeClass}>{t(status?.charAt(0).toUpperCase() + status?.slice(1))}</span>
   }
 
   const firstProduct = items[0]
@@ -186,7 +188,7 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
       <div className={styles.orderBody}>
         {/* Customer Info */}
         <p>
-          <strong>Customer:</strong> {customer?.email || '—'}
+          <strong>{t('Customer')}:</strong> {customer?.email || '—'}
         </p>
 
         {/* Delivery Route */}
@@ -194,7 +196,7 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
           <div className="px-3 py-2 bg-light border-bottom d-flex justify-content-between align-items-center">
             <h6 className="mb-2 text-primary">
               <CIcon icon={cilTruck} className="me-2" />
-              Delivery Route
+              {t('Delivery Route')}
             </h6>
             <CButton
               size="sm"
@@ -203,7 +205,7 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
               className={styles.chatButton}
               onClick={() => setRouteModalVisible(true)}
             >
-              View Route ({legs.length} leg{legs.length !== 1 ? 's' : ''})
+              {t('View Route')} ({legs.length} leg{legs.length !== 1 ? 's' : ''})
             </CButton>
           </div>
 
@@ -217,9 +219,9 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
               </div>
               <div className="flex-grow-1">
                 <div className="d-flex align-items-center mb-1">
-                  <strong className="text-primary me-2">Pickup Location</strong>
+                  <strong className="text-primary me-2">{t('Pickup Location')}</strong>
                   <CBadge color="primary" variant="outline" className="text-xs">
-                    From
+                    {t('From')}
                   </CBadge>
                 </div>
                 <p className="text-muted mb-1 small">
@@ -248,9 +250,9 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
               </div>
               <div className="flex-grow-1">
                 <div className="d-flex align-items-center mb-1">
-                  <strong className="text-success me-2">Delivery Address</strong>
+                  <strong className="text-success me-2">{t('Delivery Address')}</strong>
                   <CBadge color="success" variant="outline" className="text-xs">
-                    To
+                    {t('To')}
                   </CBadge>
                 </div>
                 <p className="text-muted mb-1 small">
@@ -261,7 +263,7 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
           </div>
         </div>
         <div className="px-3 py-2 bg-light border-bottom mb-1">
-          <h6 className="mb-2 text-primary">📦 Order Details</h6>
+          <h6 className="mb-2 text-primary">📦 {t('Order Details')}</h6>
         </div>
         {/* Inline Product Section */}
         <div className={styles.productSection}>
@@ -293,23 +295,29 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
         {/* Totals */}
         <div className={styles.orderDetails}>
           <div className={styles.detailBlock}>
-            {subTotal !== undefined && <p>Subtotal: {subTotal} SYP</p>}
+            {subTotal !== undefined && (
+              <p>
+                {t('Subtotal')}: {subTotal} SYP
+              </p>
+            )}
             <span className={styles.detailBadge}>
-              {order.type === '1'
-                ? '⚡ 15 min'
-                : order.type === '2'
-                  ? '🛒 Marketplace'
-                  : 'Standard'}
+              {order.type === '1' ? `⚡ ${t('15 min')}` : `🛒 ${t('Marketplace')}`}
             </span>
           </div>
 
           <div className={styles.detailBlock}>
-            {shippingFee !== undefined && <p>Shipping Fee: {shippingFee} SYP</p>}
+            {shippingFee !== undefined && (
+              <p>
+                {t('Shipping Fee')}: {shippingFee} SYP
+              </p>
+            )}
             <StatusBadge status={order.status} />
           </div>
 
           <div className={styles.detailBlock}>
-            <p>Grand Total: {grandTotal} SYP</p>
+            <p>
+              {t('Grand Total')}: {grandTotal} SYP
+            </p>
             {paymentStatus && <PaymentBadge status={paymentStatus} />}
           </div>
         </div>
@@ -325,7 +333,7 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
             className={styles.chatButton}
             onClick={() => setInvoiceVisible(true)}
           >
-            View Invoice
+            {t('View Invoice')}
           </CButton>
 
           {order.legs[0].driver && (
@@ -337,7 +345,7 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
                 className={styles.chatButton}
                 onClick={() => setDriverVisible(true)}
               >
-                View Driver
+                {t('View Driver')}
               </CButton>
               <CButton
                 size="sm"
@@ -346,7 +354,7 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
                 className={styles.chatButton}
                 onClick={handleChatWithDriver}
               >
-                Chat with Driver
+                {t('Chat with Driver')}
               </CButton>
             </>
           )}
@@ -358,7 +366,7 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
             className={styles.chatButton}
             onClick={handleChatWithCustomer}
           >
-            Chat with Customer
+            {t('Chat with Customer')}
           </CButton>
         </div>
       </div>
