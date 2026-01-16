@@ -294,12 +294,18 @@ const UpdateProfile = () => {
     try {
       await dispatch(saveVendorThunk(formData)).unwrap()
       dispatch(fetchVendorProfile())
+      handleLogout()
     } catch (err) {
       console.error('Save error:', err)
       alert('Failed to save profile. Please try again.')
     } finally {
       setSubmitting(false)
     }
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    navigate('/', { replace: true })
   }
 
   const handleOtherCategorySubmit = (setFieldValue, values) => {
@@ -386,9 +392,6 @@ const UpdateProfile = () => {
           }}
         >
           {({ isSubmitting, touched, errors, values, setFieldValue, setFieldTouched }) => {
-            console.log('Current errors:', errors)
-            console.log('Touched fields:', touched)
-
             return (
               <Form>
                 {/* ... rest of your form fields remain the same ... */}

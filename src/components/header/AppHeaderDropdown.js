@@ -27,6 +27,7 @@ import { useTranslation } from 'react-i18next'
 const AppHeaderDropdown = () => {
   const navigate = useNavigate()
   const { t } = useTranslation('common')
+
   const handleLogout = () => {
     localStorage.removeItem('token') // or whatever key you're using
     toast.success('Logged out successfully')
