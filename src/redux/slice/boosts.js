@@ -30,6 +30,22 @@ export const fetchBoosts = createAsyncThunk(
   }
 )
 
+
+export const updateBoost = createAsyncThunk(
+  'boost/update',
+  async ({ id, data }, { rejectWithValue }) => {
+    try {
+      console.log(data)
+      const res = await HttpClient.put(`/boost/boost/${id}`, data)
+      toast.success('boost updated successfully.')
+      return res.data.data
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to update boost.')
+      return rejectWithValue(err.response?.data || { message: err.message })
+    }
+  },
+)
+
 export const stopBoost = createAsyncThunk(
   'boost/stop',
   async (id, { rejectWithValue }) => {

@@ -1,23 +1,9 @@
 import React, { useState } from 'react'
-import {
-  CCard,
-  CCardBody,
-  CFormLabel,
-  CButton,
-  CFormInput,
-} from '@coreui/react'
+import { CCard, CCardBody, CFormLabel, CButton, CFormInput } from '@coreui/react'
 import Select from 'react-select'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
-import {
-  Star,
-  ArrowUp,
-  Sparkles,
-  Save,
-  ArrowRight,
-  Box,
-  Layers,
-} from 'lucide-react'
+import { Star, ArrowUp, Sparkles, Save, ArrowRight, Box, Layers } from 'lucide-react'
 
 /* ================== BOOST TYPES ================== */
 const boostTypes = [
@@ -66,7 +52,7 @@ const step2Schema = Yup.object({
 })
 
 /* ================== COMPONENT ================== */
-const BoostForm = ({ onSubmit, products = [], categories = [], loading }) => {
+const BoostForm = ({ onSubmit, initialValues = {}, products = [], categories = [], loading }) => {
   const [step, setStep] = useState(1)
 
   const productOptions = products.map((p) => ({
@@ -76,260 +62,413 @@ const BoostForm = ({ onSubmit, products = [], categories = [], loading }) => {
 
   const categoryOptions = categories.map((c) => ({
     value: c._id,
-    label: c.name,
+    label: c.category,
   }))
 
+  console.log(initialValues, 'initialValues=================')
+
   return (
-    <Formik
-      initialValues={{
-        boostType: '',
-        scopeType: 'product',
-        productIds: [],
-        categoryIds: [],
-        duration: 7,
-        startDate: '',
-      }}
-      validationSchema={step === 1 ? step1Schema : step2Schema}
-      onSubmit={(values) => {
-        const selectedBoost = boostTypes.find(
-          (b) => b.value === values.boostType,
-        )
+    <div style={{ minHeight: '80vh', fontFamily: "'Inter', sans-serif" }}>
+      <Formik
+        initialValues={{
+          boostType: '',
+          scopeType: 'product',
+          productIds: [],
+          categoryIds: [],
+          duration: 7,
+          startDate: '',
+          ...initialValues,
+        }}
+        validationSchema={step === 1 ? step1Schema : step2Schema}
+        enableReinitialize
+        onSubmit={(values) => {
+          const selectedBoost = boostTypes.find((b) => b.value === values.boostType)
 
-        const payload = {
-          boost_type: values.boostType,
-          scope_type: values.scopeType,
-          scope_ids:
-            values.scopeType === 'product'
-              ? values.productIds
-              : values.categoryIds,
-          duration: {
-            value: values.duration,
-            unit: 'day',
-          },
-          price: selectedBoost.pricePerDay * values.duration,
-          start_date: values.startDate,
-        }
-
-        onSubmit(payload)
-      }}
-    >
-      {({ values, setFieldValue, validateForm }) => {
-        const selectedBoost = boostTypes.find(
-          (b) => b.value === values.boostType,
-        )
-
-        const totalPrice = selectedBoost
-          ? selectedBoost.pricePerDay * values.duration
-          : 0
-
-        const goNext = async () => {
-          const errors = await validateForm()
-          if (Object.keys(errors).length === 0) {
-            setStep(2)
+          const payload = {
+            boost_type: values.boostType,
+            scope_type: values.scopeType,
+            scope_ids: values.scopeType === 'product' ? values.productIds : values.categoryIds,
+            duration: {
+              value: values.duration,
+              unit: 'day',
+            },
+            price: selectedBoost.pricePerDay * values.duration,
+            start_date: values.startDate,
           }
-        }
 
-        return (
-          <Form>
-            {/* ================= STEP 1 ================= */}
-            {step === 1 && (
-              <CCard>
-                <CCardBody className="p-5">
-                  <h3 className="fw-bold mb-4">Create New Boost</h3>
+          onSubmit(payload)
+        }}
+      >
+        {({ values, setFieldValue, validateForm }) => {
+          const selectedBoost = boostTypes.find((b) => b.value === values.boostType)
 
-                  {/* Boost Type */}
-                  <CFormLabel className="fw-semibold mb-3">
-                    Boost Type *
-                  </CFormLabel>
+          const totalPrice = selectedBoost ? selectedBoost.pricePerDay * values.duration : 0
 
-                  <div className="row g-3">
-                    {boostTypes.map((type) => {
-                      const Icon = type.icon
-                      const active = values.boostType === type.value
+          const goNext = async () => {
+            const errors = await validateForm()
+            if (Object.keys(errors).length === 0) {
+              setStep(2)
+            }
+          }
 
-                      return (
-                        <div key={type.value} className="col-md-4">
-                          <div
-                            onClick={() =>
-                              setFieldValue('boostType', type.value)
-                            }
-                            className={`border rounded p-3 cursor-pointer ${
-                              active ? 'border-primary bg-light' : ''
-                            }`}
-                          >
-                            <Icon size={26} />
-                            <h6 className="fw-bold mt-2">{type.label}</h6>
-                            <p className="small text-muted">
-                              {type.description}
-                            </p>
-                            <p className="small fw-semibold text-primary">
-                              {type.pricePerDay} SYP / day
-                            </p>
+          return (
+            <Form>
+              <CCard
+                className="border-0 shadow-sm"
+                style={{
+                  borderRadius: '24px',
+                  overflow: 'hidden',
+                  background: 'white',
+                }}
+              >
+                {/* Progress Header */}
+                <div className="px-5 pt-5 pb-3">
+                  <div className="d-flex justify-content-between align-items-center mb-4">
+                    <h2
+                      className="mb-0"
+                      style={{
+                        fontWeight: '800',
+                        fontSize: '32px',
+                        background: 'linear-gradient(45deg, #1e293b, #334155)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                      }}
+                    >
+                      {step === 1 ? 'Choose Your Boost' : 'Targeting & Schedule'}
+                    </h2>
+                    <div
+                      className="d-flex align-items-center gap-2"
+                      style={{ fontSize: '14px', fontWeight: 600, color: '#94a3b8' }}
+                    >
+                      <span className={step >= 1 ? 'text-primary' : ''}>Step 1</span>
+                      <div style={{ width: '20px', height: '2px', background: '#e2e8f0' }} />
+                      <span className={step >= 2 ? 'text-primary' : ''}>Step 2</span>
+                    </div>
+                  </div>
+                </div>
+
+                <CCardBody className="px-5 pb-5 pt-0">
+                  {/* ================= STEP 1 ================= */}
+                  {step === 1 && (
+                    <div>
+                      <p className="text-muted mb-4" style={{ fontSize: '16px' }}>
+                        Select a boost type and define the scope of your promotion.
+                      </p>
+
+                      {/* Boost Type Grid */}
+                      <div className="row g-4 mb-5">
+                        {boostTypes.map((type) => {
+                          const Icon = type.icon
+                          const active = values.boostType === type.value
+
+                          return (
+                            <div key={type.value} className="col-lg-4">
+                              <div
+                                onClick={() => setFieldValue('boostType', type.value)}
+                                style={{
+                                  border: active ? '2px solid #22c55e' : '2px solid #f1f5f9',
+                                  borderRadius: '20px',
+                                  padding: '24px',
+                                  cursor: 'pointer',
+                                  background: active ? '#eef2ff' : 'white',
+                                  transition: 'all 0.2s ease',
+                                  height: '100%',
+                                  position: 'relative',
+                                  transform: active ? 'translateY(-4px)' : 'none',
+                                  boxShadow: active
+                                    ? '0 10px 20px -5px hsla(170, 57%, 65%, 0.15)'
+                                    : 'none',
+                                }}
+                              >
+                                {active && (
+                                  <div className="position-absolute top-0 end-0 m-3 text-primary">
+                                    <div className="bg-primary text-white rounded-circle p-1">
+                                      <svg
+                                        width="16"
+                                        height="16"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth="3"
+                                          d="M5 13l4 4L19 7"
+                                        />
+                                      </svg>
+                                    </div>
+                                  </div>
+                                )}
+
+                                <div
+                                  className={`mb-3 rounded-circle d-flex align-items-center justify-content-center ${
+                                    active ? 'bg-primary text-white' : 'bg-light text-secondary'
+                                  }`}
+                                  style={{
+                                    width: '56px',
+                                    height: '56px',
+                                    transition: 'all 0.2s',
+                                  }}
+                                >
+                                  <Icon size={28} />
+                                </div>
+
+                                <h5 className="fw-bold text-dark mb-2">{type.label}</h5>
+                                <p className="text-muted mb-3 small" style={{ lineHeight: '1.5' }}>
+                                  {type.description}
+                                </p>
+                                <div className="pt-3 border-top">
+                                  <span className="fw-bold text-dark" style={{ fontSize: '18px' }}>
+                                    {type.pricePerDay}
+                                  </span>
+                                  <span className="text-secondary small"> SYP / day</span>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                      <ErrorMessage
+                        name="boostType"
+                        component="div"
+                        className="text-danger small mt-n4 mb-4"
+                      />
+
+                      {/* Scope Selection */}
+                      <div className="row g-4 mb-4">
+                        <div className="col-md-6">
+                          <CFormLabel className="fw-bold text-dark mb-2">Apply Boost To</CFormLabel>
+                          <div className="d-flex p-1 bg-light rounded-pill border">
+                            <div
+                              onClick={() => setFieldValue('scopeType', 'product')}
+                              className={`flex-fill text-center py-2 rounded-pill cursor-pointer fw-semibold ${
+                                values.scopeType === 'product'
+                                  ? 'bg-white shadow-sm text-primary'
+                                  : 'text-muted'
+                              }`}
+                              style={{ transition: 'all 0.2s' }}
+                            >
+                              <Box size={16} className="me-2 mb-1" /> Products
+                            </div>
+                            <div
+                              onClick={() => setFieldValue('scopeType', 'category')}
+                              className={`flex-fill text-center py-2 rounded-pill cursor-pointer fw-semibold ${
+                                values.scopeType === 'category'
+                                  ? 'bg-white shadow-sm text-primary'
+                                  : 'text-muted'
+                              }`}
+                              style={{ transition: 'all 0.2s' }}
+                            >
+                              <Layers size={16} className="me-2 mb-1" /> Categories
+                            </div>
                           </div>
                         </div>
-                      )
-                    })}
-                  </div>
 
-                  <ErrorMessage
-                    name="boostType"
-                    component="div"
-                    className="text-danger small mt-1"
-                  />
+                        <div className="col-md-6">
+                          <CFormLabel className="fw-bold text-dark mb-2">
+                            Duration (Days)
+                          </CFormLabel>
+                          <Field name="duration">
+                            {({ field }) => (
+                              <CFormInput
+                                {...field}
+                                type="number"
+                                min={1}
+                                style={{
+                                  padding: '12px',
+                                  borderRadius: '12px',
+                                  border: '1px solid #e2e8f0',
+                                }}
+                              />
+                            )}
+                          </Field>
+                          <ErrorMessage
+                            name="duration"
+                            component="div"
+                            className="text-danger small mt-1"
+                          />
+                        </div>
+                      </div>
 
-                  {/* Scope */}
-                  <CFormLabel className="fw-semibold mt-4">
-                    Apply Boost To *
-                  </CFormLabel>
-                  <div className="d-flex gap-3 mb-3">
-                    <div
-                      onClick={() => setFieldValue('scopeType', 'product')}
-                      className={`p-3 border rounded w-50 cursor-pointer ${
-                        values.scopeType === 'product'
-                          ? 'bg-primary text-white'
-                          : ''
-                      }`}
-                    >
-                      <Box size={18} /> Products
+                      <div className="d-flex justify-content-end mt-5 pt-3 border-top">
+                        <CButton
+                          type="button"
+                          onClick={goNext}
+                          className="btn-enhanced btn-primary-gradient d-flex align-items-center"
+                          style={{
+                            background: 'linear-gradient(135deg, #15686eff 0%, #53d8ddff 100%)',
+                          }}
+                        >
+                          Continue <ArrowRight size={20} className="ms-2" />
+                        </CButton>
+                      </div>
                     </div>
-                    <div
-                      onClick={() => setFieldValue('scopeType', 'category')}
-                      className={`p-3 border rounded w-50 cursor-pointer ${
-                        values.scopeType === 'category'
-                          ? 'bg-primary text-white'
-                          : ''
-                      }`}
-                    >
-                      <Layers size={18} /> Categories
-                    </div>
-                  </div>
-
-                  {/* Duration */}
-                  <CFormLabel className="fw-semibold">
-                    Duration (Days) *
-                  </CFormLabel>
-                  <Field name="duration">
-                    {({ field }) => (
-                      <CFormInput {...field} type="number" min={1} />
-                    )}
-                  </Field>
-
-                  <ErrorMessage
-                    name="duration"
-                    component="div"
-                    className="text-danger small"
-                  />
-
-                  <div className="mt-4 text-end">
-                    <CButton type="button" onClick={goNext}>
-                      Continue <ArrowRight size={16} className="ms-1" />
-                    </CButton>
-                  </div>
-                </CCardBody>
-              </CCard>
-            )}
-
-            {/* ================= STEP 2 ================= */}
-            {step === 2 && (
-              <CCard>
-                <CCardBody className="p-5">
-                  <h4 className="fw-bold mb-4">Schedule & Payment</h4>
-
-                  {values.scopeType === 'product' ? (
-                    <>
-                      <Select
-                        isMulti
-                        options={productOptions}
-                        onChange={(v) =>
-                          setFieldValue(
-                            'productIds',
-                            v ? v.map((i) => i.value) : [],
-                          )
-                        }
-                      />
-                      <ErrorMessage
-                        name="productIds"
-                        component="div"
-                        className="text-danger small"
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <Select
-                        isMulti
-                        options={categoryOptions}
-                        onChange={(v) =>
-                          setFieldValue(
-                            'categoryIds',
-                            v ? v.map((i) => i.value) : [],
-                          )
-                        }
-                      />
-                      <ErrorMessage
-                        name="categoryIds"
-                        component="div"
-                        className="text-danger small"
-                      />
-                    </>
                   )}
 
-                  {/* Start Date */}
-                  <CFormLabel className="fw-semibold mt-4">
-                    Start Date *
-                  </CFormLabel>
-                  <Field name="startDate">
-                    {({ field }) => (
-                      <CFormInput
-                        {...field}
-                        type="date"
-                        min={new Date().toISOString().split('T')[0]}
-                      />
-                    )}
-                  </Field>
+                  {/* ================= STEP 2 ================= */}
+                  {step === 2 && (
+                    <div>
+                      <p className="text-muted mb-4" style={{ fontSize: '16px' }}>
+                        Configure the specifics of your campaign and review the cost.
+                      </p>
 
-                  <ErrorMessage
-                    name="startDate"
-                    component="div"
-                    className="text-danger small"
-                  />
+                      <div className="row g-5">
+                        <div className="col-lg-7">
+                          <div className="mb-4">
+                            <CFormLabel className="fw-bold text-dark mb-2">
+                              {values.scopeType === 'product'
+                                ? 'Select Products'
+                                : 'Select Categories'}
+                            </CFormLabel>
+                            {values.scopeType === 'product' ? (
+                              <>
+                                <Select
+                                  isMulti
+                                  options={productOptions}
+                                  placeholder="Search and select products..."
+                                  value={productOptions.filter((p) =>
+                                    values.productIds.includes(p.value),
+                                  )}
+                                  styles={{
+                                    control: (base) => ({
+                                      ...base,
+                                      borderRadius: '12px',
+                                      padding: '6px',
+                                      borderColor: '#e2e8f0',
+                                      boxShadow: 'none',
+                                      '&:hover': { borderColor: '#cbd5e1' },
+                                    }),
+                                  }}
+                                  onChange={(v) =>
+                                    setFieldValue('productIds', v ? v.map((i) => i.value) : [])
+                                  }
+                                />
+                                <ErrorMessage
+                                  name="productIds"
+                                  component="div"
+                                  className="text-danger small mt-1"
+                                />
+                              </>
+                            ) : (
+                              <>
+                                <Select
+                                  options={categoryOptions}
+                                  placeholder="Search and select categories..."
+                                  isMulti
+                                  value={categoryOptions.filter((c) =>
+                                    values.categoryIds.includes(c.value),
+                                  )}
+                                  styles={{
+                                    control: (base) => ({
+                                      ...base,
+                                      borderRadius: '12px',
+                                      padding: '6px',
+                                      borderColor: '#e2e8f0',
+                                      boxShadow: 'none',
+                                      '&:hover': { borderColor: '#cbd5e1' },
+                                    }),
+                                  }}
+                                  onChange={(v) =>
+                                    setFieldValue('categoryIds', v ? v.map((i) => i.value) : [])
+                                  }
+                                />
+                                <ErrorMessage
+                                  name="categoryIds"
+                                  component="div"
+                                  className="text-danger small mt-1"
+                                />
+                              </>
+                            )}
+                          </div>
 
-                  {/* Summary */}
-                  <div className="mt-4 p-3 border rounded">
-                    <p>
-                      <strong>Boost:</strong> {selectedBoost?.label}
-                    </p>
-                    <p>
-                      <strong>Duration:</strong> {values.duration} days
-                    </p>
-                    <p>
-                      <strong>Total Cost:</strong> {totalPrice} SYP
-                    </p>
-                  </div>
+                          <div className="mb-4">
+                            <CFormLabel className="fw-bold text-dark mb-2">Start Date</CFormLabel>
+                            <Field name="startDate">
+                              {({ field }) => (
+                                <CFormInput
+                                  {...field}
+                                  type="date"
+                                  min={new Date().toISOString().split('T')[0]}
+                                  style={{
+                                    padding: '12px',
+                                    borderRadius: '12px',
+                                    border: '1px solid #e2e8f0',
+                                  }}
+                                />
+                              )}
+                            </Field>
+                            <ErrorMessage
+                              name="startDate"
+                              component="div"
+                              className="text-danger small mt-1"
+                            />
+                          </div>
+                        </div>
 
-                  <div className="d-flex justify-content-between mt-4">
-                    <CButton
-                      type="button"
-                      color="secondary"
-                      onClick={() => setStep(1)}
-                    >
-                      Back
-                    </CButton>
-                    <CButton
-                      type="submit"
-                      disabled={loading}
-                      color="success"
-                    >
-                      <Save size={16} className="me-1" />
-                      Activate Boost
-                    </CButton>
-                  </div>
+                        <div className="col-lg-5">
+                          <div
+                            className="p-4 rounded-4"
+                            style={{ backgroundColor: '#f8fafc', border: '1px solid #e2e8f0' }}
+                          >
+                            <h5 className="fw-bold mb-4">Order Summary</h5>
+                            <div className="d-flex justify-content-between mb-3 text-secondary">
+                              <span>Campaign Type</span>
+                              <span className="fw-semibold text-dark">{selectedBoost?.label}</span>
+                            </div>
+                            <div className="d-flex justify-content-between mb-3 text-secondary">
+                              <span>Duration</span>
+                              <span className="fw-semibold text-dark">{values.duration} Days</span>
+                            </div>
+                            <div className="d-flex justify-content-between mb-3 text-secondary">
+                              <span>Daily Rate</span>
+                              <span className="fw-semibold text-dark">
+                                {selectedBoost?.pricePerDay} SYP
+                              </span>
+                            </div>
+
+                            <div className="border-top my-3 border-dashed"></div>
+
+                            <div className="d-flex justify-content-between align-items-center">
+                              <span className="fw-bold text-dark fs-5">Total Est.</span>
+                              <span className="fw-bold text-primary fs-4">
+                                {totalPrice.toLocaleString()} SYP
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="d-flex justify-content-between mt-5 pt-3 border-top">
+                        <CButton
+                          type="button"
+                          variant="ghost"
+                          onClick={() => setStep(1)}
+                          className="text-secondary fw-semibold px-4"
+                        >
+                          Back
+                        </CButton>
+                        <CButton
+                          type="submit"
+                          disabled={loading}
+                          className="btn-lg text-white border-0 shadow-lg px-5 rounded-pill"
+                          style={{
+                            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                          }}
+                        >
+                          <Save size={20} className="me-2" />
+                          Activate Campaign
+                        </CButton>
+                      </div>
+                    </div>
+                  )}
                 </CCardBody>
               </CCard>
-            )}
-          </Form>
-        )
-      }}
-    </Formik>
+            </Form>
+          )
+        }}
+      </Formik>
+    </div>
   )
 }
 

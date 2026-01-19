@@ -26,6 +26,7 @@ const Tabs = React.lazy(() => import('./views/base/tabs/Tabs'))
 const Tables = React.lazy(() => import('./views/base/tables/Tables'))
 const Tooltips = React.lazy(() => import('./views/base/tooltips/Tooltips'))
 const New_boost = React.lazy(() => import('./views/pages/boosts/New_boost'))
+const Update_boost = React.lazy(() => import('./views/pages/boosts/Update_boost'))
 
 // Buttons
 const Buttons = React.lazy(() => import('./views/buttons/buttons/Buttons'))
@@ -102,6 +103,7 @@ const routes = [
   { path: '/order-request', name: 'Order Request', element: OrderRequest },
   { path: '/boosts', name: 'Boosts', element: BoostDetails },
   { path: '/boosts/create', name: 'Create Boost', element: New_boost },
+  { path: '/boosts/update', name: 'Create Boost', element: Update_boost },
   { path: '/promotions', name: 'Promotions', element: Promotion },
   { path: '/promotions/create', name: 'Create Promotion', element: New_promotion },
   { path: '/promotions/update', name: 'Update Promotion', element: Update_promotion },

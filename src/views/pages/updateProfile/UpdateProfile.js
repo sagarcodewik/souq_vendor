@@ -174,6 +174,8 @@ const UpdateProfile = () => {
   useEffect(() => {
     dispatch(fetchVendorProfile())
   }, [dispatch])
+
+
   useEffect(() => {
     if (!navigator.geolocation) {
       setGpsStatus('error')
@@ -228,6 +230,8 @@ const UpdateProfile = () => {
       },
     )
   }, [])
+
+
   const retryGPS = () => {
     setGpsStatus('idle')
     setGpsError('')
@@ -295,7 +299,7 @@ const UpdateProfile = () => {
     )
     try {
       await dispatch(saveVendorThunk(formData)).unwrap()
-      dispatch(fetchVendorProfile())
+      // dispatch(fetchVendorProfile())
       handleLogout()
     } catch (err) {
       console.error('Save error:', err)
@@ -770,7 +774,7 @@ const UpdateProfile = () => {
                       </div>
                     ) : (
                       <div className={styles.saveContent}>
-                        <SaveIcon />
+                        <SaveIcon color={'#fff'} />
                         Save Changes
                       </div>
                     )}

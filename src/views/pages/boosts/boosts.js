@@ -16,8 +16,6 @@ const Boots = () => {
   /* ================= REDUX STATE ================= */
   const { list: boosts, loading } = useSelector((state) => state.boosts)
 
-  console.log('BOOSTS LIST ===================>', boosts)
-
   const [deletingId, setDeletingId] = useState(null)
 
   /* ================= FETCH BOOSTS ================= */
@@ -185,15 +183,15 @@ const Boots = () => {
 
                   {/* PRODUCT NAMES */}
 
-                    <div className="mb-3">
-                      <strong>Products</strong>
-                      <ul className="mt-1">
-                        {boost.scope_ids.map((product) => (
-                          <li key={product._id}>{product.productName || product.name}</li>
-                        ))}
-                      </ul>
-                    </div>
-              
+                  <div className="mb-3">
+                    <strong>Products</strong>
+                    <ul className="mt-1">
+                      {boost.scope_ids.map((product) => (
+                        <li key={product._id}>{product.productName || product.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+
 
                   <button
                     onClick={() => handleDelete(boost._id)}

@@ -33,8 +33,6 @@ const Update_promotion = () => {
       )
   }, [dispatch])
 
-  console.log(promotion, 'promotion=====================', CategoryStatus)
-
   if (!promotion || productStatus === 'loading') return <Loader />
 
   return (
