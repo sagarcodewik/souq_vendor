@@ -1,6 +1,7 @@
 import React from 'react'
 import ResetPasswordProtectedRoute from './layout/ResetPasswordProtectedRoute'
-import Boots from './views/pages/boosts/boots'
+import BoostDetails from './views/pages/Boost/BoostDetails'
+
 // Dashboard
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 
@@ -24,6 +25,7 @@ const Spinners = React.lazy(() => import('./views/base/spinners/Spinners'))
 const Tabs = React.lazy(() => import('./views/base/tabs/Tabs'))
 const Tables = React.lazy(() => import('./views/base/tables/Tables'))
 const Tooltips = React.lazy(() => import('./views/base/tooltips/Tooltips'))
+const New_boost = React.lazy(() => import('./views/pages/boosts/New_boost'))
 
 // Buttons
 const Buttons = React.lazy(() => import('./views/buttons/buttons/Buttons'))
@@ -98,7 +100,8 @@ const routes = [
   },
   { path: '/dashboard/profile/upgrade', name: 'Upgrade To Premium', element: UpgradeToPremium },
   { path: '/order-request', name: 'Order Request', element: OrderRequest },
-  { path: '/boosts', name: 'Boosts', element: Boots },
+  { path: '/boosts', name: 'Boosts', element: BoostDetails },
+  { path: '/boosts/create', name: 'Create Boost', element: New_boost },
   { path: '/promotions', name: 'Promotions', element: Promotion },
   { path: '/promotions/create', name: 'Create Promotion', element: New_promotion },
   { path: '/promotions/update', name: 'Update Promotion', element: Update_promotion },
@@ -187,3 +190,4 @@ const routes = [
 ]
 
 export default routes
+

@@ -35,20 +35,17 @@ const AppSidebar = () => {
       // style={{ backgroundColor: '#103033' }}
     >
       <CSidebarHeader className="border-bottom">
-        <Link to="/dashboard" className="text-decoration-none">
-          <CSidebarBrand>
+          <CSidebarBrand className="w-100" to="/dashboard">
             <img
               src="/logo.svg"
               alt="Logo"
               className="sidebar-brand-full"
               height={32}
               width={90}
-              style={{ backgroundColor: 'white' }}
-            />
+              style={{ backgroundColor: 'white', height: '100%', width: '100%', maxHeight: '55px', padding: '12px', borderRadius: '6px', }}/>
             <img src="/x.png" alt="Logo" className="sidebar-brand-narrow" height={32} width={40} />
             {/* <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={32} /> */}
           </CSidebarBrand>
-        </Link>
         <CCloseButton
           className="d-lg-none"
           dark

@@ -300,9 +300,9 @@ const Promotion = () => {
                   </div>
                 </div>
                 <div className="card-body" style={{ padding: '24px' }}>
-                  <div className="row g-3 mb-4">
-                    <div className="col-4">
-                      <div
+                  <div className="row g-3 mb-4 ">
+                    <div className="col-4 ">
+                      <div className="h-100"
                         style={{
                           background: 'rgba(34, 197, 94, 0.1)',
                           padding: '16px',
@@ -326,7 +326,7 @@ const Promotion = () => {
                     </div>
 
                     <div className="col-4">
-                      <div
+                      <div className="h-100"
                         style={{
                           background: 'rgba(59, 130, 246, 0.1)',
                           padding: '16px',
@@ -347,7 +347,7 @@ const Promotion = () => {
                     </div>
 
                     <div className="col-4">
-                      <div
+                      <div className="h-100"
                         style={{
                           background: 'rgba(147, 51, 234, 0.1)',
                           padding: '16px',
