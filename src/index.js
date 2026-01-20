@@ -18,7 +18,7 @@ root.render(
       closeOnClick
       pauseOnHover
       draggable
-      theme="colored" // or "dark" or "colored" or "light"
+      theme="colored" 
     />
   </Provider>,
 )

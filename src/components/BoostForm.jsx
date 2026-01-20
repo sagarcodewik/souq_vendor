@@ -4,8 +4,8 @@ import Select from 'react-select'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { Star, ArrowUp, Sparkles, Save, ArrowRight, Box, Layers } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
-/* ================== BOOST TYPES ================== */
 const boostTypes = [
   {
     label: 'Featured Badge',
@@ -29,8 +29,6 @@ const boostTypes = [
     pricePerDay: 300,
   },
 ]
-
-/* ================== STEP VALIDATION ================== */
 const step1Schema = Yup.object({
   boostType: Yup.string().required('Boost type is required'),
   scopeType: Yup.string().required(),
@@ -51,10 +49,17 @@ const step2Schema = Yup.object({
     .min(new Date(), 'Start date cannot be in the past'),
 })
 
-/* ================== COMPONENT ================== */
-const BoostForm = ({ onSubmit, initialValues = {}, products = [], categories = [], loading }) => {
+const BoostForm = ({
+  onSubmit,
+  initialValues = {},
+  products = [],
+  categories = [],
+  loading,
+  mode = 'create',
+  status,
+}) => {
   const [step, setStep] = useState(1)
-
+   const { t } = useTranslation('boosts')
   const productOptions = products.map((p) => ({
     value: p._id,
     label: p.productName,
@@ -64,9 +69,6 @@ const BoostForm = ({ onSubmit, initialValues = {}, products = [], categories = [
     value: c._id,
     label: c.category,
   }))
-
-  console.log(initialValues, 'initialValues=================')
-
   return (
     <div style={{ minHeight: '80vh', fontFamily: "'Inter', sans-serif" }}>
       <Formik
@@ -121,7 +123,6 @@ const BoostForm = ({ onSubmit, initialValues = {}, products = [], categories = [
                   background: 'white',
                 }}
               >
-                {/* Progress Header */}
                 <div className="px-5 pt-5 pb-3">
                   <div className="d-flex justify-content-between align-items-center mb-4">
                     <h2
@@ -134,7 +135,7 @@ const BoostForm = ({ onSubmit, initialValues = {}, products = [], categories = [
                         WebkitTextFillColor: 'transparent',
                       }}
                     >
-                      {step === 1 ? 'Choose Your Boost' : 'Targeting & Schedule'}
+                      {step === 1 ? t('Choose Your Boost') : t('Targeting & Schedule')}
                     </h2>
                     <div
                       className="d-flex align-items-center gap-2"
@@ -148,14 +149,12 @@ const BoostForm = ({ onSubmit, initialValues = {}, products = [], categories = [
                 </div>
 
                 <CCardBody className="px-5 pb-5 pt-0">
-                  {/* ================= STEP 1 ================= */}
+
                   {step === 1 && (
                     <div>
                       <p className="text-muted mb-4" style={{ fontSize: '16px' }}>
-                        Select a boost type and define the scope of your promotion.
+                        {t('Choose Your Boost')}
                       </p>
-
-                      {/* Boost Type Grid */}
                       <div className="row g-4 mb-5">
                         {boostTypes.map((type) => {
                           const Icon = type.icon
@@ -214,15 +213,15 @@ const BoostForm = ({ onSubmit, initialValues = {}, products = [], categories = [
                                   <Icon size={28} />
                                 </div>
 
-                                <h5 className="fw-bold text-dark mb-2">{type.label}</h5>
+                                <h5 className="fw-bold text-dark mb-2"> {t(type.labelKey)}</h5>
                                 <p className="text-muted mb-3 small" style={{ lineHeight: '1.5' }}>
-                                  {type.description}
+                                 {t(type.descriptionKey)}
                                 </p>
                                 <div className="pt-3 border-top">
                                   <span className="fw-bold text-dark" style={{ fontSize: '18px' }}>
                                     {type.pricePerDay}
                                   </span>
-                                  <span className="text-secondary small"> SYP / day</span>
+                                  <span className="text-secondary small"> {t('Currency')} / {t('Per Day')}</span>
                                 </div>
                               </div>
                             </div>
@@ -238,7 +237,7 @@ const BoostForm = ({ onSubmit, initialValues = {}, products = [], categories = [
                       {/* Scope Selection */}
                       <div className="row g-4 mb-4">
                         <div className="col-md-6">
-                          <CFormLabel className="fw-bold text-dark mb-2">Apply Boost To</CFormLabel>
+                          <CFormLabel className="fw-bold text-dark mb-2">{t('Apply Boost To')}</CFormLabel>
                           <div className="d-flex p-1 bg-light rounded-pill border">
                             <div
                               onClick={() => setFieldValue('scopeType', 'product')}
@@ -249,7 +248,7 @@ const BoostForm = ({ onSubmit, initialValues = {}, products = [], categories = [
                               }`}
                               style={{ transition: 'all 0.2s' }}
                             >
-                              <Box size={16} className="me-2 mb-1" /> Products
+                              <Box size={16} className="me-2 mb-1" />{t('Products')}
                             </div>
                             <div
                               onClick={() => setFieldValue('scopeType', 'category')}
@@ -260,14 +259,14 @@ const BoostForm = ({ onSubmit, initialValues = {}, products = [], categories = [
                               }`}
                               style={{ transition: 'all 0.2s' }}
                             >
-                              <Layers size={16} className="me-2 mb-1" /> Categories
+                              <Layers size={16} className="me-2 mb-1" /> {t('Categories')}
                             </div>
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <CFormLabel className="fw-bold text-dark mb-2">
-                            Duration (Days)
+                            {t('Duration')} ({t('Day')})
                           </CFormLabel>
                           <Field name="duration">
                             {({ field }) => (
@@ -300,7 +299,7 @@ const BoostForm = ({ onSubmit, initialValues = {}, products = [], categories = [
                             background: 'linear-gradient(135deg, #15686eff 0%, #53d8ddff 100%)',
                           }}
                         >
-                          Continue <ArrowRight size={20} className="ms-2" />
+                         {t('Continue')}<ArrowRight size={20} className="ms-2" />
                         </CButton>
                       </div>
                     </div>
@@ -310,7 +309,7 @@ const BoostForm = ({ onSubmit, initialValues = {}, products = [], categories = [
                   {step === 2 && (
                     <div>
                       <p className="text-muted mb-4" style={{ fontSize: '16px' }}>
-                        Configure the specifics of your campaign and review the cost.
+                       {t('Configure campaign description')}
                       </p>
 
                       <div className="row g-5">
@@ -318,15 +317,16 @@ const BoostForm = ({ onSubmit, initialValues = {}, products = [], categories = [
                           <div className="mb-4">
                             <CFormLabel className="fw-bold text-dark mb-2">
                               {values.scopeType === 'product'
-                                ? 'Select Products'
-                                : 'Select Categories'}
+                                ? t('Select Products')
+                                : t('Select Categories')}
+
                             </CFormLabel>
                             {values.scopeType === 'product' ? (
                               <>
                                 <Select
                                   isMulti
                                   options={productOptions}
-                                  placeholder="Search and select products..."
+                                  placeholder={t('Search and select products')}
                                   value={productOptions.filter((p) =>
                                     values.productIds.includes(p.value),
                                   )}
@@ -383,12 +383,13 @@ const BoostForm = ({ onSubmit, initialValues = {}, products = [], categories = [
                           </div>
 
                           <div className="mb-4">
-                            <CFormLabel className="fw-bold text-dark mb-2">Start Date</CFormLabel>
+                            <CFormLabel className="fw-bold text-dark mb-2">{t('Start Date')}</CFormLabel>
                             <Field name="startDate">
                               {({ field }) => (
                                 <CFormInput
                                   {...field}
                                   type="date"
+                                  placeholder={t('Date Placeholder')}
                                   min={new Date().toISOString().split('T')[0]}
                                   style={{
                                     padding: '12px',
@@ -411,28 +412,28 @@ const BoostForm = ({ onSubmit, initialValues = {}, products = [], categories = [
                             className="p-4 rounded-4"
                             style={{ backgroundColor: '#f8fafc', border: '1px solid #e2e8f0' }}
                           >
-                            <h5 className="fw-bold mb-4">Order Summary</h5>
+                            <h5 className="fw-bold mb-4">{t('Order Summary')}</h5>
                             <div className="d-flex justify-content-between mb-3 text-secondary">
-                              <span>Campaign Type</span>
-                              <span className="fw-semibold text-dark">{selectedBoost?.label}</span>
+                              <span>{t('Campaign Type')}</span>
+                              <span className="fw-semibold text-dark">{t(selectedBoost.label)}</span>
                             </div>
                             <div className="d-flex justify-content-between mb-3 text-secondary">
-                              <span>Duration</span>
-                              <span className="fw-semibold text-dark">{values.duration} Days</span>
+                              <span>{t('Duration')}</span>
+                              <span className="fw-semibold text-dark">{values.duration}{t('Per Day')} </span>
                             </div>
                             <div className="d-flex justify-content-between mb-3 text-secondary">
-                              <span>Daily Rate</span>
+                              <span>{t('Daily Rate')}</span>
                               <span className="fw-semibold text-dark">
-                                {selectedBoost?.pricePerDay} SYP
+                                {selectedBoost?.pricePerDay}  {t('Currency')}
                               </span>
                             </div>
 
                             <div className="border-top my-3 border-dashed"></div>
 
                             <div className="d-flex justify-content-between align-items-center">
-                              <span className="fw-bold text-dark fs-5">Total Est.</span>
+                              <span className="fw-bold text-dark fs-5">{t('Total Est.')}</span>
                               <span className="fw-bold text-primary fs-4">
-                                {totalPrice.toLocaleString()} SYP
+                                {totalPrice.toLocaleString()}  {t('Currency')}
                               </span>
                             </div>
                           </div>
@@ -446,7 +447,7 @@ const BoostForm = ({ onSubmit, initialValues = {}, products = [], categories = [
                           onClick={() => setStep(1)}
                           className="text-secondary fw-semibold px-4"
                         >
-                          Back
+                         {t('Back')}
                         </CButton>
                         <CButton
                           type="submit"
@@ -457,7 +458,7 @@ const BoostForm = ({ onSubmit, initialValues = {}, products = [], categories = [
                           }}
                         >
                           <Save size={20} className="me-2" />
-                          Activate Campaign
+                         {t('Activate Campaign')}
                         </CButton>
                       </div>
                     </div>

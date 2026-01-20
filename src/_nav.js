@@ -24,8 +24,9 @@ import {
   cilChartLine,
   cilMoney,
   cilChatBubble,
+
 } from '@coreui/icons'
-import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+import { CNavGroup, CNavItem, CNavTitle} from '@coreui/react'
 
 const _nav = (t) =>  [
     {
@@ -60,9 +61,9 @@ const _nav = (t) =>  [
   },
   {
     component: CNavItem,
-    name: t('Boosts'),
+    name: t('boosts:Boosts'),
     to: '/boosts',
-    icon: <CIcon icon={cilTags} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
@@ -85,7 +86,7 @@ const _nav = (t) =>  [
     name: t('Finances'),
     to: '/finances',
     icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
-  },,
+  },
   // {
   //   component: CNavItem,
   //   name: 'Reviews',

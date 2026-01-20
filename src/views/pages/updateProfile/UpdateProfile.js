@@ -299,7 +299,7 @@ const UpdateProfile = () => {
     )
     try {
       await dispatch(saveVendorThunk(formData)).unwrap()
-      // dispatch(fetchVendorProfile())
+      dispatch(fetchVendorProfile())
       handleLogout()
     } catch (err) {
       console.error('Save error:', err)

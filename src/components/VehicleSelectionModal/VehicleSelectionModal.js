@@ -14,13 +14,13 @@ import { cilTruck, cilBike } from '@coreui/icons'
 const VehicleSelectionModal = ({ visible, setVisible, order, onApprove }) => {
   const [selectedVehicle, setSelectedVehicle] = useState('')
 
-  const handleApprove = () => {
-    if (selectedVehicle) {
-      onApprove(order.orderId, 'confirmed', selectedVehicle)
-      setVisible(false)
-      setSelectedVehicle('') // Reset selection
-    }
-  }
+ const handleApprove = () => {
+  if (!selectedVehicle) return
+
+  onApprove(order._id, 'confirmed', selectedVehicle)
+  setVisible(false)
+  setSelectedVehicle('')
+}
 
   const handleClose = () => {
     setVisible(false)

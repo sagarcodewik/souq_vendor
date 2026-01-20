@@ -9,6 +9,8 @@ import enOrders from '../locales/en/orders.json'
 import enOrderRequests from '../locales/en/orderrequest.json'
 import enOrdercard from '../locales/en/ordercard.json'
 import enApprovedOrder from '../locales/en/approvedorder.json'
+import enBoosts from '../locales/en/boosts.json'
+import enChat from '../locales/en/chat.json'
 
 // Arabic
 import arLogin from '../locales/ar/login.json'
@@ -25,6 +27,8 @@ import arSalesreport from '../locales/ar/salereport.json'
 import arCustomerchats from '../locales/ar/customerchats.json'
 import arOrderchats from '../locales/ar/orderchats.json'
 import arFinance from '../locales/ar/finance.json'
+import arChat from '../locales/ar/chat.json'
+
 
 const savedLang = localStorage.getItem('lang') || 'en'
 document.body.dir = savedLang === 'ar' ? 'rtl' : 'ltr'
@@ -34,6 +38,8 @@ i18n.use(initReactI18next).init({
     en: {
       login: enLogin,
       common: enCommon,
+       boosts: enBoosts,
+       chat: enChat,
       dashboard: enDashboard,
       orders: enOrders,
       orderrequest: enOrderRequests,
@@ -55,6 +61,7 @@ i18n.use(initReactI18next).init({
       customerchats: arCustomerchats,
       orderchats: arOrderchats,
       finance: arFinance,
+      chat: enChat
     },
   },
   lng: savedLang,

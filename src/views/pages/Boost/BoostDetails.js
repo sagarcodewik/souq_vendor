@@ -92,7 +92,7 @@ const BoostDetails = () => {
               {t('Boost Products')}
             </h2>
             <p className="text-muted mb-0" style={{ fontSize: '16px' }}>
-              Manage your visibility campaigns and boost performance
+              {t('Manage your visibility campaigns and boost performance')}
             </p>
           </div>
           <button
@@ -152,7 +152,7 @@ const BoostDetails = () => {
                   </span>
                   <input
                     className="form-control"
-                    placeholder={t('Search campaigns...')}
+                    placeholder={t('Search by title...')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     style={{
@@ -182,7 +182,7 @@ const BoostDetails = () => {
                   <option value="">{t('All Types')}</option>
                   <option value="featured">{t('Featured Badge')}</option>
                   <option value="top_of_list">{t('Top of List')}</option>
-                  <option value="highlight">{t('Highlight')}</option>
+                  <option value="highlight">{t('Highlight Listing')}</option>
                 </select>
               </div>
             </div>

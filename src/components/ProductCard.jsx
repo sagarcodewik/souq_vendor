@@ -144,7 +144,19 @@ const ProductCard = ({
           </div>
 
           <div className={styles.actionButtons}>
-            <div className={styles.ratingBadge}>
+             {Number(product.ratings?.overall) > 0 && (
+                  <div className={styles.ratingBadge}>
+                    <CIcon
+                      icon={cilStar}
+                      style={{
+                        color: '#ffc107',
+                        fontSize: '16px',
+                      }}
+                    />
+                    <span>{product.ratings.overall}</span>
+                  </div>
+                )}
+            {/* <div className={styles.ratingBadge}>
               <CIcon
                 icon={cilStar}
                 style={{
@@ -153,7 +165,7 @@ const ProductCard = ({
                 }}
               />
               <span>{product.ratings?.overall || '0'}</span>
-            </div>
+            </div> */}
             {/* <CTooltip content="View">
               <CButton size="sm" color="primary" onClick={() => setVisible(true)}>
                 <CIcon icon={cilZoom} />
