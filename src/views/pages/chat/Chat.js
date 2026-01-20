@@ -4,8 +4,10 @@ import { createOrGetChat } from '../../../redux/slice/chat'
 import { fetchVendorProfile } from '../../../redux/slice/profile'
 import ChatBox from '../../../components/Chat'
 import Loader from '../../../components/loader/loader'
+import { useTranslation } from 'react-i18next'
 
 const ChatPage = () => {
+  const { t } = useTranslation('chat')
   const dispatch = useDispatch()
   const [chatId, setChatId] = useState('')
   const [chatRequested, setChatRequested] = useState(false)
@@ -42,7 +44,7 @@ const ChatPage = () => {
 
   return (
     <div className="chat-page">
-      <h2 className="chat-page__title">Customer Support</h2>
+      <h2 className="chat-page__title">{t('Customer Support')}</h2>
       {chatId && currentUserId && receiverId && fetchStatus !== 'loading' ? (
         <ChatBox chatId={chatId} currentUserId={currentUserId} receiverId={receiverId} />
       ) : (

@@ -5,8 +5,10 @@ import io from 'socket.io-client'
 import styles from './chat.module.scss'
 import { localDateFormat } from '../utils'
 import { socket } from '../socket'
+import { useTranslation } from 'react-i18next'
 
 const ChatBox = ({ chatId, currentUserId, receiverId }) => {
+  const { t } = useTranslation('chat')
   const dispatch = useDispatch()
   const messages = useSelector((state) => state.chat.messages)
   const [newMessage, setNewMessage] = useState('')
@@ -55,7 +57,7 @@ const ChatBox = ({ chatId, currentUserId, receiverId }) => {
     <div className={styles.chat_box}>
       <div className={styles.chat_box__messages}>
         {messages.length === 0 ? (
-          <p className={styles.chat_box__empty}>No messages yet. Start the conversation!</p>
+          <p className={styles.chat_box__empty}> {t('No messages')}</p>
         ) : (
           messages.map((msg, idx) => {
             const isOwn = msg.senderId === currentUserId
@@ -77,10 +79,10 @@ const ChatBox = ({ chatId, currentUserId, receiverId }) => {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-          placeholder="Type your message..."
+          placeholder={t('Type your message')}
         />
         <button onClick={sendMessage} disabled={!newMessage.trim()}>
-          Send
+         {t('Send')}
         </button>
       </div>
     </div>
