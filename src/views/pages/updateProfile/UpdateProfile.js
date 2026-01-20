@@ -13,6 +13,7 @@ import Loader from '../../../components/loader/loader'
 import { CATEGORY_OPTIONS } from '../../../utils/constants'
 import styles from './updateProfile.module.scss'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const UserIcon = () => (
   <svg className={styles.icon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -156,6 +157,7 @@ const reverseGeocode = async (lat, lng) => {
 
 const UpdateProfile = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation('updateProfile')
   const navigate = useNavigate()
   const { vendor, status } = useSelector(
     (s) => s.vendorProfile?.profile || { vendor: null, status: 'idle' },
@@ -355,7 +357,8 @@ const UpdateProfile = () => {
                 animation: 'spin 1s linear infinite',
               }}
             />
-            <span>Detecting your location...</span>
+            <span>{t('Detecting your location')}</span>
+
           </div>
         )}
 
@@ -442,7 +445,7 @@ const UpdateProfile = () => {
                 <div className={styles.formSection}>
                   <div className={styles.sectionHeader}>
                     <BuildingIcon />
-                    <h2 className={styles.sectionTitle}>Business Information</h2>
+                    <h2 className={styles.sectionTitle}>{t('Business Information')}</h2>
                   </div>
 
                   <div className={styles.sectionBody}>
@@ -455,7 +458,7 @@ const UpdateProfile = () => {
                         { name: 'nationalIdNumber', label: 'National ID Number', icon: HashIcon },
                       ].map(({ name, label, icon: IconComponent }) => (
                         <div key={name} className={styles.fieldGroup}>
-                          <label className={styles.fieldLabel}>{label}</label>
+                          <label className={styles.fieldLabel}> {t(label)}</label>
                           <div className={styles.inputWrapper}>
                             <div className={styles.inputIcon}>
                               <IconComponent />
@@ -479,7 +482,7 @@ const UpdateProfile = () => {
                 <div className={styles.formSection}>
                   <div className={styles.sectionHeader}>
                     <PhoneIcon />
-                    <h2 className={styles.sectionTitle}>Contact Information</h2>
+                    <h2 className={styles.sectionTitle}>{t('Contact Information')}</h2>
                   </div>
 
                   <div className={styles.sectionBody}>
@@ -489,7 +492,7 @@ const UpdateProfile = () => {
                         { name: 'whatsappNumber', label: 'WhatsApp Number' },
                       ].map(({ name, label }) => (
                         <div key={name} className={styles.fieldGroup}>
-                          <label className={styles.fieldLabel}>{label}</label>
+                          <label className={styles.fieldLabel}>{t(label)}</label>
                           <div className={styles.inputWrapper}>
                             <div className={styles.inputIcon}>
                               <PhoneIcon />
@@ -513,12 +516,12 @@ const UpdateProfile = () => {
                 <div className={styles.formSection}>
                   <div className={styles.sectionHeader}>
                     <CreditCardIcon />
-                    <h2 className={styles.sectionTitle}>Payment Information</h2>
+                    <h2 className={styles.sectionTitle}>{t('Payment Information')}</h2>
                   </div>
 
                   <div className={styles.sectionBody}>
-                    <div className={styles.fieldGroup}>
-                      <label className={styles.fieldLabel}>Bank/Mobile Payment Info</label>
+                    <div className={styles.fieldGroup}>{t('Bank/Mobile Payment Info')}
+                      <label className={styles.fieldLabel}>{}</label>
                       <div className={styles.inputWrapper}>
                         <div className={styles.inputIcon}>
                           <CreditCardIcon />
@@ -540,12 +543,12 @@ const UpdateProfile = () => {
                 <div className={styles.formSection} style={{ overflow: 'unset' }}>
                   <div className={styles.sectionHeader}>
                     <BuildingIcon />
-                    <h2 className={styles.sectionTitle}>Business Categories</h2>
+                    <h2 className={styles.sectionTitle}>{t('Business Categories')}</h2>
                   </div>
 
                   <div className={styles.sectionBody}>
                     <div className={styles.fieldGroup}>
-                      <label className={styles.fieldLabel}>Select Business Categories</label>
+                      <label className={styles.fieldLabel}>{t('Select Business Categories')}</label>
                       <Select
                         isMulti
                         name="category"
@@ -569,7 +572,7 @@ const UpdateProfile = () => {
                         }}
                         classNamePrefix="select"
                         className={`${styles.categorySelect} ${touched.category && errors.category ? styles.selectError : ''}`}
-                        placeholder="Choose business categories..."
+                         placeholder={t('Choose business categories')}
                         styles={{
                           control: (provided, state) => ({
                             ...provided,
@@ -604,7 +607,7 @@ const UpdateProfile = () => {
                       />
                       {showOtherInput && (
                         <div className={styles.otherCategoryWrapper}>
-                          <label className={styles.fieldLabel}>Specify Other Category</label>
+                          <label className={styles.fieldLabel}>{t('Specify Other Category')}</label>
                           <div className={styles.otherCategoryInputWrapper}>
                             <div className={styles.inputWrapper}>
                               <div className={styles.inputIcon}>
@@ -630,7 +633,7 @@ const UpdateProfile = () => {
                       )}
                       {values.category.length > 0 && (
                         <div className={styles.selectedCategoriesWrapper}>
-                          <p className={styles.selectedCategoriesLabel}>Selected Categories:</p>
+                          <p className={styles.selectedCategoriesLabel}>{t('Selected Categories')}</p>
                           <div className={styles.selectedCategories}>
                             {values.category.map((category, index) => (
                               <span key={index} className={styles.categoryTag}>
@@ -657,15 +660,15 @@ const UpdateProfile = () => {
                 <div className={styles.formSection}>
                   <div className={styles.sectionHeader}>
                     <UploadIcon />
-                    <h2 className={styles.sectionTitle}>License Document</h2>
+                    <h2 className={styles.sectionTitle}>{t('License Document')}</h2>
                   </div>
 
                   <div className={styles.sectionBody}>
                     <div className={styles.uploadGroup}>
-                      <label className={styles.fieldLabel}>Upload License Document</label>
+                      <label className={styles.fieldLabel}>{t('Upload License Document')}</label>
                       <div className={styles.uploadArea}>
                         <FileTextIcon />
-                        <p className={styles.uploadText}>Upload license document (PDF or Image)</p>
+                        <p className={styles.uploadText}> {t('Upload license help')}</p>
                         <input
                           type="file"
                           accept=".pdf,image/*"
@@ -705,14 +708,14 @@ const UpdateProfile = () => {
                                 window.open(blobUrl)
                               }}
                             >
-                              View PDF
+                              {t('View PDF')}
                             </button>
                           )}
                         </div>
                       )}
                       {vendor.licenseDocument && (
                         <div className={styles.existingFile}>
-                          <h4 className={styles.existingFileTitle}>Current License Document</h4>
+                          <h4 className={styles.existingFileTitle}>{t('Current License Document')}</h4>
                           {vendor.licenseDocument.includes('.pdf') ? (
                             <a
                               href={vendor.licenseDocument}
@@ -720,7 +723,7 @@ const UpdateProfile = () => {
                               rel="noopener noreferrer"
                               className={styles.pdfLink}
                             >
-                              View License (PDF)
+                             {t('View License (PDF)')}
                             </a>
                           ) : (
                             <img
@@ -740,12 +743,12 @@ const UpdateProfile = () => {
                 <div className={styles.formSection}>
                   <div className={styles.sectionHeader}>
                     <MapPinIcon />
-                    <h2 className={styles.sectionTitle}>Business Location</h2>
+                    <h2 className={styles.sectionTitle}>{t('Business Location')}</h2>
                   </div>
 
                   <div className={styles.sectionBody}>
                     <div className={styles.fieldGroup}>
-                      <label className={styles.fieldLabel}>Current Business Address</label>
+                      <label className={styles.fieldLabel}>{t('Current Business Address')}</label>
                       <div className={styles.inputWrapper}>
                         <div className={styles.inputIcon}>
                           <MapPinIcon />
@@ -755,12 +758,11 @@ const UpdateProfile = () => {
                           readOnly
                           rows={3}
                           className={styles.addressInput}
-                          placeholder="Address will be detected automatically via GPS"
+                          placeholder={t('Address auto detected')}
                         />
                       </div>
                       <p className={styles.gpsNote}>
-                        Location detected automatically via GPS. Please ensure location services are
-                        enabled.
+                        {t('Location Enabled')}
                       </p>
                     </div>
                   </div>
@@ -770,12 +772,12 @@ const UpdateProfile = () => {
                     {isSubmitting ? (
                       <div className={styles.loadingContent}>
                         <div className={styles.spinner}></div>
-                        Saving...
+                        {t('Saving')}
                       </div>
                     ) : (
                       <div className={styles.saveContent}>
                         <SaveIcon color={'#fff'} />
-                        Save Changes
+                       {t('Save Changes')}
                       </div>
                     )}
                   </CButton>

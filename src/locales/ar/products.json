@@ -1,6 +1,85 @@
 {
-  "Product List" : "قائمة المنتجات",
-  "New Product" : "منتج جديد",
-  "All Categories" :"جميع الفئات",
-  "Search product..." : "بحث عن المنتج..."
+  "Product List": "قائمة المنتجات",
+  "New Product": "منتج جديد",
+  "All Categories": "جميع الفئات",
+  "Search product...": "بحث عن المنتج...",
+
+  "Edit Product": "تعديل المنتج",
+  "Add Product Subtitle": "أضف منتجًا جديدًا إلى مخزونك",
+  "Edit Product Subtitle": "تحديث معلومات المنتج",
+
+  "Product Name": "اسم المنتج",
+  "Enter product name": "أدخل اسم المنتج",
+
+  "Short Description": "وصف قصير",
+  "Brief description": "وصف مختصر للعرض والبحث",
+  "Brief help": "وصف مختصر للعرض والبحث (10-500 حرف)",
+
+  "Category": "الفئة",
+  "Select Category": "اختر الفئة",
+  "Subcategory": "الفئة الفرعية",
+  "Select Subcategory": "اختر الفئة الفرعية",
+  "Select Category First": "اختر الفئة أولاً",
+
+  "Price": "السعر",
+  "Discount": "الخصم (%)",
+  "Optional discount": "نسبة خصم اختيارية (0-99%)",
+
+  "Stock Quantity": "كمية المخزون",
+  "Available stock": "الكمية المتوفرة في المخزون",
+  "Total stock sizes": "إجمالي العناصر المتوفرة بجميع المقاسات",
+
+  "Available Sizes": "المقاسات المتاحة",
+  "Select sizes": "اختر جميع المقاسات المتوفرة لهذا المنتج",
+
+  "Package Quantity": "كمية العبوة",
+  "Enter quantity": "أدخل الكمية",
+  "Quantity help": "الكمية لكل عبوة / وحدة",
+
+  "Dimensions": "الأبعاد",
+  "Length": "الطول",
+  "Width": "العرض",
+  "Height": "الارتفاع",
+  "Unit": "الوحدة",
+  "Select Unit": "اختر الوحدة",
+
+  "Product Type": "نوع المنتج",
+  "Market Place": "السوق",
+
+  "Availability Options": "خيارات التوفر",
+  "Product Available": "المنتج متوفر",
+  "COD Available": "الدفع عند الاستلام متاح",
+
+  "Tags": "الوسوم",
+  "Tags help": "حتى 10 وسوم. اضغط Enter أو فاصلة أو مسافة للإضافة.",
+
+  "Product Highlights": "مميزات المنتج",
+  "Highlights placeholder": "أدخل الميزات الرئيسية للمنتج...",
+
+  "Product Overview": "نظرة عامة على المنتج",
+  "Overview placeholder": "اكتب وصفًا تفصيليًا للمنتج...",
+
+  "Product Specifications": "مواصفات المنتج",
+  "Specifications placeholder": "اكتب المواصفات الفنية بالتفصيل...",
+
+  "Product Images": "صور المنتج",
+  "Add Color": "إضافة",
+  "Remove": "إزالة",
+  "Example length":"طول المثال",
+  "placeholder": {
+    "length": "مثال: 20",
+    "width": "مثال: 15",
+    "height": "مثال: 10"
+  },
+  "Cancel": "إلغاء",
+  "Create Product": "إنشاء منتج",
+  "Update Product": "تحديث المنتج",
+  "Creating": "جاري الإنشاء...",
+  "Updating": "جاري التحديث...",
+  "Please upload at least one image for your product":"يرجى تحميل صورة واحدة على الأقل لمنتجك",
+  "Tags placeholder":"العلامات النائبة",
+   "Specifications Help": "قم بتضمين التفاصيل التقنية، الأبعاد، المواد، التوافق، وغيرها (15–3000 حرف)",
+  "Overview Help": "قدّم وصفًا شاملاً للمنتج، استخداماته، وفوائده (20–5000 حرف)",
+  "Highlights Help": "سلّط الضوء على نقاط البيع الرئيسية، الميزات الأساسية، والفوائد (10–2000 حرف)"
+
 }

@@ -1,0 +1,33 @@
+{
+  "Upgrade to Premium": "الترقية إلى البريميوم",
+  "Premium description": "احصل على ظهور أفضل، أدوات متقدمة، وزيادة في نمو عملك.",
+  "Apply for Premium": "التقديم على البريميوم",
+
+  "Premium Application Under Review": "طلب البريميوم قيد المراجعة",
+  "Premium Review Description": "نقوم بمراجعة طلبك وسيتم إشعارك قريبًا.",
+
+  "Premium Vendor": "بائع بريميوم",
+  "Plan": "الخطة",
+  "Days Remaining": "الأيام المتبقية",
+
+  "Profile Information": "معلومات الملف الشخصي",
+  "Store Name": "اسم المتجر",
+  "Owner Name": "اسم المالك",
+  "Email": "البريد الإلكتروني",
+  "Business Phone": "هاتف العمل",
+  "WhatsApp": "واتساب",
+  "Category": "الفئة",
+  "Location": "الموقع",
+
+  "Delivery Hours": "ساعات التوصيل",
+  "Open": "مفتوح",
+  "Closed": "مغلق",
+  "to": "إلى",
+  "Copy to all": "نسخ للجميع",
+  "Copied": "تم النسخ!",
+  "Update Hours": "تحديث الساعات",
+  "Updating": "جاري التحديث...",
+
+  "No profile data found": "لم يتم العثور على بيانات الملف الشخصي",
+  "Failed to load delivery hours": "فشل تحميل ساعات التوصيل"
+}

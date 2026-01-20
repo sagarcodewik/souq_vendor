@@ -17,6 +17,7 @@ import { localTimeFormat, convertLocalTimeToISO, convertLocalTimeToIOS } from '.
 import { daysOfWeek } from '../../../utils/constants'
 import styles from './profile.module.scss'
 import Loader from '../../../components/loader/loader'
+import { useTranslation } from 'react-i18next'
 
 // Icon Components
 const UserIcon = () => (
@@ -107,16 +108,17 @@ const getDefaultHours = () => {
 const isValidCloseTime = (open, close) => {
   const [openH, openM] = open.split(':').map(Number)
   const [closeH, closeM] = close.split(':').map(Number)
- 
+
   const openMinutes = openH * 60 + openM
   const closeMinutes = closeH * 60 + closeM
- 
+
   return closeMinutes > openMinutes && closeMinutes <= 1439 // before 12:00 AM
 }
- 
+
 const Profile = () => {
   const dispatch = useDispatch()
- 
+  const { t } = useTranslation('profile')
+
   // ✅ Corrected selector to match the Redux structure
   const { profile = {}, deliveryHours = {} } = useSelector((state) => state.vendor)
   const {
@@ -129,20 +131,20 @@ const Profile = () => {
     status: hoursStatus = 'idle',
     error: hoursError,
   } = useSelector((state) => state.vendorProfile.deliveryHours || {})
- 
+
   const [businessHours, setBusinessHours] = useState(getDefaultHours)
   const [originalHours, setOriginalHours] = useState(getDefaultHours)
   const [submitting, setSubmitting] = useState(false)
   const [selectedPlan, setSelectedPlan] = useState('Monthly')
   const [copiedDay, setCopiedDay] = useState(null)
- 
+
   const navigate = useNavigate()
-  
+
   useEffect(() => {
     dispatch(fetchVendorProfile())
     dispatch(fetchVendorDeliveryHours())
   }, [dispatch])
- 
+
   useEffect(() => {
     if (hoursStatus === 'succeeded') {
       const formatted = getDefaultHours()
@@ -160,7 +162,7 @@ const Profile = () => {
       setOriginalHours(formatted)
     }
   }, [deliveryHoursData, hoursStatus])
- 
+
   const toggleDay = (day) => {
     setBusinessHours((prev) => ({
       ...prev,
@@ -170,14 +172,14 @@ const Profile = () => {
       },
     }))
   }
- 
+
   const updateTime = (day, type, value) => {
     setBusinessHours((prev) => {
       const updated = {
         ...prev[day],
         [type]: value,
       }
- 
+
       // If type is 'close', validate the time range
       if (type === 'close') {
         const { open } = updated
@@ -186,14 +188,14 @@ const Profile = () => {
           return prev
         }
       }
- 
+
       return {
         ...prev,
         [day]: updated,
       }
     })
   }
- 
+
   const copyHoursToAll = (sourceDay) => {
     const source = businessHours[sourceDay]
     const updated = {}
@@ -208,17 +210,17 @@ const Profile = () => {
     setCopiedDay(sourceDay)
     setTimeout(() => setCopiedDay(null), 2000)
   }
- 
+
   const hasChanges = () => {
     return JSON.stringify(businessHours) !== JSON.stringify(originalHours)
   }
- 
+
   const handleUpdate = async () => {
     const payload = []
- 
+
     for (const { key } of daysOfWeek) {
       const bh = businessHours[key]
- 
+
       payload.push({
         day: key,
         isDayOff: !bh.isOpen,
@@ -240,7 +242,7 @@ const Profile = () => {
     if (!vendor?.premiumEndDate) return 0;
     return Math.max(0, Math.ceil((new Date(vendor.premiumEndDate) - new Date()) / (1000 * 60 * 60 * 24)));
   };
- 
+
   if (profileStatus === 'loading' || hoursStatus === 'loading') {
     return (
       <div className={styles.loadingContainer}>
@@ -248,15 +250,15 @@ const Profile = () => {
       </div>
     )
   }
- 
+
   if (profileStatus === 'failed') {
     return <div className={styles.errorContainer}>{profileError}</div>
   }
- 
+
   if (!vendor) {
     return <div className={styles.noDataContainer}>No profile data found.</div>
   }
- 
+
   if (hoursStatus === 'failed') {
     return (
       <div className={styles.errorContainer}>
@@ -264,11 +266,11 @@ const Profile = () => {
       </div>
     )
   }
- 
+
   return (
     <div className={styles.profilePage}>
       {submitting && <Loader />}
-      
+
       <div className={styles.container}>
         {/* Premium Status Cards */}
         <div className={styles.premiumSection}>
@@ -276,9 +278,9 @@ const Profile = () => {
             <div className={styles.premiumCard}>
               <div className={styles.premiumCardContent}>
                 <div className={styles.premiumInfo}>
-                  <h3 className={styles.premiumTitle}>Upgrade to Premium</h3>
+                  <h3 className={styles.premiumTitle}>{t('Upgrade to Premium')}</h3>
                   <p className={styles.premiumDescription}>
-                    Get featured listings, more visibility, and advanced tools to grow your business.
+                   {t('Premium description')}
                   </p>
                 </div>
                 <CrownIcon />
@@ -287,7 +289,7 @@ const Profile = () => {
                 className={styles.premiumButton}
                 onClick={() => navigate('/dashboard/profile/upgrade')}
               >
-                Apply for Premium
+               {t('Apply for Premium')}
               </CButton>
             </div>
           )}
@@ -297,9 +299,9 @@ const Profile = () => {
               <div className={styles.reviewCardContent}>
                 <ClockIcon />
                 <div>
-                  <h3 className={styles.reviewTitle}>Premium Application Under Review</h3>
+                  <h3 className={styles.reviewTitle}>{t('Premium Application Under Review')}</h3>
                   <p className={styles.reviewDescription}>
-                    We're processing your premium application. You'll be notified soon!
+                    {t('Premium Review Description')}
                   </p>
                 </div>
               </div>
@@ -313,14 +315,14 @@ const Profile = () => {
                   <CrownIcon />
                   <div>
                     <h3 className={styles.activeTitle}>
-                      Premium Vendor <StarIcon />
+                     {t('Premium Vendor')} <StarIcon />
                     </h3>
-                    <p className={styles.activePlan}>Plan: {vendor.premiumPlan}</p>
+                    <p className={styles.activePlan}>{t('Plan')} {vendor.premiumPlan}</p>
                   </div>
                 </div>
                 <div className={styles.daysCounter}>
                   <div className={styles.daysCounterBox}>
-                    <p className={styles.daysLabel}>Days Remaining</p>
+                    <p className={styles.daysLabel}>{t('Days Remaining')}</p>
                     <p className={styles.daysNumber}>{getDaysLeft()}</p>
                   </div>
                 </div>
@@ -334,16 +336,16 @@ const Profile = () => {
           <div className={styles.profileHeader}>
             <div className={styles.profileHeaderContent}>
               <UserIcon />
-              <h2 className={styles.profileHeaderTitle}>Profile Information</h2>
+              <h2 className={styles.profileHeaderTitle}>{t('Profile Information')}</h2>
             </div>
-            <button 
+            <button
               className={styles.editButton}
               onClick={() => navigate('/dashboard/profile/profile-update')}
             >
               <EditIcon />
             </button>
           </div>
-          
+
           <div className={styles.profileBody}>
             {/* Profile Picture */}
             <div className={styles.profilePictureSection}>
@@ -375,15 +377,15 @@ const Profile = () => {
                 <div className={styles.profileItem}>
                   <BuildingIcon />
                   <div>
-                    <p className={styles.profileLabel}>Store Name</p>
+                    <p className={styles.profileLabel}>{t('Store Name')}</p>
                     <p className={styles.profileValue}>{vendor.businessName}</p>
                   </div>
                 </div>
-                
+
                 <div className={styles.profileItem}>
                   <UserIcon />
                   <div>
-                    <p className={styles.profileLabel}>Owner Name</p>
+                    <p className={styles.profileLabel}>{t('Owner Name')}</p>
                     <p className={styles.profileValue}>{vendor.ownerName}</p>
                   </div>
                 </div>
@@ -391,7 +393,7 @@ const Profile = () => {
                 <div className={styles.profileItem}>
                   <MailIcon />
                   <div>
-                    <p className={styles.profileLabel}>Email</p>
+                    <p className={styles.profileLabel}>{t('Email')}</p>
                     <p className={styles.profileValue}>{vendor.userId?.email}</p>
                   </div>
                 </div>
@@ -399,7 +401,7 @@ const Profile = () => {
                 <div className={styles.profileItem}>
                   <PhoneIcon />
                   <div>
-                    <p className={styles.profileLabel}>Business Phone</p>
+                    <p className={styles.profileLabel}>{t('Business Phone')}</p>
                     <p className={styles.profileValue}>{vendor.businessPhone}</p>
                   </div>
                 </div>
@@ -409,7 +411,7 @@ const Profile = () => {
                 <div className={styles.profileItem}>
                   <PhoneIcon />
                   <div>
-                    <p className={styles.profileLabel}>WhatsApp</p>
+                    <p className={styles.profileLabel}>{t('WhatsApp')}</p>
                     <p className={styles.profileValue}>{vendor.whatsappNumber}</p>
                   </div>
                 </div>
@@ -417,7 +419,7 @@ const Profile = () => {
                 <div className={styles.profileItem}>
                   <StarIcon />
                   <div>
-                    <p className={styles.profileLabel}>Category</p>
+                    <p className={styles.profileLabel}>{t('Category')}</p>
                     <p className={styles.profileValue}>{vendor.category?.join(', ')}</p>
                   </div>
                 </div>
@@ -425,7 +427,7 @@ const Profile = () => {
                 <div className={styles.profileItem}>
                   <MapPinIcon />
                   <div>
-                    <p className={styles.profileLabel}>Location</p>
+                    <p className={styles.profileLabel}>{t('Location')}</p>
                     <p className={styles.profileValue}>{vendor.address?.city}, {vendor.address?.country}</p>
                   </div>
                 </div>
@@ -439,38 +441,38 @@ const Profile = () => {
           <div className={styles.hoursHeader}>
             <div className={styles.hoursHeaderContent}>
               <ClockIcon />
-              <h2 className={styles.hoursHeaderTitle}>Delivery Hours</h2>
+              <h2 className={styles.hoursHeaderTitle}>{t('Delivery Hours')}</h2>
             </div>
           </div>
-          
+
           <div className={styles.hoursBody}>
             <div className={styles.hoursGrid}>
               {daysOfWeek.map(({ key, label }) => {
                 const dayData = businessHours[key];
-                
+
                 return (
-                  <div 
-                    key={key} 
+                  <div
+                    key={key}
                     className={`${styles.dayCard} ${dayData.isOpen ? styles.dayCardOpen : styles.dayCardClosed}`}
                   >
                     <div className={styles.dayCardContent}>
                       <div className={styles.dayInfo}>
                         <CalendarIcon />
                         <span className={styles.dayName}>{label}</span>
-                        
+
                         {/* Custom Toggle Switch */}
-                        <div 
+                        <div
                           className={`${styles.toggle} ${dayData.isOpen ? styles.toggleOn : styles.toggleOff}`}
                           onClick={() => toggleDay(key)}
                         >
                           <div className={styles.toggleDot}></div>
                         </div>
-                        
+
                         <span className={styles.dayStatus}>
                           {dayData.isOpen ? 'Open' : 'Closed'}
                         </span>
                       </div>
-                      
+
                       {dayData.isOpen && (
                         <div className={styles.timeControls}>
                           <CFormInput
@@ -486,7 +488,7 @@ const Profile = () => {
                             onChange={(e) => updateTime(key, 'close', e.target.value)}
                             className={styles.timeInput}
                           />
-                          
+
                           <button
                             onClick={() => copyHoursToAll(key)}
                             className={`${styles.copyButton} ${copiedDay === key ? styles.copyButtonSuccess : ''}`}
@@ -510,7 +512,7 @@ const Profile = () => {
                 );
               })}
             </div>
-            
+
             <div className={styles.updateSection}>
               <CButton
                 className={styles.updateButton}
@@ -526,5 +528,5 @@ const Profile = () => {
     </div>
   )
 }
- 
+
 export default Profile

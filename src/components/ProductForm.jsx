@@ -36,13 +36,14 @@ import {
   requiresSize,
   requiresQuantityUnit,
 } from '../utils/constants'
-
+import { useTranslation } from 'react-i18next'
 /**
  * ---------------------------------------------------------------------------
  * ProductForm component with Size Checkboxes for Clothes Category
  * ---------------------------------------------------------------------------
  */
 const ProductForm = ({ isEditMode = false, productId }) => {
+  const { t } = useTranslation('product')
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -59,7 +60,7 @@ const ProductForm = ({ isEditMode = false, productId }) => {
 
   const [initialValues, setInitialValues] = useState(DEFAULT_PRODUCT_VALUES)
   const imageInputRefs = useRef({})
-  const { categories } = useSelector((state) => state.products) // or categorySlice if you separated it
+  const { categories } = useSelector((state) => state.products)
 
   /** Size Checkbox Management -------------------------------------------- */
   const handleSizeChange = (sizeValue, isChecked, setFieldValue, currentSizes) => {
@@ -382,7 +383,7 @@ const ProductForm = ({ isEditMode = false, productId }) => {
 
       if (requiresColorImages) {
         if (selectedColors.length === 0) {
-          toast.error('Please add at least one color')
+          toast.error(t('Error add color'))
           setSubmitting(false)
           return
         }
@@ -543,10 +544,13 @@ const ProductForm = ({ isEditMode = false, productId }) => {
       <CCol xs={12} className="pb-4">
         <CCard className={styles.card}>
           <CCardHeader>
-            <h4>{isEditMode ? 'Edit Product' : 'New Product'}</h4>
+            <h4>{isEditMode ? t('Edit Product') : t('New Product')}</h4>
             <small className="text-muted">
-              {isEditMode ? 'Update product information' : 'Add a new product to your inventory'}
-            </small>
+            {isEditMode
+              ? t('Edit Product Subtitle')
+              : t('Add Product Subtitle')}
+          </small>
+
           </CCardHeader>
 
           <CCardBody>
@@ -573,8 +577,8 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                   <Form>
                     {/* Product Name */}
                     <div className="mb-3">
-                      <CFormLabel>Product Name *</CFormLabel>
-                      <Field as={CFormInput} name="productName" placeholder="Enter product name" />
+                      <CFormLabel>{t('Product Name')} *</CFormLabel>
+                      <Field as={CFormInput} name="productName" placeholder={t('Enter product name')} />
                       <ErrorMessage
                         name="productName"
                         component="div"
@@ -584,35 +588,34 @@ const ProductForm = ({ isEditMode = false, productId }) => {
 
                     {/* Description */}
                     <div className="mb-3">
-                      <CFormLabel>Short Description *</CFormLabel>
-                      <Field
-                        as={CFormTextarea}
-                        name="description"
-                        rows="3"
-                        placeholder="Brief description for listing and search"
-                      />
-                      <small className="text-muted">
-                        Brief description for listing and search (10-500 characters)
-                      </small>
+                     <CFormLabel>{t('Short Description')} *</CFormLabel>
+                    <Field
+                      as={CFormTextarea}
+                      name="description"
+                      rows="3"
+                      placeholder={t('Brief description')}
+                    />
+
+                    <small className="text-muted">
+                      {t('Brief help')}
+                    </small>
+
                       <ErrorMessage
                         name="description"
                         component="div"
                         className="text-danger small"
                       />
                     </div>
-
-                    {/* Category & Subcategory */}
                     <CRow>
-                      {/* Category Select */}
                       <CCol md={6}>
                         <div className="mb-3">
-                          <CFormLabel>Category *</CFormLabel>
+                          <CFormLabel>{t('Category')}*</CFormLabel>
                           <CFormSelect
                             name="category"
                             value={values.category}
                             onChange={(e) => handleCategoryChange(e.target.value, setFieldValue)}
                           >
-                            <option value="">Select Category</option>
+                            <option value="">{t('Select Category')}</option>
                             {categories.map((cat) => (
                               <option key={cat._id} value={cat._id}>
                                 {cat.category}
@@ -626,14 +629,14 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                           />
                         </div>
                       </CCol>
-
-                      {/* Subcategory Select */}
                       <CCol md={6}>
                         <div className="mb-3">
-                          <CFormLabel>Subcategory *</CFormLabel>
+                          <CFormLabel>{t('Subcategory')}*</CFormLabel>
                           <Field as={CFormSelect} name="subCategory" disabled={!values.category}>
                             <option value="">
-                              {values.category ? 'Select Subcategory' : 'Select Category First'}
+                              {values.category
+                                ? t('Select Subcategory')
+                                : t('Select Category First')}
                             </option>
                             {availableSubcategories.map((subcat) => (
                               <option key={subcat} value={subcat}>
@@ -658,10 +661,10 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                     {/* Size Checkboxes for Clothes Category */}
                     {requiresSize(values.category) && (
                       <div className="mb-3">
-                        <CFormLabel className="fw-bold">Available Sizes *</CFormLabel>
+                        <CFormLabel className="fw-bold">  {t('Available Sizes')} *</CFormLabel>
                         <div className="mt-2">
                           <small className="text-muted d-block mb-2">
-                            Select all sizes that will be available for this clothing item
+                              {t('Select sizes')}
                           </small>
                           <div className="row">
                             {CLOTHING_SIZES.map((size, index) => (
@@ -703,7 +706,7 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                     <CRow>
                       <CCol md={6}>
                         <div className="mb-3">
-                          <CFormLabel>Price *</CFormLabel>
+                          <CFormLabel>{t('Price')}*</CFormLabel>
                           <Field
                             as={CFormInput}
                             type="number"
@@ -721,7 +724,7 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                       </CCol>
                       <CCol md={6}>
                         <div className="mb-3">
-                          <CFormLabel>Discount (%)</CFormLabel>
+                          <CFormLabel>{t('Discount')}</CFormLabel>
                           <Field
                             as={CFormInput}
                             type="number"
@@ -730,7 +733,7 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                             max="99"
                             placeholder="0"
                           />
-                          <small className="text-muted">Optional discount percentage (0-99%)</small>
+                          <small className="text-muted">{t('Optional discount')}</small>
                         </div>
                       </CCol>
                     </CRow>
@@ -738,7 +741,7 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                     {/* Price Preview */}
                     {values.price && values.discount && (
                       <div className="mb-3 p-3 bg-light rounded border">
-                        <small className="text-muted d-block mb-1">Price Preview:</small>
+                        <small className="text-muted d-block mb-1">{t('Price Preview')}</small>
                         <div className="d-flex gap-3 align-items-center">
                           <span className="text-decoration-line-through text-muted fs-6">
                             {parseFloat(values.price).toFixed(2)}
@@ -755,7 +758,7 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                     <CRow>
                       <CCol md={6}>
                         <div className="mb-3">
-                          <CFormLabel>Stock Quantity *</CFormLabel>
+                          <CFormLabel>{t('Stock Quantity')}</CFormLabel>
                           <Field
                             as={CFormInput}
                             type="number"
@@ -764,10 +767,11 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                             placeholder="0"
                           />
                           <small className="text-muted">
-                            {requiresSize(values.category)
-                              ? 'Total number of items available across all sizes'
-                              : 'Available quantity in stock'}
-                          </small>
+                          {requiresSize(values.category)
+                            ? t('Total stock sizes')
+                            : t('Available stock')}
+                        </small>
+
                           <ErrorMessage
                             name="stockQuantity"
                             component="div"
@@ -780,19 +784,19 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                       {requiresQuantityUnit(values.category) && (
                         <CCol md={6}>
                           <div className="mb-3">
-                            <CFormLabel>Package Quantity *</CFormLabel>
+                            <CFormLabel>{t('Package Quantity')} *</CFormLabel>
                             <div className="d-flex gap-2">
                               <Field
                                 as={CFormInput}
                                 type="number"
                                 name="quantity"
-                                placeholder="Enter quantity"
+                                 placeholder={t('Enter quantity')}
                                 style={{ flex: '0 0 70%' }}
                                 min="0.1"
                                 step="0.1"
                               />
                               <Field as={CFormSelect} name="unit" style={{ flex: '0 0 30%' }}>
-                                <option value="">Unit</option>
+                                <option value="">{t('Unit')}</option>
                                 {UNITS.map((unit) => (
                                   <option key={unit.value} value={unit.value}>
                                     {unit.label}
@@ -800,7 +804,7 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                                 ))}
                               </Field>
                             </div>
-                            <small className="text-muted">Quantity per package/unit</small>
+                            <small className="text-muted">  {t('Quantity help')}</small>
                             <ErrorMessage
                               name="quantity"
                               component="div"
@@ -834,12 +838,12 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                     <CRow>
                       <CCol md={3}>
                         <div className="mb-3">
-                          <CFormLabel>Length *</CFormLabel>
+                          <CFormLabel>{t('Length')}*</CFormLabel>
                           <Field
                             as={CFormInput}
                             type="number"
                             name="dimensions.length"
-                            placeholder="e.g. 20"
+                            placeholder={t('Example length')}
                             min="0.1"
                             step="0.1"
                           />
@@ -853,12 +857,12 @@ const ProductForm = ({ isEditMode = false, productId }) => {
 
                       <CCol md={3}>
                         <div className="mb-3">
-                          <CFormLabel>Width *</CFormLabel>
+                          <CFormLabel>{t('Width')} *</CFormLabel>
                           <Field
                             as={CFormInput}
                             type="number"
                             name="dimensions.width"
-                            placeholder="e.g. 15"
+                            placeholder={t('placeholder.width')}
                             min="0.1"
                             step="0.1"
                           />
@@ -872,12 +876,12 @@ const ProductForm = ({ isEditMode = false, productId }) => {
 
                       <CCol md={3}>
                         <div className="mb-3">
-                          <CFormLabel>Height *</CFormLabel>
+                          <CFormLabel>{t('Height')} *</CFormLabel>
                           <Field
                             as={CFormInput}
                             type="number"
                             name="dimensions.height"
-                            placeholder="e.g. 10"
+                            placeholder={t('placeholder.height')}
                             min="0.1"
                             step="0.1"
                           />
@@ -891,9 +895,9 @@ const ProductForm = ({ isEditMode = false, productId }) => {
 
                       <CCol md={3}>
                         <div className="mb-3">
-                          <CFormLabel>Unit *</CFormLabel>
+                          <CFormLabel>{t('Unit')} *</CFormLabel>
                           <Field as={CFormSelect} name="dimensions.unit">
-                            <option value="">Select Unit</option>
+                            <option value="">{t('Select Unit')}</option>
                             <option value="cm">cm</option>
                             <option value="m">m</option>
                             <option value="inch">inch</option>
@@ -910,7 +914,7 @@ const ProductForm = ({ isEditMode = false, productId }) => {
 
                     {/* Product Type */}
                     <div className="mb-3">
-                      <CFormLabel className="fw-bold mb-2">Product Type *</CFormLabel>
+                      <CFormLabel className="fw-bold mb-2">{t('Product Type')} *</CFormLabel>
                       <div className="d-flex gap-3">
                         <CFormCheck
                           type="radio"
@@ -928,7 +932,7 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                           type="radio"
                           name="productType"
                           id="marketplace"
-                          label="Market Place"
+                          label={t('Market Place')}
                           value="2"
                           checked={values.productType === '2'}
                           onChange={handleChange}
@@ -946,19 +950,19 @@ const ProductForm = ({ isEditMode = false, productId }) => {
 
                     {/* Availability Options */}
                     <div className="mb-3">
-                      <CFormLabel className="fw-bold mb-2">Availability Options</CFormLabel>
+                      <CFormLabel className="fw-bold mb-2">{t('Availability Options')}</CFormLabel>
                       <div className="d-flex gap-4">
                         <CFormCheck
                           type="checkbox"
                           name="isAvailable"
-                          label="Product is Available"
+                          label={t('Product Available')}
                           checked={values.isAvailable}
                           onChange={handleChange}
                         />
                         <CFormCheck
                           type="checkbox"
                           name="isCODAvailable"
-                          label="Cash on Delivery Available"
+                          label={t('COD Available')}
                           checked={values.isCODAvailable}
                           onChange={handleChange}
                         />
@@ -978,7 +982,7 @@ const ProductForm = ({ isEditMode = false, productId }) => {
 
                     {/* Tags */}
                     <div className="mb-3">
-                      <CFormLabel>Tags</CFormLabel>
+                      <CFormLabel>{t('Tags')}</CFormLabel>
                       <CFormInput
                         value={tagInput}
                         onChange={(e) => setTagInput(e.target.value)}
@@ -995,10 +999,10 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                             setTagInput('')
                           }
                         }}
-                        placeholder="Type and press enter, comma, or space"
+                        placeholder={t('Tags placeholder')}
                       />
                       <small className="text-muted">
-                        Up to 10 tags. Press Enter, comma, or space to add.
+                       {t('Tags help')}
                       </small>
                       <div className="d-flex flex-wrap mt-2 gap-2">
                         {values.tags.map((tag, index) => (
@@ -1037,14 +1041,13 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                     {/* Product Highlights */}
                     <div className="mb-4">
                       <TipTapEditor
-                        label="Product Highlights *"
+                        label={`${t('Product Highlights')} *`}
                         content={values.highlights}
                         onChange={(html) => setFieldValue('highlights', html)}
-                        placeholder="Enter key features and highlights of your product..."
+                        placeholder={t('Highlights placeholder')}
                       />
                       <small className="text-muted">
-                        Highlight the main selling points, key features, and benefits (10-2000
-                        characters)
+                        {t('Highlights Help')}
                       </small>
                       <ErrorMessage
                         name="highlights"
@@ -1055,14 +1058,13 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                     {/* Product Overview */}
                     <div className="mb-4">
                       <TipTapEditor
-                        label="Product Overview *"
+                        label={t('Product Overview')}
                         content={values.overview}
                         onChange={(html) => setFieldValue('overview', html)}
                         placeholder="Write a detailed overview of your product..."
                       />
                       <small className="text-muted">
-                        Provide a comprehensive description of the product, its uses, and benefits
-                        (20-5000 characters)
+                         {t('Overview Help')}
                       </small>
                       <ErrorMessage name="overview" component="div" className="text-danger small" />
                     </div>
@@ -1070,14 +1072,13 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                     {/* Product Specifications */}
                     <div className="mb-4">
                       <TipTapEditor
-                        label="Product Specifications *"
+                        label={t('Product Specifications')}
                         content={values.specifications}
                         onChange={(html) => setFieldValue('specifications', html)}
                         placeholder="List detailed technical specifications..."
                       />
                       <small className="text-muted">
-                        Include technical details, dimensions, materials, compatibility, etc.
-                        (15-3000 characters)
+                       {t('Specifications Help')}
                       </small>
                       <ErrorMessage
                         name="specifications"
@@ -1094,7 +1095,7 @@ const ProductForm = ({ isEditMode = false, productId }) => {
 
                         {/* Predefined Colors */}
                         <div className="mb-3">
-                          <h6>Quick Add Colors:</h6>
+                          <h6>{t('Quick Add Colors')}</h6>
                           <div className="d-flex flex-wrap gap-2">
                             {PREDEFINED_COLORS.map((color) => (
                               <button
@@ -1120,7 +1121,7 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                         </div>
                         {/* Custom Color */}
                         <div className="mb-3">
-                          <h6>Add Custom Color:</h6>
+                          <h6>{t('Add Custom Color')}</h6>
                           <div className="d-flex gap-2 align-items-end">
                             <div style={{ flex: 1 }}>
                               <CFormLabel>Color Name</CFormLabel>
@@ -1145,7 +1146,7 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                               onClick={addCustomColor}
                               disabled={!customColorName.trim()}
                             >
-                              Add
+                              {t('Add Color')}
                             </CButton>
                           </div>
                         </div>
@@ -1179,7 +1180,7 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                                         variant="outline"
                                         onClick={() => removeColor(color.id)}
                                       >
-                                        Remove
+                                       {t('Remove')}
                                       </CButton>
                                     </div>
                                     {/* Image Upload */}
@@ -1261,7 +1262,7 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                     ) : (
                       // 🔶 Otherwise show simple image uploader
                       <div className="mb-4">
-                        <CFormLabel className="fw-bold">Product Images *</CFormLabel>
+                        <CFormLabel className="fw-bold">{t('Product Images')}</CFormLabel>
                         <input
                           type="file"
                           accept="image/*"
@@ -1317,7 +1318,7 @@ const ProductForm = ({ isEditMode = false, productId }) => {
 
                         {generalImages.length === 0 && (
                           <CAlert color="info" className="mt-2">
-                            Please upload at least one image for your product
+                            {t('Please upload at least one image for your product')}
                           </CAlert>
                         )}
                       </div>
@@ -1329,20 +1330,16 @@ const ProductForm = ({ isEditMode = false, productId }) => {
                         onClick={() => navigate('/products')}
                         disabled={isSubmitting}
                       >
-                        Cancel
+                       {t('Cancel')}
                       </CButton>
                       <CButton
                         color="primary"
                         type="submit"
                         disabled={isSubmitDisabled(isSubmitting)}
                       >
-                        {isSubmitting
-                          ? isEditMode
-                            ? 'Updating...'
-                            : 'Creating...'
-                          : isEditMode
-                            ? 'Update Product'
-                            : 'Create Product'}
+                       {isSubmitting
+                        ? isEditMode ? t('Updating') : t('Creating')
+                        : isEditMode ? t('Update Product') : t('Create Product')}
                       </CButton>
                     </div>
                   </Form>

@@ -11,7 +11,9 @@ import enOrdercard from '../locales/en/ordercard.json'
 import enApprovedOrder from '../locales/en/approvedorder.json'
 import enBoosts from '../locales/en/boosts.json'
 import enChat from '../locales/en/chat.json'
-
+import enProduct from '../locales/en/products.json'
+import enProfile from '../locales/en/profile.json'
+import enUpdateProfile from '../locales/en/updateProfile.json'
 // Arabic
 import arLogin from '../locales/ar/login.json'
 import arBoosts from '../locales/ar/boosts.json'
@@ -28,7 +30,9 @@ import arCustomerchats from '../locales/ar/customerchats.json'
 import arOrderchats from '../locales/ar/orderchats.json'
 import arFinance from '../locales/ar/finance.json'
 import arChat from '../locales/ar/chat.json'
-
+import arProduct from '../locales/ar/products.json'
+import arProfile from '../locales/ar/profile.json'
+import arUpdateProfile from '../locales/ar/updateProfile.json'
 
 const savedLang = localStorage.getItem('lang') || 'en'
 document.body.dir = savedLang === 'ar' ? 'rtl' : 'ltr'
@@ -40,11 +44,14 @@ i18n.use(initReactI18next).init({
       common: enCommon,
        boosts: enBoosts,
        chat: enChat,
+       product: enProduct,
       dashboard: enDashboard,
       orders: enOrders,
       orderrequest: enOrderRequests,
       ordercard: enOrdercard,
       approvedorder: enApprovedOrder,
+      profile: enProfile,
+      updateProfile: enUpdateProfile,
     },
     ar: {
       login: arLogin,
@@ -61,7 +68,11 @@ i18n.use(initReactI18next).init({
       customerchats: arCustomerchats,
       orderchats: arOrderchats,
       finance: arFinance,
-      chat: enChat
+      chat: arChat,
+      product: arProduct,
+      profile: arProfile,
+      updateProfile: arUpdateProfile
+
     },
   },
   lng: savedLang,

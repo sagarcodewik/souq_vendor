@@ -1,0 +1,40 @@
+{
+  "Business Information": "Business Information",
+  "Contact Information": "Contact Information",
+  "Payment Information": "Payment Information",
+  "Business Categories": "Business Categories",
+  "License Document": "License Document",
+  "Business Location": "Business Location",
+
+  "Business Name": "Business Name",
+  "Owner Name": "Owner Name",
+  "Commercial Reg No.": "Commercial Registration Number",
+  "VAT/Tax ID": "VAT / Tax ID",
+  "National ID Number": "National ID Number",
+
+  "Enter Business Name": "Enter business name",
+  "Enter Owner Name": "Enter owner name",
+
+  "Business Phone": "Business Phone",
+  "WhatsApp Number": "WhatsApp Number",
+
+  "Bank/Mobile Payment Info": "Bank / Mobile Payment Info",
+
+  "Select Business Categories": "Select Business Categories",
+  "Choose business categories": "Choose business categories",
+  "Specify Other Category": "Specify Other Category",
+  "Selected Categories": "Selected Categories",
+  "Current License Document": "Current License Document",
+  "Current Business Address": "Current Business Address",
+  "Upload License Document": "Upload License Document",
+  "Upload license help": "Upload license help",
+  "Choose File": "Choose File",
+  "View PDF": "View PDF",
+  " View License (PDF)": " View License (PDF)",
+  "Detecting your location": "Detecting your location...",
+  "Retry GPS": "Retry GPS",
+  "GPS permission denied": "Location permission denied. Please enable GPS.",
+  "Location Enabled": "Location detected automatically via GPS. Please ensure location services are enabled.",
+  "Save Changes": "Save Changes",
+  "Saving": "Saving..."
+}

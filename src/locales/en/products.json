@@ -1,0 +1,85 @@
+{
+  "Product List": "Product List",
+  "New Product": "New Product",
+  "All Categories": "All Categories",
+  "Search product...": "Search product...",
+
+  "Edit Product": "Edit Product",
+  "Add Product Subtitle": "Add a new product to your inventory",
+  "Edit Product Subtitle": "Update product information",
+
+  "Product Name": "Product Name",
+  "Enter product name": "Enter product name",
+
+  "Short Description": "Short Description",
+  "Brief description": "Brief description for listing and search",
+  "Brief help": "Brief description for listing and search (10-500 characters)",
+
+  "Category": "Category",
+  "Select Category": "Select Category",
+  "Subcategory": "Subcategory",
+  "Select Subcategory": "Select Subcategory",
+  "Select Category First": "Select Category First",
+
+  "Price": "Price",
+  "Discount": "Discount (%)",
+  "Optional discount": "Optional discount percentage (0-99%)",
+
+  "Stock Quantity": "Stock Quantity",
+  "Available stock": "Available quantity in stock",
+  "Total stock sizes": "Total number of items available across all sizes",
+
+  "Available Sizes": "Available Sizes",
+  "Select sizes": "Select all sizes that will be available for this clothing item",
+
+  "Package Quantity": "Package Quantity",
+  "Enter quantity": "Enter quantity",
+  "Quantity help": "Quantity per package/unit",
+
+  "Dimensions": "Dimensions",
+  "Length": "Length",
+  "Width": "Width",
+  "Height": "Height",
+  "Unit": "Unit",
+  "Select Unit": "Select Unit",
+
+  "Product Type": "Product Type",
+  "Market Place": "Market Place",
+
+  "Availability Options": "Availability Options",
+  "Product Available": "Product is Available",
+  "COD Available": "Cash on Delivery Available",
+
+  "Tags": "Tags",
+  "Tags help": "Up to 10 tags. Press Enter, comma, or space to add.",
+
+  "Product Highlights": "Product Highlights",
+  "Highlights placeholder": "Enter key features and highlights of your product...",
+
+  "Product Overview": "Product Overview",
+  "Overview placeholder": "Write a detailed overview of your product...",
+
+  "Product Specifications": "Product Specifications",
+  "Specifications placeholder": "List detailed technical specifications...",
+
+  "Product Images": "Product Images",
+  "Add Color": "Add",
+  "Remove": "Remove",
+  "Example length":"Example length",
+  "placeholder": {
+    "length": "e.g. 20",
+    "width": "e.g. 15",
+    "height": "e.g. 10"
+  },
+  "Cancel": "Cancel",
+  "Create Product": "Create Product",
+  "Update Product": "Update Product",
+  "Creating": "Creating...",
+  "Updating": "Updating...",
+  "Please upload at least one image for your product":"Please upload at least one image for your product",
+  "Tags placeholder":"Tags placeholder",
+  "Specifications Help": "Include technical details, dimensions, materials, compatibility, etc. (15–3000 characters)",
+  "Overview Help": "Provide a comprehensive description of the product, its uses, and benefits (20–5000 characters)",
+  "Highlights Help": "Highlight the main selling points, key features, and benefits (10–2000 characters)"
+}
+

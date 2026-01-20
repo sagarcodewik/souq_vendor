@@ -21,8 +21,6 @@ const ChatBox = ({ chatId, currentUserId, receiverId }) => {
 
   useEffect(() => {
     if (!chatId) return
-
-    // socket.connect()
     socket.emit('joinRoom', { chatId })
 
     socket.on('newMessage', (msg) => {

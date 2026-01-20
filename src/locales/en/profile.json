@@ -1,0 +1,33 @@
+{
+  "Upgrade to Premium": "Upgrade to Premium",
+  "Premium description": "Get featured listings, more visibility, and advanced tools to grow your business.",
+  "Apply for Premium": "Apply for Premium",
+
+  "Premium Application Under Review": "Premium Application Under Review",
+  "Premium Review Description": "We're processing your premium application. You'll be notified soon!",
+
+  "Premium Vendor": "Premium Vendor",
+  "Plan": "Plan",
+  "Days Remaining": "Days Remaining",
+
+  "Profile Information": "Profile Information",
+  "Store Name": "Store Name",
+  "Owner Name": "Owner Name",
+  "Email": "Email",
+  "Business Phone": "Business Phone",
+  "WhatsApp": "WhatsApp",
+  "Category": "Category",
+  "Location": "Location",
+
+  "Delivery Hours": "Delivery Hours",
+  "Open": "Open",
+  "Closed": "Closed",
+  "to": "to",
+  "Copy to all": "Copy to all",
+  "Copied": "Copied!",
+  "Update Hours": "Update Hours",
+  "Updating": "Updating...",
+
+  "No profile data found": "No profile data found.",
+  "Failed to load delivery hours": "Failed to load delivery hours"
+}
