@@ -1,0 +1,116 @@
+.container {
+  padding: 16px 24px;
+  background: #fff;
+}
+
+/* Header bar */
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #dbeafe;
+  border-radius: 6px;
+  margin-top: 2%;
+  padding: 10px 16px;
+  background: #ffffff;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  color: #000;
+}
+
+/* Right buttons */
+.buttonWrapper {
+  display: flex;
+  gap: 12px;
+}
+
+/* New Promotions */
+.primaryBtn {
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  background: #16a34a; // green
+  border: none;
+  color: #fff;
+
+  &:hover {
+    background: #15803d;
+  }
+}
+
+/* New Boosts */
+.secondaryBtn {
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  background: #0d9488; // teal
+  border: none;
+  color: #fff;
+
+  &:hover {
+    background: #0f766e;
+  }
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+  .headerRow {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .buttonWrapper {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+/* Wrapper */
+.segmentWrapper {
+  display: inline-flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 4px;
+  gap: 4px;
+}
+
+/* Button base */
+.segmentBtn {
+  padding: 8px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+
+  &:hover {
+    background: #f3f4f6;
+  }
+}
+
+/* Active state */
+.active {
+  background: #0d9488;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(13, 148, 136, 0.35);
+}
+
+/* Mobile polish */
+@media (max-width: 576px) {
+  .segmentBtn {
+    padding: 8px 18px;
+    font-size: 13px;
+  }
+}

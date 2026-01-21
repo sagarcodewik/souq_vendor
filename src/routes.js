@@ -84,6 +84,9 @@ const DriverChats = React.lazy(() => import('./views/pages/DriverChats/Chats'))
 const OrderChats = React.lazy(() => import('./views/pages/OrderChats/Chats'))
 const OrderChat = React.lazy(() => import('./views/pages/OrderChat/Chat'))
 const Finance = React.lazy(() => import('./views/pages/finances/finance'))
+const PromotionBoost = React.lazy(() => import('./views/pages/maangePromotionBoost/PromotionBoost'))
+
+
 // Route definitions
 const routes = [
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
@@ -105,6 +108,8 @@ const routes = [
   { path: '/boosts/create', name: 'Create Boost', element: New_boost },
   { path: '/boosts/update', name: 'Create Boost', element: Update_boost },
   { path: '/promotions', name: 'Promotions', element: Promotion },
+  { path: '/promotionsboost', name: 'Promotions', element: PromotionBoost },
+
   { path: '/promotions/create', name: 'Create Promotion', element: New_promotion },
   { path: '/promotions/update', name: 'Update Promotion', element: Update_promotion },
   { path: '/dashboard/return-order', name: 'Return Order', element: Return_order },
