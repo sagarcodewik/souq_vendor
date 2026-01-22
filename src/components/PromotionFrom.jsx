@@ -110,6 +110,7 @@ const customStyles = `
   }
 
   .type-card {
+    height: 100%;
     border: 2px solid #e5e7eb;
     border-radius: 16px;
     padding: 24px;

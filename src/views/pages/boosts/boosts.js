@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 
 import Loader from '../../../components/loader/loader'
 import { fetchBoosts, deleteBoost } from '../../../redux/slice/boosts'
+import PromotionTabing from '../promotion/PromotionTabing'
 
 const Boots = () => {
   const dispatch = useDispatch()
@@ -80,6 +81,7 @@ const Boots = () => {
 
   /* ================= UI ================= */
   return (
+   
     <div style={{ minHeight: '100vh', backgroundColor: '#f8f9fa', padding: '24px' }}>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 style={{ fontWeight: '700', fontSize: '32px' }}>{t('Boosts')}</h2>

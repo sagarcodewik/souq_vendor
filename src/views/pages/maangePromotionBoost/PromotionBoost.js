@@ -64,7 +64,7 @@ const PromotionBoost = () => {
       </div>
 
       <div className={styles.headerRow}>
-        <h4 className={styles.title}>Promotions & Boosts</h4>
+        <h5 className={styles.title}>Promotions & Boosts</h5>
 
         <div className={styles.buttonWrapper}>
           {activeTab === 'promotions' && (

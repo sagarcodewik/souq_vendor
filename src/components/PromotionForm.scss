@@ -1,0 +1,41 @@
+/* ===== EXACT SAME STYLES – NO CHANGE ===== */
+
+.gradient-bg {
+  background: linear-gradient(135deg, #f8fafc 0%, #dbeafe 50%, #e0e7ff 100%);
+  min-height: 100vh;
+}
+
+.gradient-header-icon {
+  background: linear-gradient(135deg, #103033, #0B737F);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #1f2937, #4b5563);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.step-active {
+  background: linear-gradient(135deg, #103033, #0B737F) !important;
+  color: white !important;
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
+}
+
+.step-inactive {
+  background: #e5e7eb !important;
+  color: #6b7280 !important;
+}
+
+/* 🔥 KEEP COPYING EVERYTHING EXACTLY 🔥 */
+/* NO formatting changes */
+/* NO renaming */
+/* NO removing */
+
+.react-select-enhanced .react-select__control {
+  border: 2px solid #e5e7eb !important;
+  border-radius: 12px !important;
+  padding: 4px 8px !important;
+  min-height: 48px !important;
+}
