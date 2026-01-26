@@ -78,8 +78,6 @@ const Promotion = () => {
   const getStatusBadge = (promotion) => {
     const currentDate = new Date()
     const startDate = new Date(promotion.startDate)
-
-    // ✅ FLASH-SALE LOGIC
     if (promotion.type === 'flash-sale') {
       const endTime = new Date(startDate)
       endTime.setHours(endTime.getHours() + promotion.hours)
@@ -94,10 +92,7 @@ const Promotion = () => {
 
       return badge('Expired', '#6b7280')
     }
-
-    // ✅ NORMAL PROMOTION
     const endDate = new Date(promotion.endDate)
-
     if (currentDate < startDate) return badge('Scheduled', '#f59e0b')
     if (currentDate > endDate) return badge('Expired', '#6b7280')
     return badge('Active', '#22c55e')
@@ -479,7 +474,6 @@ const Promotion = () => {
                           Categories
                         </span>
                       </div>
-
                       <div className="d-flex flex-wrap gap-2">
                         {promotion.categoryIds.map((cat) => (
                           <span
@@ -500,8 +494,6 @@ const Promotion = () => {
                       </div>
                     </div>
                   )}
-
-                  {/* Action Buttons */}
                   <div className="d-flex gap-2">
                     <button
                       onClick={() =>
@@ -541,8 +533,6 @@ const Promotion = () => {
           ))}
         </div>
       )}
-
-      {/* Pagination */}
       {totalRecords > pageSize && (
         <div
           className="d-flex justify-content-between align-items-center mt-4 p-4 bg-white"
@@ -579,7 +569,6 @@ const Promotion = () => {
           </div>
         </div>
       )}
-
       <ProductDetailsModal
         product={selectedProduct}
         isOpen={isModalOpen}

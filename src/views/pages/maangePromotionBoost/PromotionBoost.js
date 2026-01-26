@@ -6,13 +6,11 @@ import styles from './promotionBoost.module.scss'
 const PromotionBoost = () => {
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('promotions')
-
   return (
     <div className={styles.container}>
-
       <div className={styles.segmentWrapper}>
         <button
-          className={`${styles.segmentBtn} ${
+          className={` ${styles.segmentBtn} ${
             activeTab === 'promotions' ? styles.active : ''
           }`}
           onClick={() => setActiveTab('promotions')}
@@ -41,7 +39,6 @@ const PromotionBoost = () => {
               New Promotions
             </CButton>
           )}
-
           {activeTab === 'boosts' && (
             <CButton
               className={styles.secondaryBtn}
