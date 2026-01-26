@@ -24,10 +24,16 @@
   "Closed": "مغلق",
   "to": "إلى",
   "Copy to all": "نسخ للجميع",
-  "Copied": "تم النسخ!",
+  "Copied!": "تم النسخ!",
   "Update Hours": "تحديث الساعات",
   "Updating": "جاري التحديث...",
-
   "No profile data found": "لم يتم العثور على بيانات الملف الشخصي",
-  "Failed to load delivery hours": "فشل تحميل ساعات التوصيل"
+  "Failed to load delivery hours": "فشل تحميل ساعات التوصيل",
+  "Monday": "الاثنين",
+  "Tuesday": "الثلاثاء",
+  "Wednesday": "الأربعاء",
+  "Thursday": "الخميس",
+  "Friday": "الجمعة",
+  "Saturday": "السبت",
+  "Sunday": "الأحد"
 }

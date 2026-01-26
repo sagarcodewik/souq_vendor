@@ -70,7 +70,7 @@
     "yup": "^1.6.1"
   },
   "scripts": {
-    "start": "npx env-cmd -f .env.staging react-scripts start",
+    "start": "npx env-cmd -f .env.local react-scripts start",
     "staging": "env-cmd -f .env.staging react-scripts start",
     "build": "env-cmd -f .env.staging react-scripts build",
     "start:prod": "env-cmd -f .env.production react-scripts start",

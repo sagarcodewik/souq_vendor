@@ -458,7 +458,7 @@ const Profile = () => {
                     <div className={styles.dayCardContent}>
                       <div className={styles.dayInfo}>
                         <CalendarIcon />
-                        <span className={styles.dayName}>{label}</span>
+                        <span className={styles.dayName}>{t(label)}</span>
 
                         {/* Custom Toggle Switch */}
                         <div
@@ -469,7 +469,7 @@ const Profile = () => {
                         </div>
 
                         <span className={styles.dayStatus}>
-                          {dayData.isOpen ? 'Open' : 'Closed'}
+                          {dayData.isOpen ? t('Open') : t('Closed')}
                         </span>
                       </div>
 
@@ -496,12 +496,12 @@ const Profile = () => {
                             {copiedDay === key ? (
                               <>
                                 <CheckIcon />
-                                Copied!
+                                {t('Copied!')}
                               </>
                             ) : (
                               <>
                                 <CopyIcon />
-                                Copy to all
+                                {t('Copy to all')}
                               </>
                             )}
                           </button>
@@ -519,7 +519,7 @@ const Profile = () => {
                 onClick={handleUpdate}
                 disabled={!hasChanges() || hoursStatus === 'loading'}
               >
-                {hoursStatus === 'loading' ? 'Updating...' : 'Update Hours'}
+                {hoursStatus === t('loading') ? t('Updating...') : t('Update Hours')}
               </CButton>
             </div>
           </div>

@@ -22,6 +22,7 @@ import {
 
 import Loader from '../loader/loader'
 import { localDateFormat } from '../../utils'
+import { useTranslation } from 'react-i18next'
 
 /* ---------------------------------- */
 
@@ -38,6 +39,7 @@ const DataTable = ({
   const [sortKey, setSortKey] = useState('')
   const [sortDirection, setSortDirection] = useState('asc')
   const [dataList, setDataList] = useState(data)
+  const { t } = useTranslation('common')
 
   const totalPages = Math.max(Math.ceil(totalRecords / pageSize), 1)
 
@@ -130,7 +132,7 @@ const DataTable = ({
           ) : dataList.length === 0 ? (
             <CTableRow>
               <CTableDataCell colSpan={headers.length} className="text-center py-4">
-                No data found
+                {t('No data found')}
               </CTableDataCell>
             </CTableRow>
           ) : (
