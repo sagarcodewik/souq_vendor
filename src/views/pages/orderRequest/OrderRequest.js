@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchVendorOrders, updateOrderStatus } from '../../../redux/slice/order'
-import DataTable from '../../../components/datatable/datatable'
-import { OrderRequestHeaders } from '../../../utils/header'
 import { jwtDecode } from 'jwt-decode'
 import { toast } from 'react-toastify'
 import { CNav, CNavItem, CNavLink, CPagination, CPaginationItem } from '@coreui/react'
@@ -26,10 +24,9 @@ const OrderRequest = () => {
 
   const [activeTab, setActiveTab] = useState(TABS.INTRACITY)
   const [loadingOrderId, setLoadingOrderId] = useState(null)
-  const [searchTerm, setSearchTerm] = useState('') // 🔥 search state
-  const [debouncedSearch, setDebouncedSearch] = useState('') // 🔥 debounced state
+  const [searchTerm, setSearchTerm] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState('')
 
-  // 🔥 Debounce logic: update debouncedSearch 500ms after typing stops
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(searchTerm)
