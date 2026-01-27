@@ -56,8 +56,8 @@ const _nav = (t) =>  [
   {
     component: CNavItem,
     name: t('Promotions'),
-    // to: '/promotions',
-    to: '/promotionsboost',
+    to: '/promotions',
+    // to: '/promotionsboost',
     icon: <CIcon icon={cilTags} customClassName="nav-icon" />,
   },
   {

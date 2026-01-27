@@ -7,6 +7,13 @@ import { fetchPromotions, deletePromotion } from '../../../redux/slice/promotion
 import ProductDetailsModal from './ProductDetailsModal'
 import { cilTag, cilBolt, cilGift } from '@coreui/icons'
 import { useTranslation } from 'react-i18next'
+import './style.scss'
+import { Formik } from 'formik'
+import { ArrowRight, Box, Calendar, ChartNoAxesCombined, ChevronLeft, ChevronRight, Layers, Megaphone, Pencil, Percent, PlusCircle, Sparkles, Tag, Target, Trash2, UsersRound } from 'lucide-react'
+import { CButton } from '@coreui/react'
+import { CiSearch } from "react-icons/ci";
+import PromotionTabing from './PromotionTabing'
+
 
 const Promotion = () => {
   const dispatch = useDispatch()
@@ -99,17 +106,7 @@ const Promotion = () => {
   }
 
   const badge = (text, color) => (
-    <span
-      className="badge"
-      style={{
-        backgroundColor: color,
-        color: 'white',
-        fontSize: '11px',
-        padding: '4px 8px',
-      }}
-    >
-      {text}
-    </span>
+    <span className="promotion-status-badge" style={{ backgroundColor: color }}> {text}</span>
   )
 
   const formatDate = (dateString) => {
@@ -122,72 +119,26 @@ const Promotion = () => {
   }
 
   const getDiscountDisplay = (promotion) => {
-    if (promotion.discountType === 'Percentage') {
-      return {
-        value: `${promotion.discountValue}%`,
-        label: 'OFF',
-      }
-    }
-
-    return {
-      value: `${promotion.discountValue} SYP`,
-      label: 'OFF',
-    }
+    if (promotion.discountType === 'Percentage') { return { value: `${promotion.discountValue}%`, label: 'OFF', } }
+    return { value: `${promotion.discountValue} SYP`, label: 'OFF', }
   }
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f8f9fa', padding: '24px' }}>
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="mb-0" style={{ color: '#111827', fontWeight: 'bold', fontSize: '32px' }}>
-          {t('Promotions')}
-        </h2>
-        <button
-          onClick={() => navigate('/promotions/create')}
-          className="btn text-white"
-          style={{
-            backgroundColor: '#0d9488',
-            borderColor: '#0d9488',
-            borderRadius: '12px',
-            padding: '12px 24px',
-            fontWeight: '600',
-            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-          }}
-        >
-          {t('New Promotion')}
-        </button>
+    <>
+      <PromotionTabing />
+      <div className="promotion-header d-flex justify-content-between align-items-center mb-3">
+        <h2 className="promotion-title mb-0">{t('Promotions')}</h2>
+        <button onClick={() => navigate('/promotions/create')} className="btn promotion-btn text-white">{t('New Promotion')}</button>
       </div>
-      <div className="row mb-4">
+      <div className="row gx-3 mb-3 promotion-filters">
         <div className="col-md-8">
           <div className="position-relative">
-            <input
-              type="text"
-              className="form-control"
-              placeholder={t('Search by title...')}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              style={{
-                paddingLeft: '40px',
-                borderRadius: '12px',
-                border: '1px solid #d1d5db',
-                padding: '12px',
-              }}
-            />
-            <i
-              className="fas fa-search position-absolute"
-              style={{ left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }}
-            ></i>
+            <input type="text" className="form-control promotion-search-input" placeholder={t('Search by title...')} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+            <CiSearch size={22} className="promotion-search-icon" />
           </div>
         </div>
+
         <div className="col-md-4">
-          <select
-            className="form-select"
-            value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value)}
-            style={{
-              borderRadius: '12px',
-              border: '1px solid #d1d5db',
-              padding: '12px',
-            }}
-          >
+          <select className="form-select promotion-type-select" value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
             <option value="">{t('All Types')}</option>
             <option value="promotion">{t('Promotion')}</option>
             <option value="flash-sale">{t('Flash Sale')}</option>
@@ -196,266 +147,101 @@ const Promotion = () => {
         </div>
       </div>
       {!promotions || promotions.length === 0 ? (
-        <div
-          className="text-center p-5"
-          style={{
-            background: 'linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%)',
-            border: '2px dashed #93c5fd',
-            borderRadius: '24px',
-          }}
-        >
-          <div className="mb-3">
-            <i className="fas fa-plus-circle" style={{ fontSize: '64px', color: '#3b82f6' }}></i>
-          </div>
-          <h3 style={{ color: '#111827', fontWeight: '600', marginBottom: '8px' }}>
-            {searchTerm || selectedType ? t('No promotions found') : t('Create New Promotion')}
-          </h3>
-          <p style={{ color: '#6b7280', marginBottom: '16px' }}>
-            {searchTerm || selectedType
-              ? t('Try adjusting your filters')
-              : t('Start building your next promotional campaign')}
-          </p>
+        <div className="promotion-empty-state text-center p-5">
+          <div className="mb-3"><PlusCircle size={64} className="empty-icon" /></div>
+          <h3 className="empty-title"> {searchTerm || selectedType ? t('No promotions found') : t('Create New Promotion')}</h3>
+          <p className="empty-subtitle">{searchTerm || selectedType ? t('Try adjusting your filters') : t('Start building your next promotional campaign')}</p>
           {!searchTerm && !selectedType && (
-            <button
-              onClick={() => navigate('/promotions/create')}
-              className="btn btn-primary"
-              style={{ borderRadius: '12px', padding: '8px 24px' }}
-            >
-              {t('Get Started')}
-            </button>
+            <button onClick={() => navigate('/promotions/create')} className="btn btn-primary empty-btn">{t('Get Started')}</button>
           )}
         </div>
       ) : (
-        <div className="row">
+        <div className="row g-3 g-lg-4 mb-4">
           {promotions.map((promotion) => (
-            <div key={promotion._id || promotion.id} className="col-lg-6 mb-4">
-              <div
-                className="card border-0"
-                style={{
-                  borderRadius: '24px',
-                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-                  transition: 'all 0.3s ease',
-                  overflow: 'hidden',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)'
-                  e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0px)'
-                  e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
-                }}
-              >
-                <div
-                  className="card-header bg-white border-bottom"
-                  style={{ padding: '24px 24px 16px 24px' }}
-                >
+            <div key={promotion._id || promotion.id} className="col-lg-6 d-flex" >
+              <div className="promotion-card card border-0 w-100 d-flex flex-column">
+                {/* HEADER */}
+                <div className="promotion-card-header card-header bg-white border-bottom">
                   <div className="d-flex justify-content-between align-items-start">
                     <div className="d-flex align-items-center">
-                      <div className="me-3">
-                        <div
-                          style={{
-                            width: '40px',
-                            height: '40px',
-                            backgroundColor: '#f3f4f6',
-                            borderRadius: '12px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                        >
-                          <CIcon
-                            icon={
-                              promotion.type === 'promotion'
-                                ? cilTag
-                                : promotion.type === 'flash-sale'
-                                  ? cilBolt
-                                  : promotion.type === 'bundle'
-                                    ? cilGift
-                                    : cilTag
-                            }
-                            size="lg"
-                            style={{ color: '#6b7280' }}
-                          />
-                        </div>
+                      <div className="promotion-icon-wrapper me-3">
+                        <CIcon icon={promotion.type === 'promotion' ? cilTag : promotion.type === 'flash-sale' ? cilBolt : promotion.type === 'bundle' ? cilGift : cilTag} size="lg" />
                       </div>
                       <div>
-                        <h4
-                          className="mb-1"
-                          style={{ color: '#111827', fontWeight: '700', fontSize: '20px' }}
-                        >
-                          {promotion.title}
-                        </h4>
-                        <p className="mb-0" style={{ color: '#6b7280', fontSize: '14px' }}>
-                          {promotion.type}
-                        </p>
+                        <h4 className="promotion-card-title mb-1">{promotion.title}</h4>
+                        <p className="promotion-card-type mb-0">{promotion.type}</p>
                       </div>
                     </div>
                     {getStatusBadge(promotion)}
                   </div>
                 </div>
-                <div className="card-body" style={{ padding: '24px' }}>
-                  <div className="row g-3 mb-4 ">
-                    <div className="col-4 ">
-                      <div className="h-100"
-                        style={{
-                          background: 'rgba(34, 197, 94, 0.1)',
-                          padding: '16px',
-                          borderRadius: '12px',
-                        }}
-                      >
+
+                {/* BODY */}
+                <div className="promotion-card-body card-body d-flex flex-column">
+                  {/* STATS */}
+                  <div className="row g-2 mb-3">
+                    <div className="col-4">
+                      <div className="promo-stat promo-discount h-100">
                         <div className="d-flex align-items-center mb-1">
-                          <i
-                            className="fas fa-percent me-2"
-                            style={{ fontSize: '12px', color: '#22c55e' }}
-                          ></i>
-                          <small style={{ color: '#22c55e', fontWeight: '600' }}>Discount</small>
+                          <Percent size={14} className="me-2" />
+                          <small>Discount</small>
                         </div>
-                        <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#22c55e' }}>
-                          {getDiscountDisplay(promotion).value}
-                        </div>
-                        <small style={{ fontSize: '11px', color: '#16a34a', fontWeight: '600' }}>
-                          {getDiscountDisplay(promotion).label}
-                        </small>
+                        <div className="promo-value">{getDiscountDisplay(promotion).value}</div>
+                        <small className="promo-label">{getDiscountDisplay(promotion).label}</small>
                       </div>
                     </div>
 
                     <div className="col-4">
-                      <div className="h-100"
-                        style={{
-                          background: 'rgba(59, 130, 246, 0.1)',
-                          padding: '16px',
-                          borderRadius: '12px',
-                        }}
-                      >
+                      <div className="promo-stat promo-start h-100">
                         <div className="d-flex align-items-center mb-1">
-                          <i
-                            className="fas fa-calendar me-2"
-                            style={{ fontSize: '12px', color: '#3b82f6' }}
-                          ></i>
-                          <small style={{ color: '#3b82f6', fontWeight: '600' }}>Start Date</small>
+                          <Calendar size={14} className="me-2" />
+                          <small>Start Date</small>
                         </div>
-                        <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#3b82f6' }}>
-                          {formatDate(promotion.startDate)}
-                        </div>
+                        <div className="promo-date">{formatDate(promotion.startDate)}</div>
                       </div>
                     </div>
 
                     <div className="col-4">
-                      <div className="h-100"
-                        style={{
-                          background: 'rgba(147, 51, 234, 0.1)',
-                          padding: '16px',
-                          borderRadius: '12px',
-                        }}
-                      >
+                      <div className="promo-stat promo-end h-100">
                         <div className="d-flex align-items-center mb-1">
-                          <i
-                            className="fas fa-calendar me-2"
-                            style={{ fontSize: '12px', color: '#9333ea' }}
-                          ></i>
-                          <small style={{ color: '#9333ea', fontWeight: '600' }}>
-                            {promotion.endDate ? 'End Date' : 'Hours'}
-                          </small>
+                          <Calendar size={14} className="me-2" />
+                          <small>{promotion.endDate ? 'End Date' : 'Hours'}</small>
                         </div>
-                        <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#9333ea' }}>
-                          {promotion.endDate
-                            ? formatDate(promotion.endDate)
-                            : `${promotion.hours} Hours`}
-                        </div>
+                        <div className="promo-date">{promotion.endDate ? formatDate(promotion.endDate) : `${promotion.hours} Hours`}</div>
                       </div>
                     </div>
                   </div>
-                  {promotion.productIds && promotion.productIds.length > 0 && (
-                    <div className="mb-4">
-                      <div className="d-flex align-items-center mb-3">
-                        <i
-                          className="fas fa-box me-2"
-                          style={{ fontSize: '16px', color: '#6b7280' }}
-                        ></i>
-                        <span style={{ fontSize: '14px', fontWeight: '600', color: '#374151' }}>
-                          Products
-                        </span>
-                      </div>
 
+                  {/* PRODUCTS TABLE */}
+                  {promotion.productIds?.length > 0 && (
+                    <div className="promotion-products mb-3">
+                      <div className="products-header d-flex align-items-center mb-3">
+                        <Box size={22} /> <span>Products</span>
+                      </div>
                       <div className="table-responsive">
-                        <table className="table table-sm mb-0" style={{ fontSize: '12px' }}>
-                          <thead style={{ backgroundColor: '#1f2937' }}>
+                        <table className="table table-sm promotion-products-table mb-0">
+                          <thead>
                             <tr>
-                              <th
-                                scope="col"
-                                style={{
-                                  color: 'white',
-                                  padding: '8px 12px',
-                                  borderRadius: '8px 0 0 8px',
-                                }}
-                              >
-                                #
-                              </th>
-                              <th scope="col" style={{ color: 'white', padding: '8px 12px' }}>
-                                Product Name
-                              </th>
-                              <th scope="col" style={{ color: 'white', padding: '8px 12px' }}>
-                                Price (SYP)
-                              </th>
-                              <th
-                                scope="col"
-                                style={{
-                                  color: 'white',
-                                  padding: '8px 12px',
-                                  borderRadius: '0 8px 8px 0',
-                                }}
-                              >
-                                Category
-                              </th>
+                              <th>#</th>
+                              <th>Product Name</th>
+                              <th>Price (SYP)</th>
+                              <th>Category</th>
                             </tr>
                           </thead>
+
                           <tbody>
-                            {promotion.productIds.slice(0, 3).map((product, productIndex) => (
-                              <tr
-                                key={product._id || productIndex}
-                                style={{ borderBottom: '1px solid #f3f4f6' }}
-                                onMouseEnter={(e) =>
-                                  (e.currentTarget.style.backgroundColor = '#f9fafb')
-                                }
-                                onMouseLeave={(e) =>
-                                  (e.currentTarget.style.backgroundColor = 'transparent')
-                                }
-                              >
-                                <td style={{ padding: '8px 12px' }}>{productIndex + 1}</td>
-                                <td
-                                  style={{
-                                    padding: '8px 12px',
-                                    fontWeight: '500',
-                                    color: '#0d9488',
-                                    cursor: 'pointer',
-                                    textDecoration: 'underline',
-                                  }}
-                                  onClick={() => handleProductClick(product)}
-                                >
-                                  {product.productName || product.name || 'N/A'}
-                                </td>
-                                <td style={{ padding: '8px 12px' }}>
-                                  {product.discountedprice || product.price || 'N/A'}
-                                </td>
-                                <td style={{ padding: '8px 12px' }}>
-                                  {product.category?.category || product.category || 'N/A'}
-                                </td>
+                            {promotion.productIds.slice(0, 3).map((product, index) => (
+                              <tr key={product._id || index}>
+                                <td>{index + 1}</td>
+                                <td className="product-link" onClick={() => handleProductClick(product)}>{product.productName || product.name || 'N/A'}</td>
+                                <td>{product.discountedprice || product.price || 'N/A'}</td>
+                                <td>{product.category?.category || product.category || 'N/A'}</td>
                               </tr>
                             ))}
+
                             {promotion.productIds.length > 3 && (
-                              <tr style={{ backgroundColor: '#f9fafb' }}>
-                                <td
-                                  colSpan="4"
-                                  className="text-center"
-                                  style={{
-                                    padding: '8px 12px',
-                                    fontSize: '11px',
-                                    color: '#6b7280',
-                                  }}
-                                >
-                                  ... and {promotion.productIds.length - 3} more products
-                                </td>
+                              <tr className="more-products-row">
+                                <td colSpan="4">… and {promotion.productIds.length - 3} more products</td>
                               </tr>
                             )}
                           </tbody>
@@ -463,119 +249,102 @@ const Promotion = () => {
                       </div>
                     </div>
                   )}
-                  {promotion.scopeType === 'category' && promotion.categoryIds?.length > 0 && (
-                    <div className="mb-4">
-                      <div className="d-flex align-items-center mb-2">
-                        <i
-                          className="fas fa-layer-group me-2"
-                          style={{ fontSize: '14px', color: '#6b7280' }}
-                        ></i>
-                        <span style={{ fontSize: '14px', fontWeight: '600', color: '#374151' }}>
-                          Categories
-                        </span>
+
+                  {/* CATEGORIES */}
+                  {promotion.scopeType === 'category' &&
+                    promotion.categoryIds?.length > 0 && (
+                      <div className="mb-3">
+                        <div className="d-flex align-items-center mb-2 gap-2">
+                          <Layers size={22} /> <span className="category-title">Categories</span>
+                        </div>
+
+                        <div className="d-flex flex-wrap gap-2">
+                          {promotion.categoryIds.map((cat) => (
+                            <span key={cat._id} className="promotion-category-pill">{cat.category}</span>
+                          ))}
+                        </div>
                       </div>
-                      <div className="d-flex flex-wrap gap-2">
-                        {promotion.categoryIds.map((cat) => (
-                          <span
-                            key={cat._id}
-                            style={{
-                              backgroundColor: '#eef2ff',
-                              color: '#3730a3',
-                              padding: '6px 12px',
-                              borderRadius: '999px',
-                              fontSize: '12px',
-                              fontWeight: '500',
-                              whiteSpace: 'nowrap',
-                            }}
-                          >
-                            {cat.category}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  <div className="d-flex gap-2">
-                    <button
-                      onClick={() =>
-                        navigate(`/promotions/update?id=${promotion._id || promotion.id}`)
-                      }
-                      className="flex-fill btn text-white"
-                      style={{
-                        backgroundColor: '#0d9488',
-                        borderColor: '#0d9488',
-                        borderRadius: '12px',
-                        padding: '8px 16px',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                      }}
-                    >
-                      <i className="fas fa-edit me-1" style={{ fontSize: '12px' }}></i>
-                      {t('Edit')}
+                    )}
+
+                  {/* ACTION BUTTONS (ALWAYS AT BOTTOM) */}
+                  <div className="mt-auto d-flex gap-2">
+                    <button onClick={() => navigate(`/promotions/update?id=${promotion._id || promotion.id}`)} className="btn promotion-edit-btn flex-fill">
+                      <Pencil size={14} className="me-1" /> {t('Edit')}
                     </button>
-                    <button
-                      onClick={() => handleDelete(promotion._id || promotion.id)}
-                      className="flex-fill btn btn-outline-danger"
-                      disabled={deleting}
-                      style={{
-                        borderRadius: '12px',
-                        padding: '8px 16px',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                      }}
-                    >
-                      <i className="fas fa-trash me-1" style={{ fontSize: '12px' }}></i>
-                      {t('Delete')}
+
+                    <button onClick={() => handleDelete(promotion._id || promotion.id)} className="btn btn-outline-danger promotion-delete-btn flex-fill" disabled={deleting}>
+                      <Trash2 size={14} className="me-1" /> {t('Delete')}
                     </button>
                   </div>
                 </div>
               </div>
             </div>
           ))}
+          <div className="col-md-12">
+            <h3 className="fw-bold mb-3">Why Promote Your Product ?</h3>
+            <div className="row g-3 g-lg-4">
+              <div className="col-12 col-md-6 col-lg-3">
+                <div className="promo-card text-center h-100">
+                  <div className="icon-wrap bg-orange mb-3">
+                    <Target size={32} color="#FFF" />
+                  </div>
+                  <h5 className="fw-bold">Targeted Reach</h5>
+                  <p className="text-muted mb-0">
+                    Get in front of high-intent customers
+                  </p>
+                </div>
+              </div>
+              <div className="col-12 col-md-6 col-lg-3">
+                <div className="promo-card text-center h-100">
+                  <div className="icon-wrap bg-blue mb-3">
+                    <UsersRound size={32} color="#FFF" />
+                  </div>
+                  <h5 className="fw-bold">Consistent Traffic</h5>
+                  <p className="text-muted mb-0">
+                    Maintain visibility beyond organic discovery
+                  </p>
+                </div>
+              </div>
+              <div className="col-12 col-md-6 col-lg-3">
+                <div className="promo-card text-center h-100">
+                  <div className="icon-wrap bg-red mb-3">
+                    <Tag size={32} color="#FFF" />
+                  </div>
+                  <h5 className="fw-bold">Sales Momentum</h5>
+                  <p className="text-muted mb-0">
+                    Ideal for launches, offers, and high-priority products
+                  </p>
+                </div>
+              </div>
+              <div className="col-12 col-md-6 col-lg-3">
+                <div className="promo-card text-center h-100">
+                  <div className="icon-wrap bg-green mb-3">
+                    <ChartNoAxesCombined size={32} color="#FFF" />
+                  </div>
+                  <h5 className="fw-bold">Smarter Growth</h5>
+                  <p className="text-muted mb-0">
+                    Spend where performance matters most
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
       {totalRecords > pageSize && (
-        <div
-          className="d-flex justify-content-between align-items-center mt-4 p-4 bg-white"
-          style={{ borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
-        >
-          <div style={{ fontSize: '14px', color: '#6b7280' }}>
-            Showing {(currentPage - 1) * pageSize + 1}-
-            {Math.min(currentPage * pageSize, totalRecords)} of {totalRecords} promotions
-          </div>
-
+        <div className="promotion-pagination d-flex justify-content-between align-items-center mt-4 p-4">
+          <div className="pagination-info">Showing {(currentPage - 1) * pageSize + 1}- {Math.min(currentPage * pageSize, totalRecords)} of {totalRecords} promotions</div>
           <div className="d-flex align-items-center gap-2">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="btn btn-outline-secondary"
-              style={{ borderRadius: '12px', padding: '8px 16px' }}
-            >
-              <i className="fas fa-chevron-left"></i>
-            </button>
-            <button
-              className="btn btn-primary"
-              style={{ borderRadius: '12px', padding: '8px 16px' }}
-            >
-              {currentPage}
-            </button>
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage >= Math.ceil(totalRecords / pageSize)}
-              className="btn btn-outline-secondary"
-              style={{ borderRadius: '12px', padding: '8px 16px' }}
-            >
-              <i className="fas fa-chevron-right"></i>
-            </button>
+            <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="btn btn-outline-secondary pagination-btn"><ChevronLeft size={14} /></button>
+            <button className="btn btn-primary pagination-current">{currentPage}</button>
+            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage >= Math.ceil(totalRecords / pageSize)} className="btn btn-outline-secondary pagination-btn"><ChevronRight size={14} /></button>
           </div>
         </div>
       )}
-      <ProductDetailsModal
-        product={selectedProduct}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
-    </div>
+
+      <ProductDetailsModal product={selectedProduct} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </>
   )
 }
 
-export default Promotion
+export default Promotion;
