@@ -176,7 +176,7 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
       <div className="gradient-bg">
         <div className="container-fluid">
           <div className="row justify-content-center">
-            <div className="col-12 col-lg-12 col-xl-12">
+            <div className="col-12 col-lg-12 col-xl-12 px-0">
               {/* Header */}
               <div className="text-center mb-3">
                 <div className="gradient-header-icon rounded-3 d-inline-flex align-items-center justify-content-center mb-4" style={{ width: '54px', height: '54px' }}>
@@ -541,9 +541,9 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                             </div>
 
                             <div className="col-md-12 my-4 create_boost">
-                              <div class="d-flex align-items-center gap-2">
-                              <div class="w-100"><h3 className="fw-bold mb-3 heading">Do You Also Want To Apply Boost ?</h3></div>
-                              <div class="flex-shrink-1"><span className="badge bg-dark text-white rounded-pill">Paid</span></div>
+                              <div className="d-flex align-items-center gap-2">
+                              <div className="w-100"><h3 className="fw-bold mb-3 heading">Do You Also Want To Apply Boost ?</h3></div>
+                              <div className="flex-shrink-1"><span className="badge bg-dark text-white rounded-pill">Paid</span></div>
                               </div>
                               <div className="row gx-3">
                                 <div className="col-12 col-md-6 col-lg-3">
@@ -618,7 +618,7 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
 
                               </div>
                               <div className="col-md-12 my-3">
-                                <div class="alert bg-white d-flex align-items-start gap-2" role="alert">
+                                <div className="alert bg-white d-flex align-items-start gap-2" role="alert">
                                   <CircleAlert />
                                   Boosting a product or a category is a paid feature. This option is designed to provide enhanced visibility and reach, helping products or categories perform better within the platform.
                                 </div>

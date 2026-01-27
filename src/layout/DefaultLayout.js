@@ -88,7 +88,7 @@ const DefaultLayout = () => {
       <AppSidebar />
       <div className="wrapper d-flex flex-column min-vh-100">
         <AppHeader />
-        <div className="body">
+        <div className="body flex-grow-1 px-3">
           <Suspense fallback={<Loader />}>
             <Routes>
               {routes.map((route, idx) => (
