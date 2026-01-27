@@ -110,6 +110,7 @@
   transition: .3s;
   cursor: pointer;
   height: 100%;
+  position: relative;
 
   &:hover {
     transform: scale(1.02);
