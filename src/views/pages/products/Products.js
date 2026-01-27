@@ -145,7 +145,7 @@ const Products = () => {
             {/* 🔍 Search box */}
             <input
               type="text"
-              placeholder={t("Search product...")}
+              placeholder={t('Search product...')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="form-control"
@@ -240,10 +240,12 @@ const Products = () => {
       {/* 🔴 Confirmation Modal */}
       <ConfirmationModal
         visible={deleteModalVisible}
-        title="Delete Product"
-        body={`Are you sure you want to delete the product "${selectedProduct?.productName}"?`}
-        confirmText="Delete"
-        cancelText="Cancel"
+        title={t('Delete Product')}
+        body={t('Are you sure you want to delete the product {{name}}?', {
+          name: selectedProduct?.productName,
+        })}
+        confirmText={t('Delete')}
+        cancelText={t('Cancel')}
         onConfirm={confirmDelete}
         onCancel={() => setDeleteModalVisible(false)}
         loading={deleteStatus === 'loading'}

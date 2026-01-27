@@ -11,7 +11,6 @@ const PromotionBoost = () => {
   const { t } = useTranslation()
 
   const [activeTab, setActiveTab] = useState('promotions')
-
   return (
     <div className={styles.container}>
       <Formik
@@ -45,7 +44,7 @@ const PromotionBoost = () => {
 
       <div className={styles.segmentWrapper}>
         <button
-          className={`${styles.segmentBtn} ${
+          className={` ${styles.segmentBtn} ${
             activeTab === 'promotions' ? styles.active : ''
           }`}
           onClick={() => setActiveTab('promotions')}
@@ -72,7 +71,6 @@ const PromotionBoost = () => {
               New Promotions
             </CButton>
           )}
-
           {activeTab === 'boosts' && (
             <CButton onClick={() => navigate('/boosts/create')}>
               New Boosts

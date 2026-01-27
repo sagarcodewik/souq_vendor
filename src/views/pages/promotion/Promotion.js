@@ -85,8 +85,6 @@ const Promotion = () => {
   const getStatusBadge = (promotion) => {
     const currentDate = new Date()
     const startDate = new Date(promotion.startDate)
-
-    // ✅ FLASH-SALE LOGIC
     if (promotion.type === 'flash-sale') {
       const endTime = new Date(startDate)
       endTime.setHours(endTime.getHours() + promotion.hours)
@@ -101,10 +99,7 @@ const Promotion = () => {
 
       return badge('Expired', '#6b7280')
     }
-
-    // ✅ NORMAL PROMOTION
     const endDate = new Date(promotion.endDate)
-
     if (currentDate < startDate) return badge('Scheduled', '#f59e0b')
     if (currentDate > endDate) return badge('Expired', '#6b7280')
     return badge('Active', '#22c55e')
@@ -336,8 +331,6 @@ const Promotion = () => {
           </div>
         </div>
       )}
-
-      {/* Pagination */}
       {totalRecords > pageSize && (
         <div className="promotion-pagination d-flex justify-content-between align-items-center mt-4 p-4">
           <div className="pagination-info">Showing {(currentPage - 1) * pageSize + 1}- {Math.min(currentPage * pageSize, totalRecords)} of {totalRecords} promotions</div>

@@ -17,6 +17,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilPencil, cilTrash, cilCommentSquare, cilStar } from '@coreui/icons'
 import styles from './productCard.module.scss'
+import { useTranslation } from 'react-i18next'
 
 const ProductCard = ({
   product,
@@ -29,6 +30,7 @@ const ProductCard = ({
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [modalImageIndex, setModalImageIndex] = useState(0)
   const [visible, setVisible] = useState(false)
+const { t } = useTranslation('products')
 
   const images = React.useMemo(() => {
     return Array.isArray(product.images) && product.images.length > 0
@@ -105,7 +107,7 @@ const ProductCard = ({
             }}
             className="hover-overlay"
           >
-            Click to View Details
+            {t('Click to View Details')}
           </div>
         </div>
 
@@ -114,19 +116,19 @@ const ProductCard = ({
           <CCardText className="text-muted mb-1">{product.category?.category}</CCardText>
 
           <CCardText className="mb-1">
-            <strong>Price:</strong> {product.price} SYP
+            <strong>{t('Price')}:</strong> {product.price} SYP
           </CCardText>
           <CCardText className="mb-1">
-            <strong>Discount:</strong> {product.discount}% →{' '}
+            <strong>{t('Discount')}:</strong> {product.discount}% →{' '}
             <strong>{product.discountedprice} SYP</strong>
           </CCardText>
           <CCardText className="mb-1">
-            <strong>Stock:</strong> {product.stockQuantity} {product.unit}
+            <strong>{t('Stock')}:</strong> {product.stockQuantity} {product.unit}
           </CCardText>
 
           <div className="d-flex justify-content-between align-items-center my-2">
             <div>
-              <label className="me-1">Available</label>
+              <label className="me-1">{t('Available')}</label>
               <CFormSwitch
                 size="sm"
                 checked={product.isAvailable}
@@ -134,7 +136,7 @@ const ProductCard = ({
               />
             </div>
             <div>
-              <label className="me-1">COD</label>
+              <label className="me-1">{t('COD')}</label>
               <CFormSwitch
                 size="sm"
                 checked={product.isCODAvailable}
@@ -282,7 +284,7 @@ const ProductCard = ({
             {/* Highlights */}
             {product.highlight && (
               <div className="mb-3">
-                <strong>Highlights:</strong>
+                <strong>{t('Highlights')}:</strong>
                 <div
                   className="ps-3"
                   style={{
@@ -299,7 +301,7 @@ const ProductCard = ({
             {/* Overview */}
             {product.overview && (
               <div className="mb-3">
-                <strong>Overview:</strong>
+                <strong>{t('Overview')}:</strong>
                 <div
                   className="text-secondary"
                   dangerouslySetInnerHTML={{
@@ -311,7 +313,7 @@ const ProductCard = ({
 
             {/* Ratings */}
             <p className="mb-2">
-              <strong>Rating:</strong>{' '}
+              <strong>{t("Rating")}:</strong>{' '}
               {product.ratings?.overall ? (
                 <>
                   {Array.from({ length: 5 }, (_, i) => (
@@ -332,20 +334,20 @@ const ProductCard = ({
             {/* Meta Info Grid */}
             <div className="row mb-3">
               <div className="col-sm-6">
-                <strong>Category:</strong> {product.category?.category || 'N/A'}
+                <strong>{t('Category')}:</strong> {product.category?.category || 'N/A'}
               </div>
               <div className="col-sm-6">
-                <strong>Sub Category:</strong> {product.subCategory || 'N/A'}
+                <strong>{t('Sub Category')}:</strong> {product.subCategory || 'N/A'}
               </div>
               <div className="col-sm-6">
-                <strong>Quantity:</strong> {product.quantity} {product.unit}
+                <strong>{t('Quantity')}:</strong> {product.quantity} {product.unit}
               </div>
               <div className="col-sm-6">
-                <strong>Stock:</strong> {product.stockQuantity}
+                <strong>{t('Stock')}:</strong> {product.stockQuantity}
               </div>
               {product.dimensions && (
                 <div className="col-12 mt-2">
-                  <strong>Dimensions:</strong>{' '}
+                  <strong>{t('Dimensions')}:</strong>{' '}
                   {`${product.dimensions.length || 0} × ${product.dimensions.width || 0} × ${product.dimensions.height || 0} ${product.dimensions.unit || ''}`}
                 </div>
               )}
@@ -353,7 +355,7 @@ const ProductCard = ({
 
             {/* Price & Discount */}
             <div className="mb-3">
-              <strong>Price:</strong>{' '}
+              <strong>{t('Price')}:</strong>{' '}
               <span className="text-danger fw-bold">{product.discountedprice} SYP</span>{' '}
               {product.discount > 0 && (
                 <span className="text-muted text-decoration-line-through">{product.price} SYP</span>
@@ -363,7 +365,7 @@ const ProductCard = ({
             {/* Tags */}
             {product.tags?.length > 0 && (
               <div className="mb-3">
-                <strong>Tags:</strong>{' '}
+                <strong>{t('Tags')}:</strong>{' '}
                 {product.tags.map((tag, i) => (
                   <span key={i} className="badge bg-secondary me-1">
                     {tag}
@@ -374,20 +376,21 @@ const ProductCard = ({
 
             {/* Availability & COD */}
             <div className="d-flex flex-wrap gap-2">
-              <span className={`badge ${product.isAvailable ? 'bg-success' : 'bg-danger'}`}>
-                {product.isAvailable ? '✓ In Stock' : '✗ Out of Stock'}
-              </span>
+             <span className={`badge ${product.isAvailable ? 'bg-success' : 'bg-danger'}`}>
+  {product.isAvailable ? t('✓ In Stock') : t('✗ Out of Stock')}
+</span>
+
               <span
                 className={`badge ${product.isCODAvailable ? 'bg-info text-dark' : 'bg-secondary'}`}
               >
-                {product.isCODAvailable ? 'COD Available' : 'COD Not Available'}
+                {product.isCODAvailable ? t('COD Available') : t('COD Not Available')}
               </span>
             </div>
           </div>
         </CModalBody>
         <CModalFooter>
           <CButton color="secondary" onClick={() => setVisible(false)}>
-            Close
+            {t('Close')}
           </CButton>
         </CModalFooter>
       </CModal>

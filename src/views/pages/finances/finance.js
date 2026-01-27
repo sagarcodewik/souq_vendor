@@ -37,25 +37,25 @@ const Finance = () => {
 
     const doc = new jsPDF({ orientation: 'landscape' })
     doc.setFontSize(16)
-   doc.text(t('Vendor Financial Breakdown'), 14, 15)
+    doc.text(t('Vendor Financial Breakdown'), 14, 15)
 
-const tableColumn = [
-  t('Order ID'),
-  t('Order Number'),
-  t('Grand Total (SYP))'),
-  t('Vendor Earnings (SYP)'),
-  t('Date'),
-]
+    const tableColumn = [
+      t('Order ID'),
+      t('Order Number'),
+      t('Grand Total (SYP))'),
+      t('Vendor Earnings (SYP)'),
+      t('Date'),
+    ]
 
     const tableRows = financials.map((row) => [
       row.orderId || '',
       row.orderNumber || '',
-      (typeof row.grandTotal === 'number'
+      typeof row.grandTotal === 'number'
         ? row.grandTotal.toFixed(2)
-        : Number(row.grandTotal || 0).toFixed(2)),
-      (typeof row.vendorEarnings === 'number'
+        : Number(row.grandTotal || 0).toFixed(2),
+      typeof row.vendorEarnings === 'number'
         ? row.vendorEarnings.toFixed(2)
-        : Number(row.vendorEarnings || 0).toFixed(2)),
+        : Number(row.vendorEarnings || 0).toFixed(2),
       row.createdAt ? new Date(row.createdAt).toLocaleDateString() : '',
     ])
 
@@ -72,13 +72,12 @@ const tableColumn = [
     doc.save(`financial_breakdown_${date}.pdf`)
   }
 
-
   const headers = [
-    { key: 'orderId', label: 'Order Id', sortable: true },
-    { key: 'orderNumber', label: 'Order Number', sortable: true },
+    { key: 'orderId', label: t('Order ID'), sortable: true },
+    { key: 'orderNumber', label: t('Order Number'), sortable: true },
     {
       key: 'grandTotal',
-      label: 'Grand Total(SYP)',
+      label: t('Grand Total (SYP)'),
       sortable: true,
       render: (row) =>
         typeof row.grandTotal === 'number'
@@ -87,7 +86,7 @@ const tableColumn = [
     },
     {
       key: 'vendorEarnings',
-      label: 'Vendor Earnings(SYP)',
+      label: t('Vendor Earnings (SYP)'),
       sortable: true,
       render: (row) =>
         typeof row.vendorEarnings === 'number'
@@ -96,7 +95,7 @@ const tableColumn = [
     },
     {
       key: 'createdAt',
-      label: 'Date',
+      label: t('Date'),
       sortable: true,
       render: (row) => (row.createdAt ? new Date(row.createdAt).toLocaleDateString() : ''),
     },
@@ -106,7 +105,7 @@ const tableColumn = [
     <>
       <CCard className="mb-4">
         <CCardHeader className="d-flex justify-content-between align-items-center flex-wrap gap-2">
-          <h5 className="mb-0">{t("Vendor Financial Breakdown")}</h5>
+          <h5 className="mb-0">{t('Vendor Financial Breakdown')}</h5>
           <div className="d-flex align-items-center gap-3">
             <div className="input-group" style={{ width: '350px' }}>
               <span className="input-group-text bg-white">
@@ -115,7 +114,7 @@ const tableColumn = [
               <input
                 type="text"
                 className="form-control"
-                placeholder={t("Search vendor email and order number")}
+                placeholder={t('Search vendor email and order number')}
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
               />
@@ -124,7 +123,7 @@ const tableColumn = [
             {/* ✅ Download PDF Button */}
             <CButton color="primary" variant="outline" onClick={handleDownloadPDF}>
               <CIcon icon={cilCloudDownload} className="me-2" />
-              {t("Download PDF")}
+              {t('Download PDF')}
             </CButton>
           </div>
         </CCardHeader>

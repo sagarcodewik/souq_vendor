@@ -66,20 +66,24 @@ const Chats = () => {
 
   const getRoleBadge = (role) => {
     const roleConfig = {
-      admin: { color: 'danger', text: 'Admin' },
-      vendor: { color: 'primary', text: 'Vendor' },
-      customer: { color: 'success', text: 'Customer' },
-      support: { color: 'info', text: 'Support' },
-      moderator: { color: 'warning', text: 'Moderator' },
-    }
+  admin: { color: 'danger', textKey: 'Admin' },
+  vendor: { color: 'primary', textKey: 'Vendor' },
+  customer: { color: 'success', textKey: 'Customer' },
+  support: { color: 'info', textKey: 'Support' },
+  moderator: { color: 'warning', textKey: 'Moderator' },
+}
 
-    const config = roleConfig[role] || { color: 'secondary', text: ROLE_NAMES[role] || 'Unknown' }
-    return (
-      <CBadge color={config.color} size="sm">
-        {config.text}
-      </CBadge>
-    )
+      const config = roleConfig[role] || {
+    color: 'secondary',
+    textKey: ROLE_NAMES[role] || 'Unknown',
   }
+
+  return (
+    <CBadge color={config.color} size="sm">
+      {t(config.textKey)}
+    </CBadge>
+  )
+}
 
   const handleChatSelect = (chat) => {
     setSelectedChat(chat)
@@ -91,13 +95,15 @@ const Chats = () => {
     return user.name || 'Unknown User'
   }
 
-  const getChatIdentifier = (user) => {
-    if (user.orderNumber) {
-      return `${getDisplayName(user)} - ${user.orderNumber} (${ROLE_NAMES[user.role] || user.role})`
-    }
-    return `${getDisplayName(user)} (${ROLE_NAMES[user.role] || user.role})`
+const getChatIdentifier = (user) => {
+  const roleLabel = t(ROLE_NAMES[user.role] || user.role)
+
+  if (user.orderNumber) {
+    return `${getDisplayName(user)} - ${user.orderNumber} (${roleLabel})`
   }
 
+  return `${getDisplayName(user)} (${roleLabel})`
+}
   return (
     <div className={styles.chatContainer}>
       {/* LEFT SIDE - Chat Users */}
@@ -132,7 +138,7 @@ const Chats = () => {
                   <option value="all">{t("All Roles")}</option>
                   {uniqueRoles.map((role) => (
                     <option key={role} value={role}>
-                      {ROLE_NAMES[role] || role}
+                      {t(ROLE_NAMES[role] || role)}
                     </option>
                   ))}
                 </CFormSelect>
@@ -145,7 +151,7 @@ const Chats = () => {
                     value={filterOrder}
                     onChange={(e) => setFilterOrder(e.target.value)}
                   >
-                    <option value="all">All Orders</option>
+                    <option value="all">{t('All Orders')}</option>
                     {uniqueOrderNumbers.map((orderNumber) => (
                       <option key={orderNumber} value={orderNumber}>
                         {orderNumber}
@@ -198,7 +204,7 @@ const Chats = () => {
                           </small>
                           {user.orderNumber && (
                             <small className={`${styles.orderNumber} text-primary`}>
-                              Order: {user.orderNumber}
+                              {t('Order')}: {user.orderNumber}
                             </small>
                           )}
                         </div>

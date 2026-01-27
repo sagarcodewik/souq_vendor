@@ -35,12 +35,10 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
   const navigate = useNavigate()
   const { t } = useTranslation('ordercard')
 
-  const handleApproveClick = () => {
+  const handleApproveClick = (orderId) => {
     if (order.type === '2') {
-      // For marketplace orders, show vehicle selection modal
       setVehicleModalVisible(true)
     } else {
-      // For other order types, approve directly
       onStatusChange(orderId, 'confirmed')
     }
   }
@@ -105,7 +103,7 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
               color="success"
               variant="outline"
               className={styles.chatButton}
-              onClick={handleApproveClick} // Updated to use new handler
+              onClick={() => handleApproveClick(orderId)} // Updated to use new handler
             >
               <CIcon icon={cilCheck} className="me-1" />
               {t('Approve')}
@@ -173,7 +171,9 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
       paymentMap[status] || 'bg-light text-dark'
     }`
 
-    return <span className={badgeClass}>{t(status?.charAt(0).toUpperCase() + status?.slice(1))}</span>
+    return (
+      <span className={badgeClass}>{t(status?.charAt(0).toUpperCase() + status?.slice(1))}</span>
+    )
   }
 
   const firstProduct = items[0]
