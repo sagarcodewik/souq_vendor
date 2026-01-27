@@ -105,8 +105,7 @@ const Boots = () => {
         <Loader />
       ) : !boosts || boosts.length === 0 ? (
         /* ================= EMPTY STATE ================= */
-        <div
-          className="text-center p-5"
+        <div className="text-center p-5"
           style={{
             background: 'linear-gradient(135deg, #dbeafe, #e0e7ff)',
             border: '2px dashed #93c5fd',

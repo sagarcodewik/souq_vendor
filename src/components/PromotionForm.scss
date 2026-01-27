@@ -39,3 +39,36 @@
   padding: 4px 8px !important;
   min-height: 48px !important;
 }
+
+
+.create_boost {
+  padding: 20px;
+  border-radius: 16px;
+  background-color: #DDE8FE;
+  h3.heading {
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0px;
+  }
+  .badge {
+    .bg-green {
+      background-color: #103033;
+    }
+  }
+  .promo-card {
+    padding: 20px;
+    .icon-wrap {
+      img {
+        width: 100%;
+      }
+    }
+    h5 {
+      font-size: 16px;
+      line-height: 20px;
+    }
+    p {
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+}
