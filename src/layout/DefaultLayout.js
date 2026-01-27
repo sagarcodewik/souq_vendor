@@ -92,11 +92,7 @@ const DefaultLayout = () => {
           <Suspense fallback={<Loader />}>
             <Routes>
               {routes.map((route, idx) => (
-                <Route
-                  key={idx}
-                  path={route.path}
-                  element={route.element ? React.createElement(route.element) : null}
-                />
+                <Route key={idx} path={route.path} element={route.element ? React.createElement(route.element) : null}/>
               ))}
               <Route path="*" element={<>404</>} />
             </Routes>

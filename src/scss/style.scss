@@ -1,259 +1,166 @@
-// @use '@coreui/coreui/scss/coreui' as * with (
-//   $enable-deprecation-messages: false
-// );
-// @use '@coreui/chartjs/scss/coreui-chartjs';
-// @use 'vendors/simplebar';
+/* ========== CoreUI Base Setup ========== */
 
-// body {
-//   background-color: var(--cui-tertiary-bg);
-// }
-
-// .wrapper {
-//   width: 100%;
-//   padding-inline: var(--cui-sidebar-occupy-start, 0) var(--cui-sidebar-occupy-end, 0);
-//   will-change: auto;
-//   @include transition(padding 0.15s);
-// }
-
-// .header > .container-fluid,
-// .sidebar-header {
-//   min-height: calc(4rem + 1px); // stylelint-disable-line function-disallowed-list
-// }
-
-// .sidebar-brand-full {
-//   margin-left: 3px;
-// }
-
-// .sidebar-header {
-//   .nav-underline-border {
-//     --cui-nav-underline-border-link-padding-x: 1rem;
-//     --cui-nav-underline-border-gap: 0;
-//   }
-
-//   .nav-link {
-//     display: flex;
-//     align-items: center;
-//     min-height: calc(4rem + 1px); // stylelint-disable-line function-disallowed-list
-//   }
-// }
-
-// .sidebar-toggler {
-//   margin-inline-start: auto;
-// }
-
-// .sidebar-narrow,
-// .sidebar-narrow-unfoldable:not(:hover) {
-//   .sidebar-toggler {
-//     margin-inline-end: auto;
-//   }
-// }
-
-// .header > .container-fluid + .container-fluid {
-//   min-height: 3rem;
-// }
-
-// .footer {
-//   min-height: calc(3rem + 1px); // stylelint-disable-line function-disallowed-list
-// }
-// .sidebar-nav .nav-link.active {
-//   color: white;
-//   background: #0b737f; /* match primary for active nav */
-// }
-// .sidebar-nav .nav-link:hover {
-//   background: #138e9c51;
-// }
-// .sidebar {
-//   --cui-sidebar-bg: #103033;
-// }
-// .btn-primary {
-//   --cui-btn-bg: #0b737f;
-//   --cui-btn-border-color: #0a6470;
-//   --cui-btn-hover-bg: #095a63;
-//   --cui-btn-hover-border-color: #084f57;
-// }
-// body {
-//   --cui-primary: #0b737f;
-//   --cui-secondary: #0b737f;
-//   --cui-primary-text-emphasis: #0b737f;
-//   --cui-secondary-text-emphasis: #0b737f;
-//   --cui-link-color: #1da6b3;
-//   --cui-link-hover-color: #2dc6d3;
-//   // --cui-heading-color: #095f69;
-//     --cui-heading-color: #0f0e0e;
-//   color: var(--cui-heading-color);
-//   --cui-body-color: rgba(8, 85, 94, 0.95);
-//   --cui-footer-color: var(--cui-body-color);
-//   $form-check-input-bg: #103033;
-// }
-// .alert-primary {
-//   --cui-alert-bg: #2571788b;
-//   --cui-alert-border-color: #103033;
-// }
-// /* Custom Green Outline Button */
-// .btn-outline-custom-green {
-//   color: #1da6b3;
-//   border-color: #1da6b3;
-// }
-// .btn-outline-custom-green:hover {
-//   background-color: #1da6b3 !important;
-//   color: white !important;
-//   border-color: #1da6b3 !important;
-// }
-
-// /* Active/checked state */
-// input.btn-check:checked + label.btn-outline-custom-green {
-//   background-color: #1da6b3 !important;
-//   color: white !important;
-//   border-color: #1da6b3 !important;
-// }
-
-
-// /* Active/checked state */
-// .btn-check:checked + .btn-outline-custom-green {
-//   background-color: #28a745 !important;
-//   color: white !important;
-//   border-color: #28a745 !important;
-// }
-
-// .table thead > tr > th {
-//   background-color: #103033;
-//   color: white; /* optional, if you want white header text */
-// }
-// .form-select:focus {
-//   border-color: #0b737f;
-//   outline: 0;
-//   box-shadow: 0 0 0 0.2rem rgba(11, 115, 127, 0.25);
-// }
-// a {
-//   color: rgba(11, 115, 127, 1);
-// }
-// .breadcrumb-item.active {
-//   color: rgba(8, 85, 94, 0.68);
-// }
-// .text-primary {
-//   color: rgb(8, 69, 69) !important;
-// }
-// .bg-primary {
-//   background-color: #103033 !important;
-// }
-
-// @include color-mode(dark) {
-//   body {
-//     background-color: #1e565a;
-//     --cui-body-color: white;
-//     --cui-sidebar-bg: #103033;
-//     --cui-body-bg: #103033;
-//     --cui-gray-base: #103033;
-//     --cui-dark: #0e1e20;
-//     --cui-gray-900: #1a2d2f;
-
-//     --cui-primary: #0b737f;
-//     --cui-secondary: #0b737f;
-//     --cui-primary-text-emphasis: #0b737f;
-
-//     --cui-tertiary-bg: #1c3b41; /* subtle contrast background block */
-
-//     --cui-link-color: #1da6b3;
-//     --cui-link-hover-color: #2dc6d3;
-//     --cui-heading-color: #b0e0e6;
-//     color: var(--cui-heading-color);
-//   }
-//   .bg-body-secondary {
-//     background-color: #22666c !important;
-//   }
-//   .dropdown-header {
-//     color: #89b3b7;
-//   }
-//   .border {
-//     border: var(--cui-border-width) var(--cui-border-style) solid #2b7479 !important;
-//   }
-//   .btn-primary {
-//     --cui-btn-bg: #0b737f;
-//     --cui-btn-border-color: #0a6470;
-//     --cui-btn-hover-bg: #095a63;
-//     --cui-btn-hover-border-color: #084f57;
-//   }
-//   .table > :not(caption) > * > * {
-//     // padding: 0.5rem 0.5rem;
-//     // color: var(--cui-table-color-state, var(--cui-table-color-type, var(--cui-table-color)));
-//     background-color: #103033;
-//     // border-bottom-width: var(--cui-border-width);
-//     // box-shadow: inset 0 0 0 9999px
-//     //   var(--cui-table-bg-state, var(--cui-table-bg-type, var(--cui-table-accent-bg)));
-//   }
-//   .sidebar-nav .nav-link.active {
-//     color: white;
-//     background: #0b737f; /* match primary for active nav */
-//   }
-//   .sidebar-nav .nav-link:hover {
-//     background: #138e9c51;
-//   }
-//   .sidebar {
-//     --cui-sidebar-bg: #103033;
-//   }
-//   .form-select {
-//     background-color: var(--cui-body-bg);
-//   }
-//   .form-select:focus {
-//     border-color: #0b737f;
-//     outline: 0;
-//     box-shadow: 0 0 0 0.2rem rgba(11, 115, 127, 0.25);
-//   }
-//   .footer {
-//     --cui-footer-bg: var(--cui-body-bg);
-//   }
-// }
-
-
-
-@use '@coreui/coreui/scss/coreui' as * with (
+@use "@coreui/coreui/scss/coreui" as * with (
   $enable-deprecation-messages: false
 );
-@use '@coreui/chartjs/scss/coreui-chartjs';
-@use 'vendors/simplebar';
+@use "@coreui/chartjs/scss/coreui-chartjs";
 
-body {
-  background-color: var(--cui-tertiary-bg);
+/* ========== Brand Color System ========== */
+
+:root {
+  /* Backgrounds */
+  --brand-bg-light: #FEFAF7;
+  --brand-bg-soft: #f3f4f7;
+  --brand-bg-dark: #103033;
+
+  /* Brand Colors */
+  --brand-blue: #033160;
+  --brand-green: #06796F;
+  /* Brand Teal */
+  --brand-teal: #0b737f; /* solid teal */
+  --brand-teal-soft: rgba(19, 142, 156, 0.32); /* overlay / wash */
+
+  /* Dark Variants */
+  --brand-green-dark: #05665D;
+  --brand-green-darker: #04534C;
+  --brand-green-darkest: #033F39;
+
+  /* Text */
+  --brand-text-primary: #033160;
+  --brand-text-muted: rgba(3, 49, 96, 0.75);
+
+  /* Links */
+  --brand-link: #06796F;
+  --brand-link-hover: #089a8f;
+
+  /* Whites / Overlays */
+  --white-50: #ffffff50;
 }
 
+/* ========== Global Layout & CoreUI Mapping ========== */
+
+body {
+  background-color: var(--brand-bg-soft);
+
+  --cui-primary: var(--brand-green);
+  --cui-secondary: var(--brand-green);
+
+  --cui-primary-text-emphasis: var(--brand-green);
+  --cui-secondary-text-emphasis: var(--brand-green);
+
+  --cui-link-color: var(--brand-link);
+  --cui-link-hover-color: var(--brand-link-hover);
+
+  --cui-heading-color: var(--brand-blue);
+  --cui-body-color: var(--brand-text-muted);
+  --cui-footer-color: var(--cui-body-color);
+
+  color: var(--cui-body-color);
+}
+
+/* ========== Animations ========== */
+@keyframes pulse {0% { opacity: 1;} 50% { opacity: 0.5;} 100% { opacity: 1;}}
+@keyframes bounce {0%, 100% {transform: translateY(0);} 50% {transform: translateY(-6px);}}
+
+/* ========== Wrapper ========== */
 .wrapper {
   width: 100%;
-  padding-inline: var(--cui-sidebar-occupy-start, 0) var(--cui-sidebar-occupy-end, 0);
+  padding-inline: var(--cui-sidebar-occupy-start, 0)
+                   var(--cui-sidebar-occupy-end, 0);
   will-change: auto;
   @include transition(padding 0.15s);
+}
+
+/* ========== Header & Footer ========== */
+.app-header {
+  backdrop-filter: blur(10px);
+  .sidebar-toggler {
+    margin-inline-start: -14px;
+  }
+  .notification-toggle {
+    position: relative;
+    border: none;
+    background: transparent;
+    transition: all 0.3s ease;
+
+    &.animate-scale {
+      transform: scale(1.1);
+    }
+  }
+  .notification-icon {
+    transition: all 0.3s ease;
+    color: var(--cui-secondary-color);
+    &.active {
+      color: var(--cui-primary);
+      animation: pulse 2s infinite;
+    }
+  }
+  .notification-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    min-width: 20px;
+    height: 20px;
+    font-size: 0.65rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    animation: bounce 1s infinite;
+  }
+  .notification-menu {
+    width: 420px;
+    max-height: 500px;
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+  }
+  .notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  .notification-list {
+    max-height: 350px;
+    overflow-y: auto;
+  }
+  .notification-item {
+    padding: 0;
+    &.unread {
+      background: rgba(13, 110, 253, 0.05);
+    }
+  }
+  .notification-content {
+    display: flex;
+    padding: 1rem;
+  }
+  .notification-icon-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(13, 110, 253, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 12px;
+  }
+  .notification-text {
+    flex: 1;
+  }
+  .notification-title {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
 }
 
 .header > .container-fluid,
 .sidebar-header {
   min-height: calc(4rem + 1px);
-}
-
-.sidebar-brand-full {
-  margin-left: 3px;
-}
-
-.sidebar-header {
-  .nav-underline-border {
-    --cui-nav-underline-border-link-padding-x: 1rem;
-    --cui-nav-underline-border-gap: 0;
-  }
-
-  .nav-link {
-    display: flex;
-    align-items: center;
-    min-height: calc(4rem + 1px);
-  }
-}
-
-.sidebar-toggler {
-  margin-inline-start: auto;
-}
-
-.sidebar-narrow,
-.sidebar-narrow-unfoldable:not(:hover) {
-  .sidebar-toggler {
-    margin-inline-end: auto;
-  }
 }
 
 .header > .container-fluid + .container-fluid {
@@ -264,142 +171,160 @@ body {
   min-height: calc(3rem + 1px);
 }
 
-.sidebar-nav .nav-link.active {
-  color: white;
-  background: #0b737f;
-}
-.sidebar-nav .nav-link:hover {
-  background: #138e9c51;
-}
+/* ========== Sidebar ========== */
 .sidebar {
-  --cui-sidebar-bg: #103033;
+  --cui-sidebar-bg: var(--brand-bg-dark);
+
+  .sidebar-header {
+    border-bottom: 1px solid var(--white-50);
+
+    .sidebar-brand-full {
+      margin-left: 3px;
+    }
+  }
+
+  .sidebar-footer {
+    border-top: 1px solid var(--white-50);
+  }
+
+  .sidebar-toggler {
+    margin-inline-start: auto;
+  }
+
+  .sidebar-narrow,
+  .sidebar-narrow-unfoldable:not(:hover) {
+    .sidebar-toggler {
+      margin-inline-end: auto;
+    }
+  }
+
+  .sidebar-nav {
+    .nav-link.active {
+      color: #fff;
+      background-color: var(--brand-teal);
+    }
+
+    .nav-link:hover {
+      background-color: var(--brand-teal-soft);
+    }
+  }
 }
+
+/* ========== Buttons ========== */
+
 .btn-primary {
-  --cui-btn-bg: #0b737f;
-  --cui-btn-border-color: #0a6470;
-  --cui-btn-hover-bg: #095a63;
-  --cui-btn-hover-border-color: #084f57;
+  --cui-btn-bg: var(--brand-green);
+  --cui-btn-border-color: var(--brand-green-dark);
+  --cui-btn-hover-bg: var(--brand-green-darker);
+  --cui-btn-hover-border-color: var(--brand-green-darkest);
 }
-body {
-  --cui-primary: #0b737f;
 
-  --cui-secondary: #0b737f;
-  --cui-primary-text-emphasis: #0b737f;
-  --cui-secondary-text-emphasis: #0b737f;
-
-  --cui-link-color: #1da6b3;
-  --cui-link-hover-color: #2dc6d3;
-  // --cui-heading-color: #095f69;
-  --cui-heading-color: #000000;
-  color: var(--cui-heading-color);
-  // --cui-body-color: rgba(8, 85, 94, 0.95);
-  --cui-body-color: #000000;
-  --cui-footer-color: rgba(8, 85, 94, 0.95);
-  $form-check-input-bg: #103033;
-}
-.alert-primary {
-  --cui-alert-bg: #2571788b;
-  --cui-alert-border-color: #103033;
-}
 .btn-outline-custom-green {
-  color: #1da6b3;
-  border-color: #1da6b3;
-}
-.btn-outline-custom-green:hover {
-  background-color: #1da6b3 !important;
-  color: white !important;
-  border-color: #1da6b3 !important;
-}
-input.btn-check:checked + label.btn-outline-custom-green {
-  background-color: #1da6b3 !important;
-  color: white !important;
-  border-color: #1da6b3 !important;
+  color: var(--brand-green);
+  border-color: var(--brand-green);
+
+  &:hover {
+    background-color: var(--brand-green);
+    color: #fff;
+  }
 }
 
-/* Active/checked state */
 .btn-check:checked + .btn-outline-custom-green {
-  background-color: #28a745 !important;
-  color: white !important;
-  border-color: #28a745 !important;
+  background-color: var(--brand-green);
+  color: #fff;
 }
-.table thead > tr > th {
-  background-color: #103033;
-  color: white;
+
+/* ========== Forms ========== */
+
+.form-select:focus,
+.form-control:focus {
+  border-color: var(--brand-green);
+  box-shadow: 0 0 0 0.2rem rgba(6, 121, 111, 0.25);
 }
-.form-select:focus {
-  border-color: #0b737f;
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(11, 115, 127, 0.25);
+
+/* ========== Tables & Alerts ========== */
+
+.table {
+  --cui-table-bg: var(--brand-bg-dark);
+  --cui-table-border-color: rgba(6, 121, 111, 0.4);
 }
-a {
-  color: rgba(11, 115, 127, 1);
+
+.table thead th {
+  background-color: var(--brand-bg-dark);
+  color: #ffffff;
 }
-.breadcrumb-item.active {
-  color: rgba(8, 85, 94, 0.68);
+
+.alert-primary {
+  --cui-alert-bg: rgba(6, 121, 111, 0.18);
+  --cui-alert-border-color: var(--brand-bg-dark);
 }
+
+/* ========== Utilities ========== */
+
 .text-primary {
-  color: rgb(8, 69, 69) !important;
+  color: var(--brand-blue) !important;
 }
+
 .bg-primary {
-  background-color: #103033 !important;
+  background-color: var(--brand-green) !important;
 }
+
+a {
+  color: var(--cui-link-color);
+}
+
+.breadcrumb-item.active {
+  color: rgba(3, 49, 96, 0.6);
+}
+
+/* ========== SimpleBar (Scoped) ========== */
+
+.sidebar .simplebar-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* ========== Examples / Docs ========== */
+
+.example {
+  &:not(:first-child) {
+    margin-top: 1.5rem;
+  }
+
+  .tab-content {
+    background-color: var(--brand-bg-soft);
+  }
+}
+
+/* ========== Dark Mode ========== */
 
 @include color-mode(dark) {
   body {
-    background-color: #1e565a;
-    --cui-body-color: white;
-    --cui-sidebar-bg: #103033;
-    --cui-body-bg: #103033;
-    --cui-gray-base: #103033;
-    --cui-dark: #0e1e20;
-    --cui-gray-900: #1a2d2f;
+    --cui-body-bg: var(--brand-bg-dark);
+    --cui-body-color: #ffffff;
+    --cui-heading-color: #9fdad5;
 
-    --cui-primary: #0b737f;
-    --cui-secondary: #0b737f;
-    --cui-primary-text-emphasis: #0b737f;
-
-    --cui-tertiary-bg: #1c3b41;
-    --cui-link-color: #1da6b3;
-    --cui-link-hover-color: #2dc6d3;
-    --cui-heading-color: #b0e0e6; // Light text for dark mode
-    color: var(--cui-heading-color);
-  }
-  .bg-body-secondary {
-    background-color: #22666c !important;
-  }
-  .dropdown-header {
-    color: #89b3b7;
-  }
-  .border {
-    border: var(--cui-border-width) var(--cui-border-style) solid #2b7479 !important;
-  }
-  .btn-primary {
-    --cui-btn-bg: #0b737f;
-    --cui-btn-border-color: #0a6470;
-    --cui-btn-hover-bg: #095a63;
-    --cui-btn-hover-border-color: #084f57;
-  }
-  .table > :not(caption) > * > * {
-    background-color: #103033;
-  }
-  .sidebar-nav .nav-link.active {
-    color: white;
-    background: #0b737f;
-  }
-  .sidebar-nav .nav-link:hover {
-    background: #138e9c51;
-  }
-  .sidebar {
-    --cui-sidebar-bg: #103033;
-  }
-  .form-select {
     background-color: var(--cui-body-bg);
+    color: var(--cui-body-color);
   }
-  .form-select:focus {
-    border-color: #0b737f;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(11, 115, 127, 0.25);
+
+  .bg-body-secondary {
+    background-color: #1b4d50 !important;
   }
+
+  .border {
+    border-color: rgba(6, 121, 111, 0.4) !important;
+  }
+
+  .dropdown-header {
+    color: #8fc9c3;
+  }
+
+  .table {
+    --cui-table-bg: var(--brand-bg-dark);
+  }
+
   .footer {
     --cui-footer-bg: var(--cui-body-bg);
   }
