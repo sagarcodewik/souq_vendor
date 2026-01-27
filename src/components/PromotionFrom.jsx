@@ -588,7 +588,7 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
 
                                 {/* Promotion */}
                                 <div className="col-12 col-md-4">
-                                  <div className="type-card type-card-selected bg-white">
+                                  <div className="type-card type-card-selected bg-white position-relative">
                                     <div className="icon-wrap mb-2">
                                       <img src="/pc_icons1.svg" className="img-fluid"/>
                                     </div>
@@ -600,7 +600,7 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
 
                                 {/* Flash Sale */}
                                 <div className="col-12 col-md-4">
-                                  <div className="type-card bg-white">
+                                  <div className="type-card bg-white position-relative">
                                     <div className="icon-wrap mb-2"><img src="/pc_icons2.svg" className="img-fluid"/></div>
                                     <h5 className="fw-bold text-dark mb-1">Top of List</h5>
                                     <p className="text-muted small mb-0">Stay at the top of search results and category pages </p>
@@ -609,7 +609,7 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
 
                                 {/* Bundle */}
                                 <div className="col-12 col-md-4">
-                                  <div className="type-card bg-white">
+                                  <div className="type-card bg-white position-relative">
                                     <div className="icon-wrap mb-2"><img src="/pc_icons3.svg" className="img-fluid"/></div>
                                     <h5 className="fw-bold text-dark mb-1">Highlight Listing</h5>
                                     <p className="text-muted small mb-0">The product will highlight with some animations to attract consumers.</p>
