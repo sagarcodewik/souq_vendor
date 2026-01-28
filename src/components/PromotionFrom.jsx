@@ -339,10 +339,7 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
 
                                   return (
                                     <div key={type.value} className="col-12 col-md-4">
-                                      <div
-                                        onClick={() => setFieldValue('type', type.value)}
-                                        className={`type-card ${isSelected ? 'type-card-selected' : ''}`}
-                                      >
+                                      <div onClick={() => setFieldValue('type', type.value)} className={`type-card ${isSelected ? 'type-card-selected' : ''}`}>
                                         <div className={`type-icon ${type.iconClass} mb-2`}>
                                           <IconComponent size={24} />
                                         </div>

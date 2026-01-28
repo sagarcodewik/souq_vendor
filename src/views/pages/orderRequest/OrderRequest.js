@@ -74,17 +74,17 @@ const OrderRequest = () => {
   }
 
   return (
-    <div className="orderRequest">
+    <div className="col-12 mb-3 orderRequest">
       <div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
-        <h4 className={styles.heading}>{t('pending_order_requests')}</h4>
-        <div className={styles.searchWrapper}>
+        <h4 className="heading">{t('pending_order_requests')}</h4>
+        <div className="searchWrapper">
           <input type="text" placeholder={t('search_by_order_number')} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="form-control"/>
         </div>
       </div>
       {/* Tabs */}
-      <CNav variant="tabs" className={styles.tabContainer}>
+      <CNav variant="tabs" className="tabContainer">
         {Object.values(TABS).map((tab) => (
-          <CNavItem key={tab.key} className={styles.tabItem}>
+          <CNavItem key={tab.key} className="tabItem">
             <CNavLink active={activeTab.key === tab.key} onClick={() => setActiveTab(tab)} role="button" className={`${styles.tabLink} ${activeTab.key === tab.key ? styles.activeTab : '' }`}>
               <span className={styles.tabIcon}>{tab.key === 'intracity' ? '🏍️' : '🚌'}</span> {t(tab.labelKey)}
             </CNavLink>

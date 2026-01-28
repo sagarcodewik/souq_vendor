@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
-import { CButton, CBadge } from '@coreui/react'
+import {CButton, CBadge, CModal, CModalHeader, CModalTitle, CModalBody, CFormTextarea, CModalFooter,} from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilCheck, cilCheckCircle, cilX, cilTruck, cilHome, cilLocationPin } from '@coreui/icons'
-import Loader from './loader/loader'
-import styles from './orderCard.module.scss'
-import GenerateInvoiceModal from './GenerateInvoiceModal/GenerateInvoiceModal.js'
-import DriverDetailsModal from './DriverDetailsModal.js'
+import {cilCheck, cilCheckCircle, cilX, cilTruck, cilHome, cilLocationPin,} from '@coreui/icons'
 import { useNavigate } from 'react-router-dom'
-import ProductModal from './ProductModal.js'
-import RouteDetailsModal from './RouteDetailsModal/RouteDetailsModal.js'
-import VehicleSelectionModal from './VehicleSelectionModal/VehicleSelectionModal.js' // Import the new modal
 import { useTranslation } from 'react-i18next'
+import Loader from './loader/loader'
+import GenerateInvoiceModal from './GenerateInvoiceModal/GenerateInvoiceModal'
+import DriverDetailsModal from './DriverDetailsModal'
+import ProductModal from './ProductModal'
+import RouteDetailsModal from './RouteDetailsModal/RouteDetailsModal'
+import VehicleSelectionModal from './VehicleSelectionModal/VehicleSelectionModal'
+import { CheckCircle, CreditCard, FileText, MessageCircle, ShoppingCart, Truck, User, Wallet, XCircle, Zap } from 'lucide-react'
 
-const OrderCard = ({ order, loading, onStatusChange, type }) => {
+const OrderCard = ({ order, loading, onStatusChange, type }) => { 
   const {
     orderId,
     customer,
@@ -23,19 +23,31 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
     status,
     paymentStatus,
     createdAt,
-    dataToken,
-    legs,
+    legs = [],
   } = order
 
+  const navigate = useNavigate()
+  const { t } = useTranslation('ordercard')
+
+  /* -------------------- Modals State -------------------- */
   const [invoiceVisible, setInvoiceVisible] = useState(false)
   const [driverVisible, setDriverVisible] = useState(false)
   const [productModalVisible, setProductModalVisible] = useState(false)
   const [routeModalVisible, setRouteModalVisible] = useState(false)
-  const [vehicleModalVisible, setVehicleModalVisible] = useState(false) // New state for vehicle modal
-  const navigate = useNavigate()
-  const { t } = useTranslation('ordercard')
+  const [vehicleModalVisible, setVehicleModalVisible] = useState(false)
+  const [rejectModalVisible, setRejectModalVisible] = useState(false)
 
-  const handleApproveClick = (orderId) => {
+  /* -------------------- Reject Logic -------------------- */
+  const [rejectReason, setRejectReason] = useState('')
+
+  const handleRejectOrder = () => {
+    onStatusChange(orderId, 'cancelled', rejectReason)
+    setRejectReason('')
+    setRejectModalVisible(false)
+  }
+
+  /* -------------------- Approve Logic -------------------- */
+  const handleApproveClick = () => {
     if (order.type === '2') {
       setVehicleModalVisible(true)
     } else {
@@ -44,10 +56,10 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
   }
 
   const handleApproveWithVehicle = (orderId, status, vehicleType) => {
-    // Call the onStatusChange function with vehicle type
     onStatusChange(orderId, status, vehicleType)
   }
 
+  /* -------------------- Chat Navigation -------------------- */
   const handleChatWithCustomer = () => {
     navigate('/orders/order-chat', {
       state: {
@@ -64,7 +76,7 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
     navigate('/orders/order-chat', {
       state: {
         userOneId: order.vendor?._id,
-        userTwoId: order.driver?.id,
+        userTwoId: order.legs?.[0]?.driver?.id,
         orderId: order.orderId,
         orderNumber: order.orderNumber,
         type: 'Driver',
@@ -72,10 +84,11 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
     })
   }
 
+  /* -------------------- Status Actions -------------------- */
   const renderStatusActions = () => {
     if (loading) {
       return (
-        <div className={styles.loaderContainer}>
+        <div className="loaderContainer">
           <Loader size={20} />
         </div>
       )
@@ -88,76 +101,45 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
             size="sm"
             color="info"
             variant="outline"
-            className={styles.chatButton}
+            className="chatButton"
             onClick={() => onStatusChange(orderId, 'ready')}
           >
             <CIcon icon={cilCheckCircle} className="me-1" />
-            Mark as Ready
+            {t('Mark as Ready')}
           </CButton>
         )
-      } else if (status === 'pending') {
+      }
+
+      if (status === 'pending') {
         return (
-          <div className={styles.approvalActions}>
-            <CButton
-              size="sm"
-              color="success"
-              variant="outline"
-              className={styles.chatButton}
-              onClick={() => handleApproveClick(orderId)} // Updated to use new handler
-            >
-              <CIcon icon={cilCheck} className="me-1" />
-              {t('Approve')}
-            </CButton>
-            <CButton
-              size="sm"
-              color="danger"
-              variant="outline"
-              className={styles.chatButton}
-              onClick={() => onStatusChange(orderId, 'cancelled')}
-            >
-              <CIcon icon={cilX} className="me-1" />
-              {t('Reject')}
-            </CButton>
-          </div>
+          <>
+            <CButton size="sm" color="success" variant="outline" className="chatButton d-flex align-items-center gap-1" onClick={handleApproveClick}> <CheckCircle size={16} /> {t('Approve')}</CButton>
+            <CButton size="sm" color="danger" variant="outline" className="chatButton d-flex align-items-center gap-1" onClick={() => setRejectModalVisible(true)}> <XCircle size={16} /> {t('Reject')}</CButton>
+          </>
         )
       }
-    }
-
-    if (type === 'ready' && status === 'confirmed') {
-      return (
-        <CButton
-          size="sm"
-          color="info"
-          variant="outline"
-          className={styles.chatButton}
-          onClick={() => onStatusChange(orderId, 'ready')}
-        >
-          <CIcon icon={cilCheckCircle} className="me-1" />
-          Mark as Ready
-        </CButton>
-      )
     }
 
     return null
   }
 
+  /* -------------------- Badges -------------------- */
   const StatusBadge = ({ status }) => {
     const statusMap = {
-      pending: { class: 'bg-warning text-dark', label: t('Pending') },
-      confirmed: { class: 'bg-info text-white', label: t('Confirmed') },
-      cancelled: { class: 'bg-danger text-white', label: t('Cancelled') },
-      'driver-accepted': { class: 'bg-primary text-white', label: t('Driver Accepted') },
-      returned: { class: 'bg-secondary text-white', label: t('Returned') },
-      Ready: { class: 'bg-primary text-white', label: t('Ready') },
-      ready: { class: 'bg-primary text-white', label: t('Ready') },
-      shipped: { class: 'bg-primary text-white', label: t('Shipped') },
-      'in-transit': { class: 'bg-primary text-white', label: t('In Transit') },
-      delivered: { class: 'bg-success text-white', label: t('Delivered') },
+      pending: 'bg-warning text-dark',
+      confirmed: 'bg-info text-white',
+      cancelled: 'bg-danger text-white',
+      ready: 'bg-primary text-white',
+      shipped: 'bg-primary text-white',
+      'in-transit': 'bg-primary text-white',
+      delivered: 'bg-success text-white',
     }
 
-    const { class: badgeClass = 'bg-light text-dark', label = status } = statusMap[status] || {}
-
-    return <span className={`px-2 py-1 rounded text-xs font-semibold ${badgeClass}`}>{label}</span>
+    return (
+      <span className={`px-2 py-1 rounded text-xs font-semibold ${statusMap[status] || 'bg-light text-dark'}`}>
+        {t(status)}
+      </span>
+    )
   }
 
   const PaymentBadge = ({ status }) => {
@@ -167,238 +149,156 @@ const OrderCard = ({ order, loading, onStatusChange, type }) => {
       pending: 'bg-warning text-dark',
     }
 
-    const badgeClass = `px-2 py-1 rounded text-xs font-semibold ${
-      paymentMap[status] || 'bg-light text-dark'
-    }`
-
     return (
-      <span className={badgeClass}>{t(status?.charAt(0).toUpperCase() + status?.slice(1))}</span>
+      <span className={`px-2 py-1 rounded text-xs font-semibold ${paymentMap[status] || 'bg-light text-dark'}`}>
+        {t(status)}
+      </span>
     )
   }
 
   const firstProduct = items[0]
 
   return (
-    <div className={styles.orderCard}>
-      <div className={styles.orderHeader}>
-        <h4>{order.orderNumber}</h4>
-        <p>{new Date(createdAt).toLocaleString()}</p>
-      </div>
+    <>
+      <div className="orderCard">
+        <div className="orderHeader">
+          <h4>{order.orderNumber}</h4>
+          <p>{new Date(createdAt).toLocaleString()}</p>
+        </div>
+        <div className="orderBody">
+          <p><strong>{t('Customer')}:</strong> {customer?.email || '—'}</p>
+          <div className="locationSection mb-3">
+            <div className="sectionHeader d-flex justify-content-between align-items-center">
+              <h6>
+                <CIcon icon={cilTruck} />
+                {t('Delivery Route')}
+              </h6>
 
-      <div className={styles.orderBody}>
-        {/* Customer Info */}
-        <p>
-          <strong>{t('Customer')}:</strong> {customer?.email || '—'}
-        </p>
-
-        {/* Delivery Route */}
-        <div className={styles.locationSection}>
-          <div className="px-3 py-2 bg-light border-bottom d-flex justify-content-between align-items-center">
-            <h6 className="mb-2 text-primary">
-              <CIcon icon={cilTruck} className="me-2" />
-              {t('Delivery Route')}
-            </h6>
-            <CButton
-              size="sm"
-              color="primary"
-              variant="outline"
-              className={styles.chatButton}
-              onClick={() => setRouteModalVisible(true)}
-            >
-              {t('View Route')} ({legs.length} leg{legs.length !== 1 ? 's' : ''})
-            </CButton>
-          </div>
-
-          <div className="px-3 py-3">
-            {/* Pickup Location */}
-            <div className="d-flex align-items-start mb-3">
-              <div>
-                <div className={`${styles.locationIcon} ${styles.pickupIcon}`}>
+              <CButton
+                size="sm"
+                color="primary"
+                variant="outline"
+                className="chatButton"
+                onClick={() => setRouteModalVisible(true)}
+              >
+                {t('View Route')} ({legs.length} leg{legs.length !== 1 ? 's' : ''})
+              </CButton>
+            </div>
+            <div className="p-3 ">
+              <div className="d-flex align-items-start mb-0">
+                <div className="locationIcon pickupIcon">
                   <CIcon icon={cilLocationPin} className="text-white" size="l" />
                 </div>
-              </div>
-              <div className="flex-grow-1">
-                <div className="d-flex align-items-center mb-1">
-                  <strong className="text-primary me-2">{t('Pickup Location')}</strong>
-                  <CBadge color="primary" variant="outline" className="text-xs">
-                    {t('From')}
-                  </CBadge>
+                <div className="flex-grow-1">
+                  <div className="d-flex align-items-center mb-1">
+                    <strong className="text-primary me-2">{t('Pickup Location')}</strong>
+                    <CBadge color="primary" variant="outline" className="text-xs">{t('From')}</CBadge>
+                  </div>
+                  <p className="text-muted mb-1 small">{order.pickupStreet}, {order.pickupCity}, {order.pickupState},{' '} {order.pickupCountry}</p>
                 </div>
-                <p className="text-muted mb-1 small">
-                  <>
-                    {order.pickupStreet}, {order.pickupCity}, {order.pickupState},{' '}
-                    {order.pickupCountry}
+              </div>
+              {/* Connector */}
+              <div className="routeConnector" />
+              {/* Drop */}
+              <div className="d-flex align-items-start">
+                <div className="flex-shrink-0 locationIcon dropIcon"><CIcon icon={cilHome} className="text-white" size="sm" /></div>
+                <div className="flex-grow-1">
+                  <div className="d-flex align-items-center mb-1">
+                    <strong className="text-success me-2">{t('Delivery Address')}</strong>
+                    <CBadge color="success" variant="outline" className="text-xs">{t('To')}</CBadge>
+                  </div>
+                  <p className="text-muted mb-1 small">{order.dropStreet}, {order.dropCity}, {order.dropState},{' '} {order.dropCountry}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Order Details */}
+          <div className="px-3 py-2 bg-light border-bottom mb-3 rounded-3">
+            <h6 className="mb-0 text-primary">📦 {t('Order Details')}</h6>
+          </div>
+          {/* Product Section */}
+          <div className="productSection mb-3">
+            {firstProduct && (
+              <div className="productDetails mb-0">
+                <div className="productInfo">
+                  <p>{firstProduct.productId?.productName || '—'}</p>
+                </div>
+                <div className="quantity">
+                  <p>{firstProduct.quantity}x</p>
+                </div>
+              </div>
+            )}
+
+            {items.length > 1 && (
+              <CButton size="sm" color="secondary" variant="outline" className="mt-2" onClick={() => setProductModalVisible(true)}>+{items.length - 1} more item{items.length - 1 > 1 ? 's' : ''}</CButton>
+            )}
+          </div>
+
+          {/* Totals */}
+          <div className="orderDetails mb-3">
+            <div className="detailBlock d-flex justify-content-between align-items-center">
+              {subTotal !== undefined && (
+                <p className="mb-0 d-flex align-items-center gap-1"><Wallet size={16} /> {t('Subtotal')}: {subTotal} SYP</p>
+              )}
+
+              <span className="detailBadge d-flex align-items-center gap-1">
+                {order.type === '1' ? (
+                  <> <Zap size={14} /> {t('15 min')}
                   </>
-                </p>
-              </div>
+                ) : (
+                  <> <ShoppingCart size={14} /> {t('Marketplace')}
+                  </>
+                )}
+              </span>
             </div>
-
-            {/* Route Connector */}
-            <div className="d-flex align-items-center mb-3 ms-3">
-              <div
-                className="border-start border-2 border-primary"
-                style={{ height: '30px', width: '2px' }}
-              ></div>
+            <div className="detailBlock d-flex justify-content-between align-items-center">
+              {shippingFee !== undefined && (
+                <p className="mb-0 d-flex align-items-center gap-1"> <Truck size={16} /> {t('Shipping Fee')}: {shippingFee} SYP</p>
+              )}
+              <StatusBadge status={order.status} />
             </div>
-
-            {/* Drop Location */}
-            <div className="d-flex align-items-start">
-              <div>
-                <div className={`${styles.locationIcon} ${styles.dropIcon}`}>
-                  <CIcon icon={cilHome} className="text-white" size="sm" />
-                </div>
-              </div>
-              <div className="flex-grow-1">
-                <div className="d-flex align-items-center mb-1">
-                  <strong className="text-success me-2">{t('Delivery Address')}</strong>
-                  <CBadge color="success" variant="outline" className="text-xs">
-                    {t('To')}
-                  </CBadge>
-                </div>
-                <p className="text-muted mb-1 small">
-                  {order.dropStreet}, {order.dropCity}, {order.dropState}, {order.dropCountry}
-                </p>
-              </div>
+            <div className="detailBlock d-flex justify-content-between align-items-center">
+              <p className="mb-0 d-flex align-items-center gap-1 fw-semibold"> <CreditCard size={16} /> {t('Grand Total')}: {grandTotal} SYP</p>
+              {paymentStatus && <PaymentBadge status={paymentStatus} />}
             </div>
           </div>
-        </div>
-        <div className="px-3 py-2 bg-light border-bottom mb-1">
-          <h6 className="mb-2 text-primary">📦 {t('Order Details')}</h6>
-        </div>
-        {/* Inline Product Section */}
-        <div className={styles.productSection}>
-          {firstProduct && (
-            <div className={styles.productDetails}>
-              <div className={styles.productInfo}>
-                <p>{firstProduct.productId.productName || '—'}</p>
-              </div>
-              <div className={styles.quantity}>
-                <p>{firstProduct.quantity}x</p>
-              </div>
-            </div>
-          )}
-
-          {/* Show More button */}
-          {items.length > 1 && (
-            <CButton
-              size="sm"
-              color="secondary"
-              variant="outline"
-              className="mt-2"
-              onClick={() => setProductModalVisible(true)}
-            >
-              +{items.length - 1} more item{items.length - 1 > 1 ? 's' : ''}
-            </CButton>
-          )}
-        </div>
-
-        {/* Totals */}
-        <div className={styles.orderDetails}>
-          <div className={styles.detailBlock}>
-            {subTotal !== undefined && (
-              <p>
-                {t('Subtotal')}: {subTotal} SYP
-              </p>
+          {/* Actions */}
+          <div className="actions d-flex flex-wrap gap-2">
+            {renderStatusActions()}
+            {/* Invoice */}
+            <CButton size="sm" color="primary" variant="outline" className="chatButton d-flex align-items-center gap-1" onClick={() => setInvoiceVisible(true)}> <FileText size={16} /> {t('View Invoice')}</CButton>
+            {/* Driver Actions */}
+            {order.legs?.[0]?.driver && (
+              <>
+                <CButton size="sm" color="info" variant="outline" className="chatButton d-flex align-items-center gap-1" onClick={() => setDriverVisible(true)}> <User size={16} /> {t('View Driver')}</CButton>
+                <CButton size="sm" color="info" variant="outline" className="chatButton d-flex align-items-center gap-1" onClick={handleChatWithDriver}><Truck size={16} /> {t('Chat with Driver')}</CButton>
+              </>
             )}
-            <span className={styles.detailBadge}>
-              {order.type === '1' ? `⚡ ${t('15 min')}` : `🛒 ${t('Marketplace')}`}
-            </span>
+            {/* Customer Chat */}
+            <CButton size="sm" color="success" variant="outline" className="chatButton d-flex align-items-center gap-1" onClick={handleChatWithCustomer}> <MessageCircle size={16} /> {t('Chat with Customer')}</CButton>
           </div>
-
-          <div className={styles.detailBlock}>
-            {shippingFee !== undefined && (
-              <p>
-                {t('Shipping Fee')}: {shippingFee} SYP
-              </p>
-            )}
-            <StatusBadge status={order.status} />
-          </div>
-
-          <div className={styles.detailBlock}>
-            <p>
-              {t('Grand Total')}: {grandTotal} SYP
-            </p>
-            {paymentStatus && <PaymentBadge status={paymentStatus} />}
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className={styles.actions}>
-          {renderStatusActions()}
-
-          <CButton
-            size="sm"
-            color="primary"
-            variant="outline"
-            className={styles.chatButton}
-            onClick={() => setInvoiceVisible(true)}
-          >
-            {t('View Invoice')}
-          </CButton>
-
-          {order.legs[0].driver && (
-            <>
-              <CButton
-                size="sm"
-                color="info"
-                variant="outline"
-                className={styles.chatButton}
-                onClick={() => setDriverVisible(true)}
-              >
-                {t('View Driver')}
-              </CButton>
-              <CButton
-                size="sm"
-                color="info"
-                variant="outline"
-                className={styles.chatButton}
-                onClick={handleChatWithDriver}
-              >
-                {t('Chat with Driver')}
-              </CButton>
-            </>
-          )}
-
-          <CButton
-            size="sm"
-            color="success"
-            variant="outline"
-            className={styles.chatButton}
-            onClick={handleChatWithCustomer}
-          >
-            {t('Chat with Customer')}
-          </CButton>
         </div>
       </div>
 
-      {/* Modals */}
+      {/* Reject Modal */}
+      <CModal visible={rejectModalVisible} onClose={() => setRejectModalVisible(false)} alignment="center">
+        <CModalHeader><CModalTitle>{t('Reject Order')}</CModalTitle></CModalHeader>
+        <CModalBody>
+          <CFormTextarea rows={3} value={rejectReason} onChange={(e) => setRejectReason(e.target.value)} placeholder={t('Enter reason...')}/>
+        </CModalBody>
+        <CModalFooter className="justify-content-between px-3">
+          <CButton color="secondary" onClick={() => setRejectModalVisible(false)} className="m-0">{t('Cancel')}</CButton>
+          <CButton color="danger" disabled={!rejectReason.trim()} onClick={handleRejectOrder} className="m-0 text-white">{t('Confirm Reject')}</CButton>
+        </CModalFooter>
+      </CModal>
+      {/* Other Modals */}
       <GenerateInvoiceModal visible={invoiceVisible} setVisible={setInvoiceVisible} order={order} />
-      <DriverDetailsModal
-        visible={driverVisible}
-        setVisible={setDriverVisible}
-        driver={order.legs[0].driver}
-      />
-      <ProductModal
-        visible={productModalVisible}
-        setVisible={setProductModalVisible}
-        products={items}
-        orderNumber={order.orderNumber}
-      />
-      <RouteDetailsModal
-        visible={routeModalVisible}
-        setVisible={setRouteModalVisible}
-        legs={legs}
-      />
-
-      {/* Vehicle Selection Modal */}
-      <VehicleSelectionModal
-        visible={vehicleModalVisible}
-        setVisible={setVehicleModalVisible}
-        order={order}
-        onApprove={handleApproveWithVehicle}
-      />
-    </div>
+      <DriverDetailsModal visible={driverVisible} setVisible={setDriverVisible} driver={order.legs?.[0]?.driver} />
+      <ProductModal visible={productModalVisible} setVisible={setProductModalVisible} products={items} />
+      <RouteDetailsModal visible={routeModalVisible} setVisible={setRouteModalVisible} legs={legs} />
+      <VehicleSelectionModal visible={vehicleModalVisible} setVisible={setVehicleModalVisible} order={order} onApprove={handleApproveWithVehicle}/>
+    </>
   )
 }
 
-export default OrderCard
+export default OrderCard;
