@@ -18,7 +18,8 @@ const TABS = {
 
 const OrderRequest = () => {
   const dispatch = useDispatch()
-   const { t } = useTranslation('orderrequest')
+  const { t } = useTranslation('orderrequest')
+
   const { orders, status, error, currentPage, pageSize, totalRecords, sortKey, sortDirection } =
     useSelector((state) => state.orders)
 
@@ -28,9 +29,7 @@ const OrderRequest = () => {
   const [debouncedSearch, setDebouncedSearch] = useState('')
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearch(searchTerm)
-    }, 500)
+    const handler = setTimeout(() => setDebouncedSearch(searchTerm), 500)
     return () => clearTimeout(handler)
   }, [searchTerm])
 
@@ -55,22 +54,9 @@ const OrderRequest = () => {
     fetchOrders()
   }, [fetchOrders])
 
-  const handlePageChange = (page) => {
-    fetchOrders(page)
-  }
-
-  const handleSort = (key, direction) => {
-    fetchOrders(currentPage, key, direction)
-  }
-
-  const handleTabChange = (tab) => {
-    setActiveTab(tab)
-  }
-
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       setLoadingOrderId(orderId)
-
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
@@ -79,113 +65,57 @@ const OrderRequest = () => {
       if (!vendorId) toast.error('Invalid vendor ID')
 
       await dispatch(updateOrderStatus({ orderId, status: newStatus, vendorId })).unwrap()
-
       fetchOrders()
     } catch (err) {
-      console.error('Failed to update order status:', err)
+      console.error(err)
     } finally {
       setLoadingOrderId(null)
     }
   }
 
   return (
-    <div className="p-4">
-      <div className="d-flex flex-row mb-3 justify-content-between align-items-center flex-wrap gap-3">
-        <h4 className="text-xl font-semibold mb-4"><h4>{t('pending_order_requests')}</h4></h4>
-        <div className="d-flex flex-row align-items-center gap-3 flex-wrap">
-          {/* 🔥 Search bar */}
-          <div className="mt-3 mb-3">
-            <input
-              type="text"
-              placeholder={t('search_by_order_number')}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="form-control"
-              style={{ maxWidth: '300px' }}
-            />
-          </div>
+    <div className="orderRequest">
+      <div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+        <h4 className={styles.heading}>{t('pending_order_requests')}</h4>
+        <div className={styles.searchWrapper}>
+          <input type="text" placeholder={t('search_by_order_number')} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="form-control"/>
         </div>
       </div>
-      {/* Tab buttons */}
+      {/* Tabs */}
       <CNav variant="tabs" className={styles.tabContainer}>
         {Object.values(TABS).map((tab) => (
           <CNavItem key={tab.key} className={styles.tabItem}>
-            <CNavLink
-              active={activeTab.key === tab.key}
-              onClick={() => handleTabChange(tab)}
-              role="button"
-              className={styles.tabLink}
-              style={{
-                fontWeight: activeTab.key === tab.key ? 'bold' : 'normal',
-                color: activeTab.key === tab.key ? '#0b737f' : '#64748b',
-                background: activeTab.key === tab.key ? '#e0e7ff' : 'transparent',
-              }}
-            >
-              {tab.key === 'intracity' ? (
-                <span style={{ marginRight: '6px' }}>🏍️</span>
-              ) : (
-                <span style={{ marginRight: '6px' }}>🚌</span>
-              )}
-              {t(tab.labelKey)}
+            <CNavLink active={activeTab.key === tab.key} onClick={() => setActiveTab(tab)} role="button" className={`${styles.tabLink} ${activeTab.key === tab.key ? styles.activeTab : '' }`}>
+              <span className={styles.tabIcon}>{tab.key === 'intracity' ? '🏍️' : '🚌'}</span> {t(tab.labelKey)}
             </CNavLink>
           </CNavItem>
         ))}
       </CNav>
-
-      {error && <p className="text-red-500 mb-2">Error: {error}</p>}
+      {error && <p className="text-danger">{error}</p>}
       {status === 'loading' ? (
         <Loader />
       ) : (
-        <>
-          <div className="mt-4">
-            {orders.length === 0 ? (
-              <div className="text-center">
-                <p className="text-muted ">{t('no_orders_found')}</p>
-              </div>
-            ) : (
-              <div className={styles.orderList}>
-                {orders.map((order) => (
-                  <OrderCard
-                    key={order._id}
-                    order={order}
-                    loading={loadingOrderId === order._id}
-                    onStatusChange={handleStatusChange}
-                    type="request"
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        </>
+        <div className="mt-4">
+          {orders.length === 0 ? (
+            <p className="text-center text-muted">{t('no_orders_found')}</p>
+          ) : (
+            <div className={styles.orderList}>
+              {orders.map((order) => (
+                <OrderCard key={order._id} order={order} loading={loadingOrderId === order._id} onStatusChange={handleStatusChange} type="request"/>
+              ))}
+            </div>
+          )}
+        </div>
       )}
-
       {/* Pagination */}
       {orders.length > 0 && Math.ceil(totalRecords / pageSize) > 1 && (
         <div className="d-flex justify-content-center mt-4">
-          <CPagination align="center">
-            <CPaginationItem
-              disabled={currentPage === 1}
-              onClick={() => handlePageChange(currentPage - 1)}
-            >
-              <CIcon icon={cilChevronLeft} />
-            </CPaginationItem>
-
+          <CPagination>
+            <CPaginationItem disabled={currentPage === 1} onClick={() => fetchOrders(currentPage - 1)} ><CIcon icon={cilChevronLeft} /></CPaginationItem>
             {Array.from({ length: Math.ceil(totalRecords / pageSize) }, (_, i) => (
-              <CPaginationItem
-                key={i + 1}
-                active={currentPage === i + 1}
-                onClick={() => handlePageChange(i + 1)}
-              >
-                {i + 1}
-              </CPaginationItem>
+              <CPaginationItem key={i + 1} active={currentPage === i + 1} onClick={() => fetchOrders(i + 1)}>{i + 1}</CPaginationItem>
             ))}
-
-            <CPaginationItem
-              disabled={currentPage === Math.ceil(totalRecords / pageSize)}
-              onClick={() => handlePageChange(currentPage + 1)}
-            >
-              <CIcon icon={cilChevronRight} />
-            </CPaginationItem>
+            <CPaginationItem disabled={currentPage === Math.ceil(totalRecords / pageSize)} onClick={() => fetchOrders(currentPage + 1)}><CIcon icon={cilChevronRight} /></CPaginationItem>
           </CPagination>
         </div>
       )}
@@ -193,4 +123,4 @@ const OrderRequest = () => {
   )
 }
 
-export default OrderRequest
+export default OrderRequest;
