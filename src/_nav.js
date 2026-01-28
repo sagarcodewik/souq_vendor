@@ -55,17 +55,17 @@ const _nav = (t) =>  [
   },
   {
     component: CNavItem,
-    name: t('Promotions'),
+    name: t('Discount'),
     to: '/promotions',
     // to: '/promotionsboost',
     icon: <CIcon icon={cilTags} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: t('boosts:Boosts'),
-    to: '/boosts',
-    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: t('boosts:Boosts'),
+  //   to: '/boosts',
+  //   icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
+  // },
   {
     component: CNavItem,
     name: t('Sale Report'),

@@ -124,10 +124,10 @@ const Promotion = () => {
   }
   return (
     <>
-      <PromotionTabing />
+      {/* <PromotionTabing /> */}
       <div className="promotion-header d-flex justify-content-between align-items-center mb-3">
-        <h2 className="promotion-title mb-0">{t('Promotions')}</h2>
-        <button onClick={() => navigate('/promotions/create')} className="btn promotion-btn text-white">{t('New Promotion')}</button>
+        <h2 className="promotion-title mb-0">{t('Discount')}</h2>
+        <button onClick={() => navigate('/promotions/create')} className="btn promotion-btn text-white">{t('New Discount')}</button>
       </div>
       <div className="row gx-3 mb-3 promotion-filters">
         <div className="col-md-8">
@@ -140,7 +140,7 @@ const Promotion = () => {
         <div className="col-md-4">
           <select className="form-select promotion-type-select" value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
             <option value="">{t('All Types')}</option>
-            <option value="promotion">{t('Promotion')}</option>
+            <option value="promotion">{t('Discount')}</option>
             <option value="flash-sale">{t('Flash Sale')}</option>
             <option value="bundle">{t('Bundle')}</option>
           </select>
@@ -149,7 +149,7 @@ const Promotion = () => {
       {!promotions || promotions.length === 0 ? (
         <div className="promotion-empty-state text-center p-5">
           <div className="mb-3"><PlusCircle size={64} className="empty-icon" /></div>
-          <h3 className="empty-title"> {searchTerm || selectedType ? t('No promotions found') : t('Create New Promotion')}</h3>
+          <h3 className="empty-title"> {searchTerm || selectedType ? t('No discount found') : t('Create New Discount')}</h3>
           <p className="empty-subtitle">{searchTerm || selectedType ? t('Try adjusting your filters') : t('Start building your next promotional campaign')}</p>
           {!searchTerm && !selectedType && (
             <button onClick={() => navigate('/promotions/create')} className="btn btn-primary empty-btn">{t('Get Started')}</button>
