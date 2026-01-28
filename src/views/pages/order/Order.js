@@ -9,6 +9,7 @@ import OrderCard from '../../../components/OrderCard'
 import CIcon from '@coreui/icons-react'
 import { cilChevronLeft, cilChevronRight } from '@coreui/icons'
 import { useTranslation } from 'react-i18next'
+import { useSearchParams } from 'react-router-dom'
 
 /* ───────── constants ───────── */
 const STATUS_OPTIONS = [
@@ -35,6 +36,8 @@ const OrderRequest = () => {
   const [selectedStatus, setSelectedStatus] = useState('')
   const [activeTab, setActiveTab] = useState(TABS.INTRACITY)
   const [loadingId, setLoadingId] = useState(null)
+  const [searchParams] = useSearchParams()
+  const tabFromUrl = searchParams.get('tab')
   const { t } = useTranslation('approvedorder')
 
   // 🔎 Search
@@ -78,6 +81,12 @@ const OrderRequest = () => {
   useEffect(() => {
     loadOrders()
   }, [loadOrders])
+
+  useEffect(() => {
+    if (tabFromUrl === 'market_place') {
+      setActiveTab(TABS.INTERCITY)
+    }
+  }, [tabFromUrl])
 
   /* ───────── handlers ───────── */
   const handlePageChange = (page) => loadOrders(page)
@@ -127,7 +136,7 @@ const OrderRequest = () => {
           <div style={{ maxWidth: '300px' }}>
             <input
               type="text"
-              placeholder={t("Search by order number")}
+              placeholder={t('Search by order number')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="form-control"

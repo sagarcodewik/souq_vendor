@@ -124,7 +124,14 @@ const promotionSlice = createSlice({
         const index = state.list.findIndex((p) => p._id === payload._id)
         if (index !== -1) state.list[index] = payload
       })
-
+.addCase(updatePromotion.pending, (state) => {
+  state.loading = true
+  state.error = null
+})
+.addCase(updatePromotion.rejected, (state, { payload }) => {
+  state.loading = false
+  state.error = payload?.message || 'Failed to update promotion'
+})
       // DELETE
       .addCase(deletePromotion.fulfilled, (state, { payload: id }) => {
         state.list = state.list.filter((p) => p._id !== id)

@@ -17,6 +17,7 @@ import categoryReducer from './slice/category'
 import financeReducer from './slice/finance'
 import notificationReducer from './slice/notificationSlice'
 import boostReducer from './slice/boosts'
+import boostPricingReducer from "./slice/boostprice"
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -36,5 +37,6 @@ export const store = configureStore({
     finance: financeReducer,
     notifications: notificationReducer,
     boosts: boostReducer,
+    boostPricing: boostPricingReducer
   },
 })

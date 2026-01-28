@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import {
   CCard,
   CCardBody,
@@ -36,6 +36,8 @@ import {
   Calculator,
   CircleAlert,
 } from 'lucide-react'
+import { useSelector } from 'react-redux'
+
 import './create_boost.scss'
 
 const typeOptions = [
@@ -65,7 +67,7 @@ const typeOptions = [
 const boostOptions = [
   {
     id: 'featured',
-    title: 'Featured Badge',
+    title: 'Featured Product',
     description: 'Get a special badge on your product to build trust',
     icon: '/pc_icons1.svg',
   },
@@ -104,7 +106,7 @@ const paidFlagOptions = [
 const validationSchema = Yup.object().shape({
   title: Yup.string().required('Title is required'),
   type: Yup.string().required('Type is required'),
-  paidFlag: Yup.string(),
+  paidFlag: Yup.string().nullable(),
   discountType: Yup.string().required('Discount type is required'),
   discountValue: Yup.number()
     .required('Discount value is required')
@@ -145,8 +147,23 @@ const validationSchema = Yup.object().shape({
 
 const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, categories = [] }) => {
   const [step, setStep] = useState(1)
-  const [isBoostApplied, setIsBoostApplied] = useState(false)
   const [selectedBoost, setSelectedBoost] = useState(null)
+
+  const { boostPricing, status: boostPricingStatus } = useSelector((state) => state.boostPricing)
+
+  useEffect(() => {
+    if (initialValues?.boost?.isApplied) {
+      setSelectedBoost(initialValues.boost.type)
+    }
+  }, [initialValues])
+  const boostPricingMap = useMemo(() => {
+    const map = {}
+    boostPricing?.forEach((b) => {
+      map[b.boostType] = b.pricePerDay
+    })
+    return map
+  }, [boostPricing])
+
   const productOptions = products.map((prod) => ({
     value: prod._id,
     label: prod.productName,
@@ -156,12 +173,7 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
     value: cat._id,
     label: cat.category,
   }))
-  const subCategoryOptions = categories.flatMap((cat) =>
-    (cat.subCategory || []).map((sub) => ({
-      value: sub,
-      label: `${sub} (${cat.category})`,
-    })),
-  )
+
   const defaultValues = {
     title: '',
     description: '',
@@ -217,6 +229,33 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
       appliedOn,
     })
   }
+  const calculateBoostBilling = (values, boostPricingMap) => {
+    if (!values.boost?.isApplied || !values.boost?.type) return null
+    if (!values.startDate || !values.endDate) return null
+
+    const start = new Date(values.startDate)
+    const end = new Date(values.endDate)
+
+    start.setHours(0, 0, 0, 0)
+    end.setHours(0, 0, 0, 0)
+
+    const days = Math.floor((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1
+
+    const targetCount =
+      values.scopeType === 'product' ? values.productIds.length : values.categoryIds.length
+
+    if (targetCount === 0) return null
+
+    const pricePerDay = boostPricingMap[values.boost.type] || 0
+
+    return {
+      pricePerDay,
+      days,
+      targetCount,
+      totalPrice: pricePerDay * days * targetCount,
+    }
+  }
+
   return (
     <>
       <div className="gradient-bg">
@@ -264,39 +303,51 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                 validationSchema={validationSchema}
                 enableReinitialize
                 onSubmit={(values, { resetForm }) => {
-                  const toEndOfDayUTC = (dateStr) => {
-                    if (!dateStr) return null
-                    const localEndOfDay = new Date(dateStr)
-                    localEndOfDay.setHours(23, 59, 59, 999)
-                    return localEndOfDay.toISOString()
-                  }
-                  const toStartOfDayUTC = (dateStr) => {
-                    if (!dateStr) return null
+                  const payload = {
+                    ...values,
 
-                    const localStart = new Date(dateStr)
-                    localStart.setHours(0, 1, 0, 0)
-                    return localStart.toISOString()
-                  }
-
-                  onSubmit(
-                    {
-                      ...values,
-                      startDate: toStartOfDayUTC(values.startDate),
-                      endDate: toEndOfDayUTC(values.endDate),
+                    //  SEND ONLY ALLOWED BOOST FIELDS
+                    boost: {
+                      isApplied: values.boost?.isApplied || false,
+                      type: values.boost?.type || null,
+                      appliedOn: values.boost?.appliedOn || null,
                     },
-                    { resetForm },
-                  )
+
+                    startDate: values.startDate ? new Date(values.startDate).toISOString() : null,
+                    endDate: values.endDate ? new Date(values.endDate).toISOString() : null,
+                  }
+
+                  onSubmit(payload, { resetForm })
                 }}
               >
                 {({ values, setFieldValue, errors, touched }) => {
+                  console.log(' Formik state:', {
+                    errors,
+                    touched,
+                    values,
+                  })
                   const selectedType = typeOptions.find((type) => type.value === values.type)
+                  // const boostBilling = calculateBoostBilling(values, boostPricingMap)
+                  const boostBilling =
+                    boostPricingStatus === 'succeeded'
+                      ? calculateBoostBilling(values, boostPricingMap)
+                      : null
+                  const isBoostApplied = values.boost?.isApplied
+
                   const handleNext = () => {
                     const stepErrors = validateStep(values, step)
                     if (Object.keys(stepErrors).length === 0) {
                       setStep(2)
                     }
                   }
-
+                  const filteredSubCategoryOptions = categories
+                    .filter((cat) => values.categoryIds.includes(cat._id))
+                    .flatMap((cat) =>
+                      (cat.subCategory || []).map((sub) => ({
+                        value: sub,
+                        label: sub,
+                      })),
+                    )
                   return (
                     <Form>
                       {/* Step 1: Basic Information */}
@@ -618,54 +669,8 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                     </div>
                                   )}
                                 </div>
-                                <div
-                                  onClick={() => setFieldValue('scopeType', 'subcategory')}
-                                  className={`p-4 rounded-3 cursor-pointer flex-fill border transition d-flex align-items-center ${
-                                    values.scopeType === 'subcategory'
-                                      ? 'border-primary bg-primary-subtle'
-                                      : 'bg-white border-light-subtle'
-                                  }`}
-                                >
-                                  <div
-                                    className={`p-2 rounded-circle me-3 ${
-                                      values.scopeType === 'subcategory'
-                                        ? 'bg-primary text-white'
-                                        : 'bg-light text-muted'
-                                    }`}
-                                  >
-                                    <Layers size={24} />
-                                  </div>
-                                  <div>
-                                    <h6 className="fw-bold mb-1">Sub Categories</h6>
-                                    <p className="mb-0 small text-muted">
-                                      Apply to specific sub categories
-                                    </p>
-                                  </div>
-                                </div>
                               </div>
-                              {values.scopeType === 'subcategory' && (
-                                <>
-                                  <CFormLabel className="fw-semibold text-dark mb-2">
-                                    Select Sub Categories
-                                  </CFormLabel>
-                                  <div className="bg-light p-3 rounded-3">
-                                    <Select
-                                      options={subCategoryOptions}
-                                      isMulti
-                                      value={subCategoryOptions.filter((s) =>
-                                        values.subCategoryNames.includes(s.value),
-                                      )}
-                                      onChange={(selected) =>
-                                        setFieldValue(
-                                          'subCategoryNames',
-                                          selected ? selected.map((s) => s.value) : [],
-                                        )
-                                      }
-                                      placeholder="Select sub categories"
-                                    />
-                                  </div>
-                                </>
-                              )}
+
                               {values.scopeType === 'product' ? (
                                 <>
                                   <CFormLabel className="fw-semibold text-dark mb-2">
@@ -705,17 +710,43 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                       value={categoryOptions.filter((c) =>
                                         values.categoryIds.includes(c.value),
                                       )}
-                                      onChange={(selected) =>
+                                      onChange={(selected) => {
                                         setFieldValue(
                                           'categoryIds',
                                           selected ? selected.map((s) => s.value) : [],
                                         )
-                                      }
+                                        setFieldValue('subCategoryNames', [])
+                                      }}
                                       className="react-select-enhanced"
                                       classNamePrefix="react-select"
                                       placeholder="Search and select categories..."
                                     />
                                   </div>
+                                  {values.scopeType === 'category' &&
+                                    values.categoryIds.length > 0 && (
+                                      <>
+                                        <CFormLabel className="fw-semibold text-dark mt-3 mb-2">
+                                          Select Sub Categories (Optional)
+                                        </CFormLabel>
+                                        <div className="bg-light p-3 rounded-3">
+                                          <Select
+                                            options={filteredSubCategoryOptions}
+                                            isMulti
+                                            value={filteredSubCategoryOptions.filter((s) =>
+                                              values.subCategoryNames.includes(s.value),
+                                            )}
+                                            onChange={(selected) =>
+                                              setFieldValue(
+                                                'subCategoryNames',
+                                                selected ? selected.map((s) => s.value) : [],
+                                              )
+                                            }
+                                            placeholder="Select sub categories..."
+                                          />
+                                        </div>
+                                      </>
+                                    )}
+
                                   <div className="text-danger small mt-2">
                                     <ErrorMessage name="categoryIds" />
                                   </div>
@@ -746,7 +777,7 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                           <div className="icon-wrap mb-3">
                                             <img src="/pc_icons1.svg" className="img-fluid" />
                                           </div>
-                                          <h5 className="fw-bold">Featured Badge</h5>
+                                          <h5 className="fw-bold">Featured Product</h5>
                                           <p className="text-muted mb-0">
                                             Appear prominently in search and category views
                                           </p>
@@ -800,7 +831,7 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                                 <img src="/pc_icons1.svg" className="img-fluid" />
                                               </div>
                                               <h5 className="fw-bold text-dark mb-1">
-                                                Featured Badge
+                                                Featured Product
                                               </h5>
                                               <p className="text-muted small mb-0">
                                                 Get a special badge on your product to build trust
@@ -855,16 +886,10 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
 
                                       return (
                                         <div key={boost.id} className="col-12 col-md-4">
-                                          {/* <div
-                                          className={`type-card bg-white position-relative cursor-pointer ${
-                                            isSelected ? 'type-card-selected' : ''
-                                          }`}
-                                          onClick={() => handleBoostSelect(boost.id, values, setFieldValue)}
-                                        > */}
                                           <div
-                                            className={`type-card bg-white position-relative cursor-pointer ${
-                                              isSelected ? 'type-card-selected' : ''
-                                            } ${disableBoost ? 'opacity-50 pointer-events-none' : ''}`}
+                                            className={`type-card bg-white position-relative cursor-pointer
+        ${isSelected ? 'type-card-selected' : ''}
+        ${disableBoost ? 'opacity-50 pointer-events-none' : ''}`}
                                             onClick={() => {
                                               if (disableBoost) return
                                               handleBoostSelect(boost.id, values, setFieldValue)
@@ -877,9 +902,17 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                             <h5 className="fw-bold text-dark mb-1">
                                               {boost.title}
                                             </h5>
-                                            <p className="text-muted small mb-0">
+
+                                            <p className="text-muted small mb-1">
                                               {boost.description}
                                             </p>
+
+                                            {/*  PRICE */}
+                                            {boostPricingMap[boost.id] && (
+                                              <div className="fw-semibold text-success small">
+                                                {boostPricingMap[boost.id]} SYP / day
+                                              </div>
+                                            )}
 
                                             {isSelected && (
                                               <div className="selected-indicator">
@@ -907,20 +940,28 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                     {/* <button className="btn_green ms-auto">Apply Boost</button> */}
                                     <button
                                       type="button"
-                                      className={`btn_green ms-auto ${isBoostApplied ? 'btn-danger' : ''}`}
+                                      className={`btn_green ms-auto ${values.boost?.isApplied ? 'btn-danger' : ''}`}
                                       onClick={() => {
-                                        if (isBoostApplied) {
+                                        if (values.boost?.isApplied) {
                                           setSelectedBoost(null)
                                           setFieldValue('boost', {
                                             isApplied: false,
                                             type: null,
                                             appliedOn: null,
                                           })
+                                        } else {
+                                          setFieldValue('boost', {
+                                            isApplied: true,
+                                            type: selectedBoost,
+                                            appliedOn:
+                                              selectedBoost === 'notification'
+                                                ? 'category'
+                                                : 'product',
+                                          })
                                         }
-                                        setIsBoostApplied((prev) => !prev)
                                       }}
                                     >
-                                      {isBoostApplied ? 'Remove Boost' : 'Apply Boost'}
+                                      {values.boost?.isApplied ? 'Remove Boost' : 'Apply Boost'}
                                     </button>
                                   </div>
                                 </div>
@@ -997,56 +1038,80 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                 </CCol>
                               )}
                             </CRow>
-                            {/* {isBoostApplied && (
-                              <div className="boost_payment_wrap mb-4">
-                                <h3 className="heading fw-bold text-dark mb-3">
-                                  Boost Payment Details
-                                </h3>
-                                <div className="row gx-3">
-                                  <div className="col-12 col-md-4 dtl_wrap">
-                                    <h3>Wallet Balance</h3>
-                                    <p>5,420.00 SYP</p>
-                                  </div>
-                                  <div className="col-12 col-md-4 dtl_wrap">
-                                    <h3>Boost Cost</h3>
-                                    <p className="text-danger">-450.00 SYP</p>
-                                  </div>
-                                  <div className="col-12 col-md-4 dtl_wrap">
-                                    <h3>Remaining Balance</h3>
-                                    <p className="text-green">4,970.00 SYP</p>
-                                  </div>
-                                </div>
-                              </div>
-                            )} */}
+
                             {/* Summary Card */}
                             {values.title && selectedType && (
                               <div className="summary-card mb-4">
-                                <h5 className="fw-bold text-dark mb-3">Promotion Summary</h5>
+                                <h5 className="fw-bold text-dark mb-3">Discount Summary</h5>
+
                                 <div className="small">
                                   <div className="d-flex justify-content-between mb-2">
                                     <span className="text-muted">Title:</span>
                                     <span className="fw-semibold text-dark">{values.title}</span>
                                   </div>
+
                                   <div className="d-flex justify-content-between mb-2">
                                     <span className="text-muted">Type:</span>
                                     <span className="fw-semibold text-dark">
                                       {selectedType.label}
                                     </span>
                                   </div>
+
                                   <div className="d-flex justify-content-between mb-2">
                                     <span className="text-muted">Discount:</span>
                                     <span className="fw-semibold text-success">
                                       {values.discountType === 'Percentage'
                                         ? `${values.discountValue}%`
-                                        : `$${values.discountValue}`}
+                                        : `${values.discountValue} SYP`}
                                     </span>
                                   </div>
-                                  <div className="d-flex justify-content-between">
-                                    <span className="text-muted">Products:</span>
+
+                                  <div className="d-flex justify-content-between mb-2">
+                                    <span className="text-muted">
+                                      {values.scopeType === 'product' ? 'Products' : 'Categories'}:
+                                    </span>
                                     <span className="fw-semibold text-dark">
-                                      {values.productIds.length} selected
+                                      {values.scopeType === 'product'
+                                        ? values.productIds.length
+                                        : values.categoryIds.length}
                                     </span>
                                   </div>
+
+                                  {/* 🔥 BOOST BILLING (ONLY WHEN APPLIED) */}
+                                  {boostBilling && (
+                                    <>
+                                      <hr />
+
+                                      <div className="d-flex justify-content-between mb-2">
+                                        <span className="text-muted">Boost Type:</span>
+                                        <span className="fw-semibold text-capitalize">
+                                          {values.boost.type}
+                                        </span>
+                                      </div>
+
+                                      <div className="d-flex justify-content-between mb-2">
+                                        <span className="text-muted">Price / Day:</span>
+                                        <span>{boostBilling.pricePerDay} SYP</span>
+                                      </div>
+
+                                      <div className="d-flex justify-content-between mb-2">
+                                        <span className="text-muted">Days:</span>
+                                        <span>{boostBilling.days}</span>
+                                      </div>
+
+                                      <div className="d-flex justify-content-between mb-2">
+                                        <span className="text-muted">Products:</span>
+                                        <span>{boostBilling.targetCount}</span>
+                                      </div>
+
+                                      <div className="d-flex justify-content-between fw-bold">
+                                        <span>Total Boost Cost:</span>
+                                        <span className="text-danger">
+                                          {boostBilling.totalPrice} SYP
+                                        </span>
+                                      </div>
+                                    </>
+                                  )}
                                 </div>
                               </div>
                             )}
@@ -1064,6 +1129,11 @@ const PromotionForm = ({ onSubmit, initialValues = {}, loading, products, catego
                                 type="submit"
                                 disabled={loading}
                                 className={`btn-enhanced btn-success-gradient d-flex align-items-center ${loading ? 'opacity-75' : ''}`}
+                                onClick={(e) => {
+                                  console.log('🖱️ Submit button clicked')
+                                  console.log('Button type:', e.currentTarget.type)
+                                  console.log('Loading state:', loading)
+                                }}
                               >
                                 {loading ? (
                                   <>

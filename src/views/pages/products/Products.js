@@ -18,6 +18,7 @@ import { CPagination, CPaginationItem } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { useTranslation } from 'react-i18next'
 import { cilChevronLeft, cilChevronRight } from '@coreui/icons'
+import { useSearchParams } from 'react-router-dom'
 
 const Products = () => {
   const dispatch = useDispatch()
@@ -26,7 +27,8 @@ const Products = () => {
 
   const { products, status, totalRecords, deleteStatus } = useSelector((state) => state.products)
   const { categories } = useSelector((state) => state.categories)
-
+const [searchParams] = useSearchParams()
+const openProductId = searchParams.get('open')
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize] = useState(10)
   const [sortKey, setSortKey] = useState('productName')
@@ -189,13 +191,14 @@ const Products = () => {
                 {products.map((product) => (
                   <div key={product._id} className="col-sm-6 col-md-4 col-lg-4">
                     <ProductCard
-                      product={product}
-                      onEdit={handleEditItem}
-                      onDelete={handleDeleteItem}
-                      onReview={handleReview}
-                      onToggleAvailability={handleToggleAvailability}
-                      onToggleCOD={handleToggleCOD}
-                    />
+  product={product}
+  openFromUrl={openProductId === product._id}
+  onEdit={handleEditItem}
+  onDelete={handleDeleteItem}
+  onReview={handleReview}
+  onToggleAvailability={handleToggleAvailability}
+  onToggleCOD={handleToggleCOD}
+/>
                   </div>
                 ))}
               </div>

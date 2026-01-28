@@ -22,6 +22,7 @@ import { useTranslation } from 'react-i18next'
 const ProductCard = ({
   product,
   onEdit,
+  openFromUrl = false,
   onDelete,
   onReview,
   onToggleAvailability,
@@ -52,7 +53,11 @@ const { t } = useTranslation('products')
       setModalImageIndex(0)
     }
   }, [visible])
-
+useEffect(() => {
+  if (openFromUrl) {
+    setVisible(true)
+  }
+}, [openFromUrl])
   return (
     <>
       <CCard className={styles.productCard}>

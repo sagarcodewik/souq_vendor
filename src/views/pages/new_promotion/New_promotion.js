@@ -6,6 +6,7 @@ import { createPromotion } from '../../../redux/slice/promotion'
 import PromotionForm from '../../../components/PromotionFrom'
 import Loader from '../../../components/loader/loader'
 import { useNavigate } from 'react-router-dom'
+import { fetchBoostPricing } from '../../../redux/slice/boostprice'
 
 const New_promotion = () => {
   const dispatch = useDispatch()
@@ -14,6 +15,23 @@ const New_promotion = () => {
   const { products, status: productStatus } = useSelector((state) => state.products)
   const { categories, status: categoryStatus } = useSelector((state) => state.categories)
   const { loading: promotionLoading } = useSelector((state) => state.promotion)
+
+  // useEffect(() => {
+  //   dispatch(
+  //     fetchProducts({
+  //       page: 1,
+  //       pageSize: 100000,
+  //       sortKey: 'productName',
+  //       sortDirection: 'asc',
+  //     }),
+  //   )
+  //   dispatch(
+  //     fetchCategories({
+  //       page: 1,
+  //       pageSize: 100000,
+  //     }),
+  //   )
+  // }, [dispatch])
 
   useEffect(() => {
     dispatch(
@@ -24,12 +42,15 @@ const New_promotion = () => {
         sortDirection: 'asc',
       }),
     )
+
     dispatch(
       fetchCategories({
         page: 1,
         pageSize: 100000,
       }),
     )
+
+    dispatch(fetchBoostPricing())
   }, [dispatch])
 
   const handleCreate = async (formData, { resetForm }) => {

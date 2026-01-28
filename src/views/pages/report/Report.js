@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   LineChart,
   Line,
@@ -30,6 +31,7 @@ import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 
 const SalesReportDashboard = () => {
+  const navigate = useNavigate()
   const [timeRange, setTimeRange] = useState('7d')
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
@@ -218,7 +220,9 @@ const SalesReportDashboard = () => {
   )
 
   const ProductCard = ({ product, index }) => (
-    <div className="group d-flex align-items-center p-3 bg-white rounded-3 shadow-sm border-0 mb-3 product-card">
+    <div className="group d-flex align-items-center p-3 bg-white rounded-3 shadow-sm border-0 mb-3 product-card"
+    onClick={() => navigate(`/products?open=${product.productId}`)}
+>
       <div
         className="d-flex align-items-center justify-content-center me-3 product-rank"
         style={{
@@ -279,7 +283,8 @@ const SalesReportDashboard = () => {
   )
 
   const OrderCard = ({ order }) => (
-    <div className="group d-flex align-items-center p-3 bg-white rounded-3 shadow-sm border-0 mb-3 order-card">
+    <div className="group d-flex align-items-center p-3 bg-white rounded-3 shadow-sm border-0 mb-3 order-card"
+    onClick={() => navigate('/orders?tab=market_place')}>
       <div
         className="d-flex align-items-center justify-content-center me-3 order-icon"
         style={{
